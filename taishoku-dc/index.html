@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>退職金 × iDeCo/DC 受け取り順序シミュレーター</title>
+<meta name="description" content="会社の退職金とiDeCo・企業型DCの一時金を、どの順番・どの間隔で受け取ると税額がどう変わるかを比較する無料の試算ツール。入力はブラウザ内でのみ計算し、サーバーへ送信しません。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="logo" href="../"><span class="logo-mark"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><line x1="8.5" y1="7.5" x2="15.5" y2="7.5"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15.5" r="1" fill="currentColor" stroke="none"/></svg></span>ぜいきんノート</a>
+  <nav class="site-nav"><a href="../#tools">ツール一覧</a><a href="../#about">このサイトについて</a>｜<a href="../privacy/">プライバシーポリシー</a></nav>
+  <details class="menu"><summary class="menu-btn" aria-label="メニュー"><span class="burger"></span></summary><nav class="menu-panel"><a href="../#tools">ツール一覧</a><a href="../#about">このサイトについて</a>｜<a href="../privacy/">プライバシーポリシー</a></nav></details>
+</header>
+<main>
+  <p class="crumb"><a href="../">トップ</a> ＞ 退職金 × iDeCo/DC シミュレーター</p>
+  <h1><span class="h1-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><line x1="8.5" y1="7.5" x2="15.5" y2="7.5"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15.5" r="1" fill="currentColor" stroke="none"/></svg></span>退職金 × iDeCo/DC<br>受け取り順序シミュレーター</h1>
+  <p class="lead">退職金とiDeCo・DCは、受け取る順番と間隔で税金が変わります。全パターンをくらべて、いちばん税金が少ない受け取り方を表示します。</p>
+
+  <div class="disclaimer">
+    本ツールは一般的な税制の仕組みに基づく試算であり、個別の税務相談ではありません。実際の税額は、支払者による源泉徴収や確定申告の内容により確定します。個別の事情がある場合は、税理士等の専門家または所轄の税務署にご確認ください。
+  </div>
+
+  <h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 20l1.2-4.2L16.7 4.3a2.15 2.15 0 0 1 3 3L8.2 18.8 4 20z"/><line x1="14.8" y1="6.2" x2="17.8" y2="9.2"/></svg></span>入力</span></h2>
+  <form id="input-form" onsubmit="return false;">
+    <fieldset>
+      <legend><span class="in-flex"><span class="legend-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="3.5" y="8" width="17" height="12" rx="2.5"/><path d="M9 8V6.5A2.5 2.5 0 0 1 11.5 4h1A2.5 2.5 0 0 1 15 6.5V8"/><line x1="3.5" y1="13" x2="20.5" y2="13"/></svg></span>会社の退職金</span></legend>
+      <div class="field">
+        <label for="r-start">勤務開始年月</label>
+        <input type="month" id="r-start" value="1996-04">
+      </div>
+      <div class="field">
+        <label for="r-end">退職年月</label>
+        <input type="month" id="r-end" value="2026-03">
+      </div>
+      <div class="field">
+        <label for="r-income">退職金額（円）</label>
+        <input type="number" id="r-income" value="20000000" min="0" step="10000" inputmode="numeric">
+      </div>
+      <div class="field">
+        <label for="r-officer">役員等として勤務した期間（年）<span class="hint">無い場合は 0 のまま。5年以下の場合はこのツールでは計算できません。</span></label>
+        <input type="number" id="r-officer" value="0" min="0" step="1" inputmode="numeric">
+      </div>
+      <div class="field">
+        <label for="r-year">退職金の受取予定年</label>
+        <input type="number" id="r-year" value="2026" min="1990" max="2100" step="1" inputmode="numeric">
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend><span class="in-flex"><span class="legend-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M12 21.5v-8"/><path d="M12 13.5c0-3.4-2.5-5.3-6.5-5.3 0 3.8 2.1 5.7 6.5 5.3z"/><path d="M12 11.5c.2-3.2 2.4-4.9 6-4.9 0 3.5-1.9 5.3-6 4.9z"/></svg></span>iDeCo・企業型DC（老齢一時金）</span></legend>
+      <div id="dc-periods">
+        <div class="dc-period">
+          <div class="field"><label>開始年月</label><input type="month" class="dc-start" value="2006-04"></div>
+          <div class="field"><label>終了年月</label><input type="month" class="dc-end" value="2026-03"></div>
+          <div class="field"><label>種類</label><select class="dc-kind"><option selected>企業型</option><option>個人型</option><option>移換算入</option></select></div>
+          <button type="button" class="danger dc-remove">この期間を削除</button>
+        </div>
+      </div>
+      <p><button type="button" class="sub" id="add-period">加入者期間を追加</button></p>
+      <p class="small">掛金を出していた期間だけを入力してください。期間が重なるときは、片方だけでOKです。</p>
+      <div class="field">
+        <label for="d-income">想定一時金額（円）<span class="hint">一時金の全額です。全額を一時金で受け取る前提で計算します。</span></label>
+        <input type="number" id="d-income" value="8000000" min="0" step="10000" inputmode="numeric">
+      </div>
+      <div class="field">
+        <label for="d-focus-year">詳しく見たいDC受取年（任意）<span class="hint">空欄の場合は、最も税額が小さい年を最初に表示します。</span></label>
+        <input type="number" id="d-focus-year" value="" min="1990" max="2100" step="1" inputmode="numeric">
+      </div>
+    </fieldset>
+
+    <div id="form-error"></div>
+    <button type="button" class="calc-button" id="calc"><span class="btn-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><line x1="8.5" y1="7.5" x2="15.5" y2="7.5"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15.5" r="1" fill="currentColor" stroke="none"/></svg></span>計算する</button>
+    <p class="small">入力した金額や年月は、あなたのブラウザの中でのみ計算され、サーバーへは送信されません。</p>
+  </form>
+
+  <div id="result"></div>
+
+  <h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M13 2.5 4.5 13.5H11L9.8 21.5 18.5 10H12L13 2.5z"/></svg></span>2026年改正の要点</span></h2>
+  <ul class="compact">
+    <li><strong>DCを先に受けると</strong>、9年以内の退職金は控除が減ります（2026年から、対象が4年→<strong>9年</strong>に拡大）。</li>
+    <li><strong>退職金を先に受けると</strong>、調整の対象は19年以内のままです。</li>
+    <li>つまり、<strong>順番と間隔で税金が変わります</strong>。このツールは全パターンを計算します。</li>
+  </ul>
+
+  <details>
+  <summary><span class="in-flex"><span class="sum-icon"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span>参考: DCはいつから受け取れる？</span></summary>
+  <p class="small">この表は計算には使いません。老齢給付金は加入者資格を喪失していることが前提で、受給開始は75歳に達するまで選択できます（確定拠出年金法33条・34条）。</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>60歳時点の通算加入者等期間</th><th>受給開始可能年齢</th></tr></thead>
+      <tbody>
+        <tr><td>10年以上</td><td>60歳</td></tr>
+        <tr><td>8年以上10年未満</td><td>61歳</td></tr>
+        <tr><td>6年以上8年未満</td><td>62歳</td></tr>
+        <tr><td>4年以上6年未満</td><td>63歳</td></tr>
+        <tr><td>2年以上4年未満</td><td>64歳</td></tr>
+        <tr><td>1月以上2年未満</td><td>65歳</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="small">60歳以後に初めて加入した場合は、加入した日から5年経過した日以後です。</p>
+  </details>
+
+  <details>
+  <summary><span class="in-flex"><span class="sum-icon"><svg class="icon" viewBox="0 0 24 24"><line x1="9" y1="6.5" x2="20" y2="6.5"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="17.5" x2="20" y2="17.5"/><circle cx="4.8" cy="6.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="4.8" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="4.8" cy="17.5" r="1.2" fill="currentColor" stroke="none"/></svg></span>このツールの前提条件</span></summary>
+  <ul class="compact">
+    <li>法令基準は令和8年4月1日現在法令等です。</li>
+    <li>DCは全額を一時金で受け取る前提です。年金として受け取る分は公的年金等に係る雑所得となり、このツールの対象外です（年金・併用受給は計算できません）。</li>
+    <li>DC一時金の収入金額は、支給される一時金の全額（本人拠出分を含む）です。</li>
+    <li>対象は一般退職手当等と短期退職手当等のみです。特定役員退職手当等は対象外です。</li>
+    <li>同じ年に両方を受け取る場合の正式な計算は、両方とも一般退職手当等に該当する場合のみです。短期退職手当等が絡む同年受給は「参考計算」と表示します（収入金額が控除額に満たない場合の調整計算の算式が一次ソースで確定できていないため）。</li>
+    <li>障害を直接の原因とする退職の場合の加算（退職所得控除への+100万円）は、このツールの対象外です。該当する方は、表示される計算結果が実際の税額と異なります。</li>
+    <li>DCの加入者期間は、加入者であった期間の通算とし、運用指図者期間は含みません。他制度からの移換算入期間は含みます。期間が重複する場合は一方のみ算入します。</li>
+    <li>9年の重なり調整は、2026年1月1日以後に支払を受けたDC老齢一時金にのみ適用されます。同日より前の受取は4年の対象期間です。</li>
+    <li>住民税は退職所得の金額を課税標準とし、基礎控除等の所得控除は適用しません。市町村民税6%と道府県民税4%をそれぞれ計算し、それぞれ100円未満を切り捨てます。</li>
+    <li>所得税額は「退職所得の受給に関する申告書」を提出した場合の分離課税の計算（源泉徴収税額の速算表）に基づきます。</li>
+  </ul>
+  </details>
+
+  <details>
+  <summary><span class="in-flex"><span class="sum-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M12 6c-1.8-1.5-4-2-7.5-2v14c3.5 0 5.7.5 7.5 2 1.8-1.5 4-2 7.5-2V4c-3.5 0-5.7.5-7.5 2z"/><path d="M12 6v14"/></svg></span>計算の根拠（出典）</span></summary>
+  <ul class="source-list">
+    <li>退職所得の基本計算・退職所得控除額・短期退職手当等の300万円境界・DC一時金が退職所得とみなされる条件: 国税庁タックスアンサー No.1420<br><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1420.htm" target="_blank" rel="noopener">https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1420.htm</a></li>
+    <li>重なり調整の原則・みなし期間・重複相当額への最低額の不適用・年数ウィンドウ・同年受給の合算: 国税庁タックスアンサー No.2732<br><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/gensen/2732.htm" target="_blank" rel="noopener">https://www.nta.go.jp/taxes/shiraberu/taxanswer/gensen/2732.htm</a></li>
+    <li>所得税額の速算表: 国税庁「別紙 退職所得の源泉徴収税額の速算表」<br><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/gensen/2732_besshi.htm" target="_blank" rel="noopener">https://www.nta.go.jp/taxes/shiraberu/taxanswer/gensen/2732_besshi.htm</a></li>
+    <li>同年の区分混在時の算式: 国税庁タックスアンサー No.2741<br><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/gensen/2741.htm" target="_blank" rel="noopener">https://www.nta.go.jp/taxes/shiraberu/taxanswer/gensen/2741.htm</a></li>
+    <li>9年への拡大: 令和7年度税制改正大綱（財務省）<br><a href="https://www.mof.go.jp/tax_policy/tax_reform/outline/fy2025/20241227taikou.pdf" target="_blank" rel="noopener">https://www.mof.go.jp/tax_policy/tax_reform/outline/fy2025/20241227taikou.pdf</a></li>
+    <li>DC加入者期間の構成・通算、みなし期間の複数受取の扱い: 東京国税局 文書回答事例<br><a href="https://www.nta.go.jp/about/organization/tokyo/bunshokaito/gensenshotoku/240322/01.htm" target="_blank" rel="noopener">https://www.nta.go.jp/about/organization/tokyo/bunshokaito/gensenshotoku/240322/01.htm</a></li>
+    <li>住民税の課税標準・端数処理: 広島市「退職所得に対する住民税のあらまし」<br><a href="https://www.city.hiroshima.lg.jp/living/zei/1006016/1025580/1019099.html" target="_blank" rel="noopener">https://www.city.hiroshima.lg.jp/living/zei/1006016/1025580/1019099.html</a>／さいたま市「退職所得の課税の特例」<br><a href="https://www.city.saitama.lg.jp/001/153/004/002/001/004/p014828.html" target="_blank" rel="noopener">https://www.city.saitama.lg.jp/001/153/004/002/001/004/p014828.html</a></li>
+    <li>DC受給開始可能年齢: 厚生労働省「2020年の制度改正」（確定拠出年金法33条・34条）<br><a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/nenkin/nenkin/kyoshutsu/2020kaisei.html" target="_blank" rel="noopener">https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/nenkin/nenkin/kyoshutsu/2020kaisei.html</a></li>
+  </ul>
+  </details>
+
+  <footer>
+    <div class="disclaimer">
+      本ツールは一般的な税制の仕組みに基づく試算であり、個別の税務相談ではありません。実際の税額は、支払者による源泉徴収や確定申告の内容により確定します。個別の事情がある場合は、税理士等の専門家または所轄の税務署にご確認ください。
+    </div>
+    <p class="small">法令基準: 令和8年4月1日現在法令等。</p>
+    <nav class="foot-nav"><a href="../">トップ</a>｜<a href="../#tools">ツール一覧</a>｜<a href="../#about">このサイトについて</a>｜<a href="../privacy/">プライバシーポリシー</a></nav>
+    <p class="small">© 2026 ぜいきんノート（zeikin-note.com）</p>
+  </footer>
+</main>
+
+<script src="../data/rules.js"></script>
+<script src="../js/engine.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  // 静的HTMLに置いた最初のDC期間行にも削除ボタンを効かせる
+  document.querySelectorAll('.dc-remove').forEach(function (btn) {
+    btn.addEventListener('click', function () { btn.closest('.dc-period').remove(); });
+  });
+</script>
+</body>
+</html>
