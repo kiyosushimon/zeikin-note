@@ -1,0 +1,584 @@
+{
+  "meta": {
+    "title": "住民税（個人住民税）全国共通ルール",
+    "fiscal_year": "令和8年度（令和7年分の所得に対する課税）",
+    "created": "2026-11-23",
+    "sources_policy": "一次ソース（総務省・自治体公式ページ）のみ。令和8年度の数値であることを各ソースで確認した。",
+    "framework_sources": [
+      {
+        "url": "https://www.soumu.go.jp/main_sosiki/jichi_zeisei/czaisei/czaisei_seido/150790_06.html",
+        "checked": "2026-11-23",
+        "note": "総務省『個人住民税』。所得割は合計10%（道府県民税4%・市町村民税6%、政令指定都市は道府県民税2%・市民税8%）、均等割は合計4,000円（道府県民税1,000円・市町村民税3,000円）が標準。令和6年度から森林環境税（国税）1,000円を均等割と併せて徴収"
+      },
+      {
+        "url": "https://www.city.sapporo.jp/citytax/syurui/shiminzei/kojin_zeigaku.html",
+        "checked": "2026-11-23",
+        "note": "札幌市『税額の算出方法』（更新日2026年10月30日）。令和8年度の所得控除表・調整控除・端数処理を完備。本ファイルの控除額の主ソース"
+      },
+      {
+        "url": "https://www.city.fujisawa.kanagawa.jp/siminzei1/kurashi/zekin/shimin/shurui/chose.html",
+        "checked": "2026-11-23",
+        "note": "藤沢市『調整控除について』。令和8年度以降の人的控除差額表"
+      }
+    ]
+  },
+  "standard_rates": {
+    "income_levy_total_pct": 10.0,
+    "split_general": {
+      "city_pct": 6.0,
+      "prefecture_pct": 4.0
+    },
+    "split_designated_city": {
+      "city_pct": 8.0,
+      "prefecture_pct": 2.0
+    },
+    "per_capita_standard_yen": {
+      "city": 3000,
+      "prefecture": 1000,
+      "total": 4000
+    },
+    "forest_environment_tax_national_yen": 1000,
+    "forest_environment_tax_note": "国税。令和6年度から個人住民税の均等割と併せて徴収。均等割が非課税の人は森林環境税も非課税。住民税そのものではないため均等割額には含めない。",
+    "sources": [
+      {
+        "url": "https://www.soumu.go.jp/main_sosiki/jichi_zeisei/czaisei/czaisei_seido/150790_06.html",
+        "checked": "2026-11-23"
+      }
+    ]
+  },
+  "income_deductions": {
+    "note": "いずれも住民税（令和8年度）の控除額。所得税とは額が異なる。判定は前年12月31日現在の状況による。",
+    "basic": {
+      "name": "基礎控除",
+      "by_total_income": [
+        {
+          "total_income_max_yen": 24000000,
+          "deduction_yen": 430000
+        },
+        {
+          "total_income_max_yen": 24500000,
+          "deduction_yen": 290000
+        },
+        {
+          "total_income_max_yen": 25000000,
+          "deduction_yen": 150000
+        },
+        {
+          "total_income_max_yen": null,
+          "deduction_yen": 0,
+          "note": "2,500万円超は適用なし"
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://www.city.sapporo.jp/citytax/syurui/shiminzei/kojin_zeigaku.html",
+          "checked": "2026-11-23"
+        },
+        {
+          "url": "https://www.pref.fukuoka.lg.jp/contents/kojinkenminzei.html",
+          "checked": "2026-11-23"
+        }
+      ]
+    },
+    "spouse": {
+      "name": "配偶者控除",
+      "conditions": "同一生計配偶者の前年の合計所得金額が58万円以下（令和8年度から48万円→58万円に引上げ）。納税義務者本人の合計所得金額が1,000万円超の場合は適用なし。",
+      "by_taxpayer_total_income": [
+        {
+          "taxpayer_income_max_yen": 9000000,
+          "general_yen": 330000,
+          "elderly_yen": 380000
+        },
+        {
+          "taxpayer_income_max_yen": 9500000,
+          "general_yen": 220000,
+          "elderly_yen": 260000
+        },
+        {
+          "taxpayer_income_max_yen": 10000000,
+          "general_yen": 110000,
+          "elderly_yen": 130000
+        }
+      ],
+      "elderly_definition": "控除対象配偶者のうち年齢70歳以上の人",
+      "sources": [
+        {
+          "url": "https://www.city.sapporo.jp/citytax/syurui/shiminzei/kojin_zeigaku.html",
+          "checked": "2026-11-23"
+        }
+      ]
+    },
+    "spouse_special": {
+      "name": "配偶者特別控除",
+      "conditions": "配偶者の前年の合計所得金額が58万円超133万円以下。納税義務者本人の合計所得金額が1,000万円超の場合は適用なし。夫婦相互に適用はできない。",
+      "table": [
+        {
+          "spouse_income_max_yen": 1000000,
+          "taxpayer_le_900man": 330000,
+          "taxpayer_le_950man": 220000,
+          "taxpayer_le_1000man": 110000
+        },
+        {
+          "spouse_income_max_yen": 1050000,
+          "taxpayer_le_900man": 310000,
+          "taxpayer_le_950man": 210000,
+          "taxpayer_le_1000man": 110000
+        },
+        {
+          "spouse_income_max_yen": 1100000,
+          "taxpayer_le_900man": 260000,
+          "taxpayer_le_950man": 180000,
+          "taxpayer_le_1000man": 90000
+        },
+        {
+          "spouse_income_max_yen": 1150000,
+          "taxpayer_le_900man": 210000,
+          "taxpayer_le_950man": 140000,
+          "taxpayer_le_1000man": 70000
+        },
+        {
+          "spouse_income_max_yen": 1200000,
+          "taxpayer_le_900man": 160000,
+          "taxpayer_le_950man": 110000,
+          "taxpayer_le_1000man": 60000
+        },
+        {
+          "spouse_income_max_yen": 1250000,
+          "taxpayer_le_900man": 110000,
+          "taxpayer_le_950man": 80000,
+          "taxpayer_le_1000man": 40000
+        },
+        {
+          "spouse_income_max_yen": 1300000,
+          "taxpayer_le_900man": 60000,
+          "taxpayer_le_950man": 40000,
+          "taxpayer_le_1000man": 20000
+        },
+        {
+          "spouse_income_max_yen": 1330000,
+          "taxpayer_le_900man": 30000,
+          "taxpayer_le_950man": 20000,
+          "taxpayer_le_1000man": 10000
+        }
+      ],
+      "table_note": "配偶者の合計所得金額の下限は58万円超。札幌市の表は58万1円〜95万円と95万1円〜100万円で同額（33万円等）のため、100万円以下の区分に統合した。",
+      "sources": [
+        {
+          "url": "https://www.city.sapporo.jp/citytax/syurui/shiminzei/kojin_zeigaku.html",
+          "checked": "2026-11-23",
+          "note": "配偶者特別控除表"
+        },
+        {
+          "url": "https://www.city.hamamatsu.shizuoka.jp/shiminze/zei/siminze/kojo3.html",
+          "checked": "2026-11-23",
+          "note": "浜松市 所得控除の種類 その3。統合表で裏取り"
+        }
+      ]
+    },
+    "dependent": {
+      "name": "扶養控除",
+      "conditions": "扶養親族の前年の合計所得金額が58万円以下（令和8年度から48万円→58万円に引上げ）。",
+      "categories": [
+        {
+          "category": "一般扶養親族",
+          "age": "16歳以上19歳未満、および23歳以上70歳未満",
+          "deduction_yen": 330000
+        },
+        {
+          "category": "特定扶養親族",
+          "age": "19歳以上23歳未満",
+          "deduction_yen": 450000
+        },
+        {
+          "category": "老人扶養親族",
+          "age": "70歳以上",
+          "deduction_yen": 380000
+        },
+        {
+          "category": "同居老親等",
+          "age": "70歳以上で、納税義務者またはその配偶者の直系尊属で同居を常況としている人",
+          "deduction_yen": 450000
+        },
+        {
+          "category": "年少扶養親族",
+          "age": "16歳未満",
+          "deduction_yen": 0,
+          "note": "控除額は0円。ただし均等割・所得割の非課税限度額の人数計算には含める"
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://www.city.sapporo.jp/citytax/syurui/shiminzei/kojin_zeigaku.html",
+          "checked": "2026-11-23"
+        },
+        {
+          "url": "https://www.pref.fukuoka.lg.jp/contents/kojinkenminzei.html",
+          "checked": "2026-11-23"
+        }
+      ]
+    },
+    "special_relative_special": {
+      "name": "特定親族特別控除（令和8年度から新設）",
+      "conditions": "生計を一にする19歳以上23歳未満の親族（配偶者・事業専従者を除く）で、合計所得金額が58万円超123万円以下。58万円以下は特定扶養控除の対象となり本控除は適用なし。",
+      "table": [
+        {
+          "relative_income_max_yen": 950000,
+          "deduction_yen": 450000
+        },
+        {
+          "relative_income_max_yen": 1000000,
+          "deduction_yen": 410000
+        },
+        {
+          "relative_income_max_yen": 1050000,
+          "deduction_yen": 310000
+        },
+        {
+          "relative_income_max_yen": 1100000,
+          "deduction_yen": 210000
+        },
+        {
+          "relative_income_max_yen": 1150000,
+          "deduction_yen": 110000
+        },
+        {
+          "relative_income_max_yen": 1200000,
+          "deduction_yen": 60000
+        },
+        {
+          "relative_income_max_yen": 1230000,
+          "deduction_yen": 30000
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://www.city.sapporo.jp/citytax/syurui/shiminzei/kojin_zeigaku.html",
+          "checked": "2026-11-23"
+        },
+        {
+          "url": "https://www.pref.fukuoka.lg.jp/contents/kojinkenminzei.html",
+          "checked": "2026-11-23"
+        },
+        {
+          "url": "https://www.city.katsushika.lg.jp/kurashi/1000047/1001463/1014861/1040130.html",
+          "checked": "2026-11-23",
+          "note": "葛飾区 令和8年度の個人住民税の主な変更点"
+        }
+      ]
+    },
+    "disability": {
+      "name": "障害者控除",
+      "categories": [
+        {
+          "category": "普通障害者",
+          "deduction_yen": 260000
+        },
+        {
+          "category": "特別障害者",
+          "deduction_yen": 300000
+        },
+        {
+          "category": "同居特別障害者",
+          "deduction_yen": 530000,
+          "note": "本人・配偶者または生計を一にする親族と同居している特別障害者"
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://www.city.sapporo.jp/citytax/syurui/shiminzei/kojin_zeigaku.html",
+          "checked": "2026-11-23"
+        },
+        {
+          "url": "https://www.pref.fukuoka.lg.jp/contents/kojinkenminzei.html",
+          "checked": "2026-11-23"
+        }
+      ]
+    },
+    "widow": {
+      "name": "寡婦控除",
+      "deduction_yen": 260000,
+      "conditions": "合計所得金額が500万円以下等の要件あり",
+      "sources": [
+        {
+          "url": "https://www.city.sapporo.jp/citytax/syurui/shiminzei/kojin_zeigaku.html",
+          "checked": "2026-11-23"
+        },
+        {
+          "url": "https://www.pref.fukuoka.lg.jp/contents/kojinkenminzei.html",
+          "checked": "2026-11-23"
+        }
+      ]
+    },
+    "single_parent": {
+      "name": "ひとり親控除",
+      "deduction_yen": 300000,
+      "conditions": "合計所得金額が500万円以下で、総所得金額等が58万円以下の生計を一にする子を有すること等",
+      "sources": [
+        {
+          "url": "https://www.city.sapporo.jp/citytax/syurui/shiminzei/kojin_zeigaku.html",
+          "checked": "2026-11-23"
+        },
+        {
+          "url": "https://www.pref.fukuoka.lg.jp/contents/kojinkenminzei.html",
+          "checked": "2026-11-23"
+        }
+      ]
+    },
+    "working_student": {
+      "name": "勤労学生控除",
+      "deduction_yen": 260000,
+      "conditions": "本人の合計所得金額が85万円以下（令和8年度から75万円→85万円に引上げ）で、給与所得等以外の所得金額が10万円以下",
+      "sources": [
+        {
+          "url": "https://www.city.sapporo.jp/citytax/syurui/shiminzei/kojin_zeigaku.html",
+          "checked": "2026-11-23"
+        },
+        {
+          "url": "https://www.pref.fukuoka.lg.jp/contents/kojinkenminzei.html",
+          "checked": "2026-11-23"
+        }
+      ]
+    },
+    "social_insurance": {
+      "name": "社会保険料控除",
+      "rule": "前年中に支払った社会保険料（国民健康保険・国民年金・健康保険・厚生年金・介護保険・後期高齢者医療等）の全額が控除対象",
+      "sources": [
+        {
+          "url": "https://www.city.sapporo.jp/citytax/syurui/shiminzei/kojin_zeigaku.html",
+          "checked": "2026-11-23",
+          "note": "社会保険料控除: 支払った金額"
+        }
+      ]
+    }
+  },
+  "adjustment_deduction": {
+    "name": "調整控除",
+    "purpose": "平成19年の税源移譲で生じた、所得税と個人住民税の人的控除額の差に起因する負担増を調整するための税額控除。",
+    "not_applicable_when": "合計所得金額が2,500万円を超える場合は適用なし",
+    "formula": {
+      "case_taxable_income_le_2000000": "min(人的控除額の差の合計額, 合計課税所得金額) × 5%",
+      "case_taxable_income_gt_2000000": "max(人的控除額の差の合計額 − (合計課税所得金額 − 200万円), 5万円) × 5%",
+      "minimum_yen": 2500,
+      "minimum_note": "合計課税所得金額が200万円超の場合、算定額が2,500円未満なら2,500円（内訳は按分比率による。指定都市: 市民税2,000円・県民税500円。一般市: 市民税1,500円・県民税1,000円）",
+      "taxable_income_definition": "合計課税所得金額 = 課税総所得金額 + 課税退職所得金額 + 課税山林所得金額（分離課税分は含まない）"
+    },
+    "split_ratio": {
+      "designated_city": {
+        "city_pct_of_5": 4.0,
+        "prefecture_pct_of_5": 1.0
+      },
+      "general_city": {
+        "city_pct_of_5": 3.0,
+        "prefecture_pct_of_5": 2.0
+      },
+      "note": "5%の内訳。対象6市は全て指定都市のため市民税4%・県民税1%を使う（新潟市・名古屋市の公式計算例でもこの按分で計算されている）"
+    },
+    "personal_deduction_differences_yen": {
+      "note": "所得税の控除額 − 住民税の控除額として調整控除の計算に用いる金額。令和8年度以降の表。基礎控除の差5万円は、令和7年度税制改正で所得税の基礎控除が引き上げられた後も、調整控除の計算上は5万円に据え置かれている（藤沢市・札幌市とも注記あり: 『調整控除の計算における人的控除差のため、実際の差額と異なります』）。",
+      "basic": 50000,
+      "basic_condition": "合計所得金額が2,500万円以下の場合に計上",
+      "disability": {
+        "general": 10000,
+        "special": 100000,
+        "cohabiting_special": 220000
+      },
+      "widow": 10000,
+      "single_parent": {
+        "mother": 50000,
+        "father": 10000
+      },
+      "working_student": 10000,
+      "dependent": {
+        "general": 50000,
+        "specific": 180000,
+        "elderly": 100000,
+        "cohabiting_elderly_parent": 130000,
+        "young_under_16": 0
+      },
+      "spouse_by_taxpayer_income": [
+        {
+          "taxpayer_income_max_yen": 9000000,
+          "general_yen": 50000,
+          "elderly_yen": 100000
+        },
+        {
+          "taxpayer_income_max_yen": 9500000,
+          "general_yen": 40000,
+          "elderly_yen": 60000
+        },
+        {
+          "taxpayer_income_max_yen": 10000000,
+          "general_yen": 20000,
+          "elderly_yen": 30000
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://www.city.sapporo.jp/citytax/syurui/shiminzei/kojin_zeigaku.html",
+          "checked": "2026-11-23",
+          "note": "人的控除額の差の表"
+        },
+        {
+          "url": "https://www.city.fujisawa.kanagawa.jp/siminzei1/kurashi/zekin/shimin/shurui/chose.html",
+          "checked": "2026-11-23",
+          "note": "令和8年度以降の人的控除差額表。札幌市と全項目一致"
+        }
+      ]
+    },
+    "spouse_special_difference": {
+      "status": "未確認（令和8年度）",
+      "detail": "配偶者特別控除に係る調整控除の差額は、令和8年度版として確認できる公式表を今回は取得できなかった。札幌市・藤沢市の令和8年度の差額表には配偶者特別控除の行自体が掲載されていない。さいたま市の調整控除ページには配偶者特別控除の差額表があるが、配偶者の所得区分が旧基準（48万円超50万円未満で5万円/4万円/2万円、50万円超55万円未満で3万円/2万円/1万円、それ以外は差額なし）で、令和8年度の配偶者所得要件（58万円超〜）への対応が確認できないため採用しなかった。実装時はこの項目を差額0として扱わず、要確認フラグを立てること。",
+      "reference_old": [
+        {
+          "url": "https://www.city.saitama.lg.jp/001/153/004/002/001/004/p013670.html",
+          "checked": "2026-11-23",
+          "note": "さいたま市 調整控除（配偶者特別控除の差額表は旧区分のまま掲載）"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "url": "https://www.city.sapporo.jp/citytax/syurui/shiminzei/kojin_zeigaku.html",
+        "checked": "2026-11-23"
+      },
+      {
+        "url": "https://www.city.fujisawa.kanagawa.jp/siminzei1/kurashi/zekin/shimin/shurui/chose.html",
+        "checked": "2026-11-23"
+      },
+      {
+        "url": "https://www.city.saitama.lg.jp/001/153/004/002/001/004/p013670.html",
+        "checked": "2026-11-23"
+      }
+    ]
+  },
+  "nontaxable_limits": {
+    "note": "非課税の判定は前年の所得による。人数 n = 本人(1) + 同一生計配偶者 + 扶養親族数（16歳未満の年少扶養親族を含む）。",
+    "per_capita_levy": {
+      "name": "均等割（および森林環境税）の非課税限度額",
+      "income_measure": "前年の合計所得金額",
+      "formula": "合計所得金額 ≤ 基準額 × n + 10万円 + (同一生計配偶者または扶養親族がいる場合のみ 加算額)",
+      "by_tax_class": [
+        {
+          "class": 1,
+          "class_label": "1級地",
+          "base_yen": 350000,
+          "dependent_addition_yen": 210000,
+          "single_limit_yen": 450000
+        },
+        {
+          "class": 2,
+          "class_label": "2級地",
+          "base_yen": 315000,
+          "dependent_addition_yen": 189000,
+          "single_limit_yen": 415000
+        },
+        {
+          "class": 3,
+          "class_label": "3級地",
+          "base_yen": 280000,
+          "dependent_addition_yen": 168000,
+          "single_limit_yen": 380000
+        }
+      ],
+      "class_note": "級地は生活保護法の級地区分に準じる。基準額は1級地35万円を起点に2級地=×0.9、3級地=×0.8。対象6市では名古屋・福岡・札幌・仙台・さいたまが1級地、新潟が2級地（各市の公式算式から確認）。3級地の額は新潟市以外の確認経路として、3級地の自治体公式算式（28万円×n+10万円+16万8,000円）から裏取りした。",
+      "sources": [
+        {
+          "url": "https://www.city.fukuoka.lg.jp/zaisei/shisanzei/life/Index.html",
+          "checked": "2026-11-23",
+          "note": "1級地の算式"
+        },
+        {
+          "url": "https://www.city.niigata.lg.jp/kurashi/zei/siraberu/kojin/kojingaiyou.html",
+          "checked": "2026-11-23",
+          "note": "2級地の算式（31万5,000円・18万9,000円）"
+        },
+        {
+          "url": "https://www.city.sapporo.jp/citytax/syurui/shiminzei/kojin.html",
+          "checked": "2026-11-23",
+          "note": "1級地の早見表"
+        }
+      ]
+    },
+    "income_levy": {
+      "name": "所得割の非課税限度額",
+      "income_measure": "前年の総所得金額等",
+      "formula": "総所得金額等 ≤ 35万円 × n + 10万円 + (同一生計配偶者または扶養親族がいる場合のみ 32万円)",
+      "single_limit_yen": 450000,
+      "class_note": "所得割の算式は級地によらず全国共通（2級地の新潟市でも35万円基礎であることを公式算式で確認）。",
+      "sources": [
+        {
+          "url": "https://www.city.niigata.lg.jp/kurashi/zei/siraberu/kojin/kojingaiyou.html",
+          "checked": "2026-11-23"
+        },
+        {
+          "url": "https://www.city.fukuoka.lg.jp/zaisei/shisanzei/life/Index.html",
+          "checked": "2026-11-23"
+        }
+      ]
+    },
+    "special_categories": {
+      "name": "障害者・未成年者・寡婦・ひとり親の非課税",
+      "rule": "賦課期日現在、障害者・未成年者（18歳未満）・寡婦・ひとり親のいずれかに該当し、前年の合計所得金額が135万円以下の人は、均等割・所得割・森林環境税の全てが非課税。",
+      "limit_yen": 1350000,
+      "change_note": "令和8年度から125万円→135万円に引上げ（令和7年度税制改正。給与所得控除の最低保障額引上げ等に伴う措置）。タスク指示にあった125万円は令和7年度までの旧額。",
+      "sources": [
+        {
+          "url": "https://www.city.nagoya.jp/_res/projects/default_project/_page_/001/012/148/2026kojinsiminzei.pdf",
+          "checked": "2026-11-23",
+          "note": "135万円以下と明記"
+        },
+        {
+          "url": "https://www.city.saitama.lg.jp/001/153/004/006/p065397_d/fil/R8shizeinoshiori.pdf",
+          "checked": "2026-11-23",
+          "note": "令和8年度版市税のしおり。135万円以下"
+        },
+        {
+          "url": "https://www.city.niigata.lg.jp/kurashi/zei/siraberu/kojin/kojingaiyou.html",
+          "checked": "2026-11-23",
+          "note": "135万円以下"
+        }
+      ]
+    },
+    "other_exemptions": [
+      "生活保護法の規定による生活扶助を受けている人は均等割・所得割・森林環境税の全てが非課税"
+    ]
+  },
+  "rounding": {
+    "tax_base": "課税標準（課税総所得金額・課税退職所得金額・課税山林所得金額など区分ごと）は1,000円未満切捨て",
+    "income_levy_amount": "所得割額は市民税・県民税それぞれで算出し、100円未満切捨て（均等割を加えた市・県民税額の段階で切り捨てる運用を公式計算例で確認: 名古屋市・新潟市）",
+    "adjustment_and_credits": "調整控除等の税額控除は所得割額から控除する",
+    "sources": [
+      {
+        "url": "https://www.city.sapporo.jp/citytax/syurui/shiminzei/kojin_zeigaku.html",
+        "checked": "2026-11-23",
+        "note": "『課税所得金額は1,000円未満の端数を切り捨てます。さらに所得割額は100円未満の端数を切り捨てます』"
+      },
+      {
+        "url": "https://www.city.saitama.lg.jp/001/153/004/002/001/001/p013654.html",
+        "checked": "2026-11-23",
+        "note": "課税所得金額（1,000円未満切捨て）、所得割額（100円未満切捨て）"
+      },
+      {
+        "url": "https://www.city.niigata.lg.jp/kurashi/zei/siraberu/kojin/keisanrei.html",
+        "checked": "2026-11-23",
+        "note": "計算例。課税標準額は千円未満切捨て、調整控除後の所得割額は百円未満切捨て"
+      }
+    ]
+  },
+  "reference_tables_for_part_c": {
+    "employment_income_deduction_min_yen": 650000,
+    "note": "令和8年度（令和7年分）から給与所得控除の最低保障額は65万円（改正前55万円）。扶養親族等の所得要件も48万円→58万円に引上げ済み。これらは部品Cの収入→所得換算に必要。",
+    "sources": [
+      {
+        "url": "https://www.city.fukuoka.lg.jp/zaisei/zeisei/life/kojinshiminkenminzei/001.html",
+        "checked": "2026-11-23",
+        "note": "福岡市 給与所得の計算表（令和8年度（令和7年分）から）。651,000円以上は収入金額−650,000円"
+      },
+      {
+        "url": "https://www.city.sendai.jp/shiminze-kikaku/kurashi/tetsuzuki/zekin/kojin/sikenminzeinituite/syotokukingaku.html",
+        "checked": "2026-11-23",
+        "note": "仙台市 給与所得速算表（令和8年度以降）"
+      }
+    ]
+  }
+}
