@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>住民税シミュレーター（令和8年度・非課税ライン判定つき）｜ぜいきんノート</title>
+<meta name="description" content="前年の所得から住民税（市民税・県民税）の年額を計算します。非課税になるラインの判定と、来年の国民健康保険料と合わせた請求予測もできます。対応6市・令和8年度。">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+<header class="site-header">
+<div class="header-inner">
+<a class="logo" href="../"><span class="logo-mark">ぜ</span>ぜいきんノート</a>
+<details class="menu">
+<summary class="menu-btn" aria-label="メニュー"><span></span><span></span><span></span></summary>
+<nav class="nav">
+<a href="../taishoku-dc/">退職金×iDeCo/DC</a>
+<a href="../kokuho/">国民健康保険料</a>
+<a href="../taishoku-hoken/">退職後の健康保険 比較</a>
+<a href="./" aria-current="page">住民税</a>
+</nav>
+</details>
+</div>
+</header>
+<main class="wrap">
+<nav class="crumbs"><a href="../">トップ</a> ＞ 住民税シミュレーター</nav>
+<h1 class="title"><span class="title-icon">住</span><span class="title-text">住民税シミュレーター</span></h1>
+<p class="lead">前年の所得から、住民税（市民税・県民税）の年額を計算します。非課税になるラインの判定と、来年の請求予測（国保＋住民税）もできます。対応は令和8年度・6市です。</p>
+
+<section class="card">
+<h2><span class="h2-icon">入</span>入力</h2>
+<div class="grid2">
+<div class="field">
+<label for="city">住んでいる市</label>
+<select id="city"></select>
+</div>
+<div class="field">
+<label for="age">あなたの年齢</label>
+<div class="yen-wrap"><input type="number" id="age" min="0" max="100" value="40"><span class="unit">歳</span></div>
+</div>
+<div class="field">
+<label for="incomeKind">あなたの所得の種類</label>
+<select id="incomeKind">
+<option value="salary" selected>給与収入（年収）</option>
+<option value="pension">公的年金収入</option>
+<option value="other">その他の所得金額</option>
+</select>
+</div>
+<div class="field">
+<label for="incomeAmount">金額（前年分）</label>
+<div class="yen-wrap"><input type="number" id="incomeAmount" min="0" step="10000" value="5000000"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="selfStatus">あなたの状況</label>
+<select id="selfStatus">
+<option value="none" selected>通常</option>
+<option value="disability_general">障害者（普通）</option>
+<option value="disability_special">障害者（特別）</option>
+<option value="disability_cohabiting">障害者（同居特別）</option>
+<option value="widow">寡婦</option>
+<option value="single_parent_mother">ひとり親（母）</option>
+<option value="single_parent_father">ひとり親（父）</option>
+<option value="working_student">勤労学生</option>
+</select>
+</div>
+<label class="check"><input type="checkbox" id="isMinor"> 未成年（18歳未満）</label>
+<div class="field">
+<label for="hasSpouse">配偶者</label>
+<select id="hasSpouse">
+<option value="no">いない</option>
+<option value="yes" selected>いる</option>
+</select>
+</div>
+<div class="field" id="spouseIncomeWrap">
+<label for="spouseIncome">配偶者の所得金額（前年）</label>
+<div class="yen-wrap"><input type="number" id="spouseIncome" min="0" step="10000" value="0"><span class="unit">円</span></div>
+</div>
+<label class="check" id="spouseElderlyWrap"><input type="checkbox" id="spouseElderly"> 配偶者は70歳以上</label>
+<div class="field">
+<label for="social">社会保険料控除の額（前年に払った分）</label>
+<div class="yen-wrap"><input type="number" id="social" min="0" step="10000" value="500000"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="housing">住宅ローン控除（住民税分の見込み・任意）</label>
+<div class="yen-wrap"><input type="number" id="housing" min="0" step="1000" value="0"><span class="unit">円</span></div>
+</div>
+</div>
+<h3 class="subhead">扶養親族の人数</h3>
+<div class="grid2">
+<div class="field"><label for="depGeneral">一般扶養（16〜18歳・23〜69歳）</label><div class="yen-wrap"><input type="number" class="dep" id="depGeneral" min="0" max="10" value="1"><span class="unit">人</span></div></div>
+<div class="field"><label for="depSpecific">特定扶養（19〜22歳）</label><div class="yen-wrap"><input type="number" class="dep" id="depSpecific" min="0" max="10" value="0"><span class="unit">人</span></div></div>
+<div class="field"><label for="depElderly">老人扶養（70歳以上）</label><div class="yen-wrap"><input type="number" class="dep" id="depElderly" min="0" max="10" value="0"><span class="unit">人</span></div></div>
+<div class="field"><label for="depCohabiting">同居老親等</label><div class="yen-wrap"><input type="number" class="dep" id="depCohabiting" min="0" max="10" value="0"><span class="unit">人</span></div></div>
+<div class="field"><label for="depYoung">年少扶養（16歳未満）</label><div class="yen-wrap"><input type="number" class="dep" id="depYoung" min="0" max="10" value="1"><span class="unit">人</span></div></div>
+</div>
+</section>
+
+<section class="card">
+<h2><span class="h2-icon">結</span>住民税の年額（令和8年度）</h2>
+<div class="verdict" id="verdict">計算中…</div>
+<div class="big-result"><span class="big-label">年額</span> <span id="total" class="count-up" data-value="0">0円</span></div>
+<div class="table-wrap">
+<table class="result-table">
+<tr><th>市民税</th><th>県民税</th><th>森林環境税</th><th>合計</th></tr>
+<tr><td id="cityTax">–</td><td id="prefTax">–</td><td id="forestTax">–</td><td id="totalCell">–</td></tr>
+</table>
+</div>
+<p class="note" id="detail"></p>
+<p class="note" id="specialNote" hidden>配偶者特別控除の調整控除は、令和8年度の公式な差額表を確認中のため、この計算には入れていません。実際の税額が少し低くなる場合があります。</p>
+</section>
+
+<section class="card">
+<h2><span class="h2-icon">非</span>非課税ラインの判定</h2>
+<p class="note">住民税は、前年の所得がライン以下だと非課税（または均等割だけ非課税）になります。あなたの所得とラインの比較です。</p>
+<div class="table-wrap">
+<table class="result-table">
+<tr><th></th><th>非課税になる所得の上限</th><th>判定</th></tr>
+<tr><td>均等割（＋森林環境税）</td><td id="pcLimit">–</td><td id="pcJudge">–</td></tr>
+<tr><td>所得割</td><td id="ilLimit">–</td><td id="ilJudge">–</td></tr>
+</table>
+</div>
+<p class="note" id="ntNote"></p>
+</section>
+
+<section class="card">
+<h2><span class="h2-icon">予</span>来年の請求予測（国保＋住民税）</h2>
+<p class="note">今年の所得の見込みを入れると、来年に請求される国民健康保険料と住民税の合計の目安が出ます。国保は現在の料率による仮計算です。</p>
+<div class="grid2">
+<div class="field">
+<label for="nextKind">今年のあなたの所得の種類</label>
+<select id="nextKind">
+<option value="salary" selected>給与収入（年収）</option>
+<option value="pension">公的年金収入</option>
+<option value="other">その他の所得金額</option>
+</select>
+</div>
+<div class="field">
+<label for="nextAmount">今年の金額（見込み）</label>
+<div class="yen-wrap"><input type="number" id="nextAmount" min="0" step="10000" value="0"><span class="unit">円</span></div>
+</div>
+</div>
+<div class="table-wrap">
+<table class="result-table">
+<tr><th>来年の国保（年額）</th><th>来年の住民税（年額）</th><th>合計</th></tr>
+<tr><td id="fcKokuho">–</td><td id="fcJumin">–</td><td id="fcTotal">–</td></tr>
+</table>
+</div>
+<p class="note">家族構成は上の入力から推定しています（扶養親族の年齢は区分から推定）。配偶者の所得は上の入力のままとして計算しています。</p>
+<p><a class="crosslink" href="../kokuho/">→ 国民健康保険料をくわしく計算する</a></p>
+</section>
+
+<section class="card">
+<h2><span class="h2-icon">AI</span>自分のAIに相談する</h2>
+<p>計算の内容をまとめた文をコピーできます。ChatGPTやClaudeなど、お使いのAIに貼ると、そのまま相談できます。</p>
+<button type="button" id="copyPrompt" class="btn-ai">AIに相談する用の文をコピー</button>
+</section>
+
+<details class="card accordion">
+<summary>前提条件・対象外のもの</summary>
+<ul>
+<li>令和8年度（令和7年分の所得に対する課税）の計算です。所得は前年分を入力してください。</li>
+<li>生命保険料控除・地震保険料控除・医療費控除・寄附金税額控除（ふるさと納税など）・特定親族特別控除は対象外です。該当する方は実際の税額が下がります。</li>
+<li>分離課税の所得（退職所得・譲渡所得など）は対象外です。</li>
+<li>来年の請求予測の国保は、現在の料率による仮計算です。実際の料率は来年度に決まります。</li>
+<li>この試算は一般的な税制の仕組みに基づく目安であり、個別の税務相談ではありません。実際の税額は、お住まいの自治体から届く税額決定通知書でご確認ください。</li>
+</ul>
+</details>
+
+<details class="card accordion">
+<summary>出典・計算の根拠</summary>
+<ul>
+<li>総務省「個人住民税」: 税率・均等割・森林環境税の標準</li>
+<li>札幌市「税額の算出方法」（令和8年度）: 所得控除の額・調整控除の人的控除差額表・端数処理</li>
+<li>各市の公式ページ（令和8年度）: 市ごとの税率・均等割・独自課税（名古屋市の市民税減税、みやぎ環境税、あいち森と緑づくり税、福岡県森林環境税）</li>
+<li>名古屋市・新潟市の公式計算例と、計算結果が一致することを確認済みです</li>
+</ul>
+</details>
+</main>
+<footer class="site-footer">
+<p class="disclaimer">このサイトの計算は一般的な税制の仕組みに基づく試算であり、個別の税務相談ではありません。実際の税額は、お住まいの自治体から届く税額決定通知書でご確認ください。</p>
+<nav class="footer-nav">
+<a href="../taishoku-dc/">退職金×iDeCo/DC</a>
+<a href="../kokuho/">国民健康保険料</a>
+<a href="../taishoku-hoken/">退職後の健康保険 比較</a>
+<a href="./">住民税</a>
+<a href="../privacy/">プライバシーポリシー</a>
+</nav>
+<p class="copy">© 2026 ぜいきんノート（zeikin-note.com）</p>
+</footer>
+<div class="toast" id="toast" role="status"></div>
+<script src="../js/kokuho-engine.js"></script>
+<script src="../js/juminzei-engine.js"></script>
+<script src="../js/juminzei-app.js"></script>
+</body>
+</html>
