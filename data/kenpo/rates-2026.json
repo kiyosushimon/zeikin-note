@@ -1,0 +1,576 @@
+{
+  "fiscal_year": 2026,
+  "insurer": "全国健康保険協会（協会けんぽ）",
+  "cap_standard_remuneration": 320000,
+  "cap_note": "任意継続被保険者の標準報酬月額の上限。健康保険法第47条に基づき、前年9月30日時点の全被保険者の標準報酬月額の平均額（令和7年9月30日時点で318,100円）を報酬月額とみなした等級（第23級・32万円）が上限となる。令和7年度（令和7年3月分まで）は30万円だった。協会けんぽ公式お知らせ（令和7年12月公表）および令和8年度保険料額表（東京支部）の注記で確認。",
+  "premium_rounding": {
+    "insured_share_deducted_from_salary": "被保険者負担分（折半額）に円未満の端数がある場合、端数が50銭以下の場合は切り捨て、50銭を超える場合は切り上げて1円とする",
+    "insured_share_paid_in_cash": "被保険者負担分（折半額）に円未満の端数がある場合、端数が50銭未満の場合は切り捨て、50銭以上の場合は切り上げて1円とする",
+    "agreement_override": "事業主と被保険者の間に特約がある場合は、特約に基づき端数処理をすることができる",
+    "total_on_payment_notice": "納入告知書の保険料額は被保険者個々の保険料額の合算額とし、合算額に円未満の端数がある場合は切り捨てた額とする",
+    "source": "令和8年度保険料額表（東京支部）注記（協会けんぽ公式PDF）",
+    "note": "任意継続は全額自己負担のため折半は発生しない。実務上は協会けんぽが公表する任意継続被保険者用の保険料額表の額が正となる。"
+  },
+  "grade_table": [
+    {
+      "grade": 1,
+      "standard": 58000,
+      "range_min": 0,
+      "range_max": 63000
+    },
+    {
+      "grade": 2,
+      "standard": 68000,
+      "range_min": 63000,
+      "range_max": 73000
+    },
+    {
+      "grade": 3,
+      "standard": 78000,
+      "range_min": 73000,
+      "range_max": 83000
+    },
+    {
+      "grade": 4,
+      "standard": 88000,
+      "range_min": 83000,
+      "range_max": 93000
+    },
+    {
+      "grade": 5,
+      "standard": 98000,
+      "range_min": 93000,
+      "range_max": 101000
+    },
+    {
+      "grade": 6,
+      "standard": 104000,
+      "range_min": 101000,
+      "range_max": 107000
+    },
+    {
+      "grade": 7,
+      "standard": 110000,
+      "range_min": 107000,
+      "range_max": 114000
+    },
+    {
+      "grade": 8,
+      "standard": 118000,
+      "range_min": 114000,
+      "range_max": 122000
+    },
+    {
+      "grade": 9,
+      "standard": 126000,
+      "range_min": 122000,
+      "range_max": 130000
+    },
+    {
+      "grade": 10,
+      "standard": 134000,
+      "range_min": 130000,
+      "range_max": 138000
+    },
+    {
+      "grade": 11,
+      "standard": 142000,
+      "range_min": 138000,
+      "range_max": 146000
+    },
+    {
+      "grade": 12,
+      "standard": 150000,
+      "range_min": 146000,
+      "range_max": 155000
+    },
+    {
+      "grade": 13,
+      "standard": 160000,
+      "range_min": 155000,
+      "range_max": 165000
+    },
+    {
+      "grade": 14,
+      "standard": 170000,
+      "range_min": 165000,
+      "range_max": 175000
+    },
+    {
+      "grade": 15,
+      "standard": 180000,
+      "range_min": 175000,
+      "range_max": 185000
+    },
+    {
+      "grade": 16,
+      "standard": 190000,
+      "range_min": 185000,
+      "range_max": 195000
+    },
+    {
+      "grade": 17,
+      "standard": 200000,
+      "range_min": 195000,
+      "range_max": 210000
+    },
+    {
+      "grade": 18,
+      "standard": 220000,
+      "range_min": 210000,
+      "range_max": 230000
+    },
+    {
+      "grade": 19,
+      "standard": 240000,
+      "range_min": 230000,
+      "range_max": 250000
+    },
+    {
+      "grade": 20,
+      "standard": 260000,
+      "range_min": 250000,
+      "range_max": 270000
+    },
+    {
+      "grade": 21,
+      "standard": 280000,
+      "range_min": 270000,
+      "range_max": 290000
+    },
+    {
+      "grade": 22,
+      "standard": 300000,
+      "range_min": 290000,
+      "range_max": 310000
+    },
+    {
+      "grade": 23,
+      "standard": 320000,
+      "range_min": 310000,
+      "range_max": 330000
+    },
+    {
+      "grade": 24,
+      "standard": 340000,
+      "range_min": 330000,
+      "range_max": 350000
+    },
+    {
+      "grade": 25,
+      "standard": 360000,
+      "range_min": 350000,
+      "range_max": 370000
+    },
+    {
+      "grade": 26,
+      "standard": 380000,
+      "range_min": 370000,
+      "range_max": 395000
+    },
+    {
+      "grade": 27,
+      "standard": 410000,
+      "range_min": 395000,
+      "range_max": 425000
+    },
+    {
+      "grade": 28,
+      "standard": 440000,
+      "range_min": 425000,
+      "range_max": 455000
+    },
+    {
+      "grade": 29,
+      "standard": 470000,
+      "range_min": 455000,
+      "range_max": 485000
+    },
+    {
+      "grade": 30,
+      "standard": 500000,
+      "range_min": 485000,
+      "range_max": 515000
+    },
+    {
+      "grade": 31,
+      "standard": 530000,
+      "range_min": 515000,
+      "range_max": 545000
+    },
+    {
+      "grade": 32,
+      "standard": 560000,
+      "range_min": 545000,
+      "range_max": 575000
+    },
+    {
+      "grade": 33,
+      "standard": 590000,
+      "range_min": 575000,
+      "range_max": 605000
+    },
+    {
+      "grade": 34,
+      "standard": 620000,
+      "range_min": 605000,
+      "range_max": 635000
+    },
+    {
+      "grade": 35,
+      "standard": 650000,
+      "range_min": 635000,
+      "range_max": 665000
+    },
+    {
+      "grade": 36,
+      "standard": 680000,
+      "range_min": 665000,
+      "range_max": 695000
+    },
+    {
+      "grade": 37,
+      "standard": 710000,
+      "range_min": 695000,
+      "range_max": 730000
+    },
+    {
+      "grade": 38,
+      "standard": 750000,
+      "range_min": 730000,
+      "range_max": 770000
+    },
+    {
+      "grade": 39,
+      "standard": 790000,
+      "range_min": 770000,
+      "range_max": 810000
+    },
+    {
+      "grade": 40,
+      "standard": 830000,
+      "range_min": 810000,
+      "range_max": 855000
+    },
+    {
+      "grade": 41,
+      "standard": 880000,
+      "range_min": 855000,
+      "range_max": 905000
+    },
+    {
+      "grade": 42,
+      "standard": 930000,
+      "range_min": 905000,
+      "range_max": 955000
+    },
+    {
+      "grade": 43,
+      "standard": 980000,
+      "range_min": 955000,
+      "range_max": 1005000
+    },
+    {
+      "grade": 44,
+      "standard": 1030000,
+      "range_min": 1005000,
+      "range_max": 1055000
+    },
+    {
+      "grade": 45,
+      "standard": 1090000,
+      "range_min": 1055000,
+      "range_max": 1115000
+    },
+    {
+      "grade": 46,
+      "standard": 1150000,
+      "range_min": 1115000,
+      "range_max": 1175000
+    },
+    {
+      "grade": 47,
+      "standard": 1210000,
+      "range_min": 1175000,
+      "range_max": 1235000
+    },
+    {
+      "grade": 48,
+      "standard": 1270000,
+      "range_min": 1235000,
+      "range_max": 1295000
+    },
+    {
+      "grade": 49,
+      "standard": 1330000,
+      "range_min": 1295000,
+      "range_max": 1355000
+    },
+    {
+      "grade": 50,
+      "standard": 1390000,
+      "range_min": 1355000,
+      "range_max": null
+    }
+  ],
+  "grade_table_note": "健康保険の標準報酬月額等級表（全50等級）。報酬月額の範囲は「以上〜未満」。第1級は63,000円未満（range_minは便宜上0）、第50級は1,355,000円以上（range_maxはnull）。協会けんぽ令和8年度保険料額表（東京支部）で全等級を確認。",
+  "rates_note": "健康保険料率は都道府県別。子ども・子育て支援金率（0.23%）と介護保険料率（1.62%）は全国一律で、全都道府県に同じ値を記録している。健康保険料率・介護保険料率は令和8年3月分（4月納付分）から適用（任意継続被保険者は令和8年4月分から）。子ども・子育て支援金率は令和8年4月分（5月納付分）から適用。介護保険料率は40歳以上65歳未満（介護保険第2号被保険者）のみ加算。",
+  "prefectures": {
+    "北海道": {
+      "health_rate": 0.1028,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "青森県": {
+      "health_rate": 0.0985,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "岩手県": {
+      "health_rate": 0.0951,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "宮城県": {
+      "health_rate": 0.101,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "秋田県": {
+      "health_rate": 0.1001,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "山形県": {
+      "health_rate": 0.0975,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "福島県": {
+      "health_rate": 0.095,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "茨城県": {
+      "health_rate": 0.0952,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "栃木県": {
+      "health_rate": 0.0982,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "群馬県": {
+      "health_rate": 0.0968,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "埼玉県": {
+      "health_rate": 0.0967,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "千葉県": {
+      "health_rate": 0.0973,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "東京都": {
+      "health_rate": 0.0985,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "神奈川県": {
+      "health_rate": 0.0992,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "新潟県": {
+      "health_rate": 0.0921,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "富山県": {
+      "health_rate": 0.0959,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "石川県": {
+      "health_rate": 0.097,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "福井県": {
+      "health_rate": 0.0971,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "山梨県": {
+      "health_rate": 0.0955,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "長野県": {
+      "health_rate": 0.0963,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "岐阜県": {
+      "health_rate": 0.098,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "静岡県": {
+      "health_rate": 0.0961,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "愛知県": {
+      "health_rate": 0.0993,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "三重県": {
+      "health_rate": 0.0977,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "滋賀県": {
+      "health_rate": 0.0988,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "京都府": {
+      "health_rate": 0.0989,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "大阪府": {
+      "health_rate": 0.1013,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "兵庫県": {
+      "health_rate": 0.1012,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "奈良県": {
+      "health_rate": 0.0991,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "和歌山県": {
+      "health_rate": 0.1006,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "鳥取県": {
+      "health_rate": 0.0986,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "島根県": {
+      "health_rate": 0.0994,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "岡山県": {
+      "health_rate": 0.1005,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "広島県": {
+      "health_rate": 0.0978,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "山口県": {
+      "health_rate": 0.1015,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "徳島県": {
+      "health_rate": 0.1024,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "香川県": {
+      "health_rate": 0.1002,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "愛媛県": {
+      "health_rate": 0.0998,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "高知県": {
+      "health_rate": 0.1005,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "福岡県": {
+      "health_rate": 0.1011,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "佐賀県": {
+      "health_rate": 0.1055,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "長崎県": {
+      "health_rate": 0.1006,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "熊本県": {
+      "health_rate": 0.1008,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "大分県": {
+      "health_rate": 0.1008,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "宮崎県": {
+      "health_rate": 0.0977,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "鹿児島県": {
+      "health_rate": 0.1013,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    },
+    "沖縄県": {
+      "health_rate": 0.0944,
+      "child_rate": 0.0023,
+      "care_rate": 0.0162
+    }
+  },
+  "provenance": {
+    "source_name": "全国健康保険協会（協会けんぽ）公式サイト",
+    "rates_url": "https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/rate_prefectures/r08/index.html",
+    "premium_table_page_url": "https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/premium_prefectures/r08/",
+    "premium_table_pdf_url_tokyo": "https://www.kyoukaikenpo.or.jp/assets/R8_13tokyo.pdf",
+    "cap_announcement_url": "https://www.kyoukaikenpo.or.jp/news/r07_dec/1259.html",
+    "voluntary_continuation_faq_url": "https://www.kyoukaikenpo.or.jp/faq/voluntary_continuation/005/index.html",
+    "retrieved_date": "2026-11-23",
+    "published": {
+      "rates": "令和8年度料率として2026年2月時点で公表済み（協会けんぽ宮城支部メールマガジン令和8年2月20日発行号で「令和8年度 健康保険料・介護保険料が決定しました」と案内）。料率ページ自体に公表日の明記はないため、正確な公表日は未確認。",
+      "cap": "令和7年12月（協会けんぽ公式お知らせ「令和8年度の任意継続被保険者の標準報酬月額の上限について」）"
+    },
+    "verified_items": [
+      "都道府県別健康保険料率47件",
+      "子ども・子育て支援金率（全国一律0.23%）",
+      "介護保険料率（全国一律1.62%）",
+      "任意継続の標準報酬月額上限320,000円",
+      "標準報酬月額等級表50等級（標準報酬月額と報酬月額の範囲）",
+      "保険料の端数処理ルール（保険料額表注記）"
+    ]
+  }
+}
