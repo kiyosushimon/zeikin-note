@@ -1,0 +1,136 @@
+{
+ "common_rules_applied": {
+  "child_component_under18_exemption": {
+   "note": "子ども分の均等割は18歳未満（高校生世代まで）の被保険者について全額減額（広報さがみはらに明記）"
+  },
+  "preschool_child_reduction": {
+   "applies_to": [
+    "medical",
+    "support",
+    "child"
+   ],
+   "note": "未就学児の均等割5割減額（全国共通制度）"
+  },
+  "statutory_reduction": {
+   "applies_to": "均等割額・平等割額",
+   "note": "所得基準による軽減（法定軽減）",
+   "salary_earner_adjustment": "(給与所得者等の数-1)×100,000円（0未満は0）",
+   "tiers": [
+    {
+     "reduction_rate": 0.7,
+     "threshold_formula": "430,000 + 調整額"
+    },
+    {
+     "reduction_rate": 0.5,
+     "threshold_formula": "430,000 + 調整額 + 310,000×被保険者数"
+    },
+    {
+     "reduction_rate": 0.2,
+     "threshold_formula": "430,000 + 調整額 + 570,000×被保険者数"
+    }
+   ]
+  }
+ },
+ "exceptions": [],
+ "municipality_code": "14150",
+ "name": "相模原市",
+ "official_pages": {
+  "notice_source": "広報さがみはら No.1575（令和8年4月15日号）",
+  "rate_page": "https://www.city.sagamihara.kanagawa.jp/_res/projects/default_project/_project_/00_common/koho/sagamihara20260415.pdf",
+  "trial_page": null
+ },
+ "prefecture": "神奈川県",
+ "provenance": {
+  "retrieval_method": "manual",
+  "retrieved_at": "2026-11-23",
+  "source_published": "2026-04-15（広報発行）",
+  "source_type": "PDF（相模原市公式広報『広報さがみはら』の令和8年度税率表）",
+  "source_url": "https://www.city.sagamihara.kanagawa.jp/_res/projects/default_project/_project_/00_common/koho/sagamihara20260415.pdf",
+  "verification": {
+   "status": "照合前"
+  }
+ },
+ "publication_profile": {
+  "official_decision": "2026-03（税率改正）",
+  "page_update_month": 4
+ },
+ "rate_pattern_id": "sagamihara",
+ "rate_record": {
+  "base_deduction": {
+   "amount": 430000,
+   "note": "所得割＝令和7年中の総所得金額等から基礎控除額を差し引いた金額×税率（広報に明記）",
+   "tiers": [
+    {
+     "deduction": 430000,
+     "max_total_income": 24000000
+    },
+    {
+     "deduction": 290000,
+     "max_total_income": 24500000
+    },
+    {
+     "deduction": 150000,
+     "max_total_income": 25000000
+    },
+    {
+     "deduction": 0,
+     "max_total_income": null
+    }
+   ]
+  },
+  "components": {
+   "care": {
+    "age_band": [
+     40,
+     64
+    ],
+    "asset_rate": null,
+    "cap": 170000,
+    "income_rate": 0.0232,
+    "per_capita": 12000,
+    "per_capita_adult_addon": null,
+    "per_household": 6000
+   },
+   "child": {
+    "asset_rate": null,
+    "cap": 30000,
+    "income_rate": 0.0028,
+    "note": "均等割1,300円＋18歳以上均等割60円＋平等割800円（4区分すべてに平等割あり）",
+    "per_capita": 1300,
+    "per_capita_adult_addon": 60,
+    "per_household": 800
+   },
+   "medical": {
+    "asset_rate": null,
+    "cap": 670000,
+    "income_rate": 0.0675,
+    "per_capita": 29000,
+    "per_capita_adult_addon": null,
+    "per_household": 18000
+   },
+   "support": {
+    "asset_rate": null,
+    "cap": 260000,
+    "income_rate": 0.0278,
+    "per_capita": 11500,
+    "per_capita_adult_addon": null,
+    "per_household": 7000
+   }
+  },
+  "fiscal_year": 2026,
+  "levy_type": "税",
+  "method": "3方式",
+  "rate_pattern_id": "sagamihara",
+  "rounding": {
+   "per_component": "floor_100yen",
+   "note": "区分ごとに100円未満切捨て。市の公式「国民健康保険税の税額計算」ページ（令和8年度）に明記され、同ページの計算例の数値（医療分270,735円→270,700円）でも区分ごとの適用を確認。相模原市は保険料ではなく国民健康保険税方式。条例本文は例規集が紙版のみで条文番号は未確認。特定世帯の平等割減額は未対応（サイトの前提条件に明記）。",
+   "source_url": "https://www.city.sagamihara.kanagawa.jp/kurashi/1026448/kokuho/1026464/noufu/1007892.html",
+   "confirmed_at": "2026-11-23"
+  }
+ },
+ "scope_group": "seireishi",
+ "unconfirmed": [
+  "公式の計算例との完全照合は未実施（料率と端数は市の公式計算方法ページで確認済み）",
+  "特定世帯・特定継続世帯の平等割減額の額は未確認"
+ ]
+}

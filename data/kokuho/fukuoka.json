@@ -1,0 +1,142 @@
+{
+ "common_rules_applied": {
+  "child_component_under18_exemption": {
+   "note": "子ども分の均等割（967円＋72円）は18歳未満（18歳に達する日以後最初の3月31日以前）の被保険者について全額減額（市公式チラシで直接確認）"
+  },
+  "preschool_child_reduction": {
+   "applies_to": [
+    "medical",
+    "support",
+    "child"
+   ],
+   "note": "未就学児の均等割5割減額（全国共通制度）"
+  },
+  "statutory_reduction": {
+   "applies_to": "均等割額・平等割額",
+   "note": "所得基準による減額（法定軽減）。判定所得=世帯主＋被保険者＋特定同一世帯所属者の所得合計。令和8年度基準（施行令改正・運営協議会資料で基準引上げを確認）。照合ケース（給与収入150万円単身）で2割軽減の適用を確認",
+   "salary_earner_adjustment": "(給与所得者等の数-1)×100,000円（0未満は0）",
+   "tiers": [
+    {
+     "reduction_rate": 0.7,
+     "threshold_formula": "430,000 + 調整額"
+    },
+    {
+     "reduction_rate": 0.5,
+     "threshold_formula": "430,000 + 調整額 + 310,000×被保険者数"
+    },
+    {
+     "reduction_rate": 0.2,
+     "threshold_formula": "430,000 + 調整額 + 570,000×被保険者数"
+    }
+   ]
+  }
+ },
+ "exceptions": [],
+ "municipality_code": "40130",
+ "name": "福岡市",
+ "official_pages": {
+  "notice_source": "福岡県「令和8年度 各市町村の国民健康保険料(税)率」（県公式PDF）＋福岡市国民健康保険条例（例規集）＋市公式チラシ",
+  "rate_page": "https://www.city.fukuoka.lg.jp/hofuku/kokuho/hp/seido/06-01.html",
+  "trial_page": "福岡市「令和8年度国民健康保険料の目安」（市公式の早見表。今回の照合では二次転記で参照）"
+ },
+ "prefecture": "福岡県",
+ "provenance": {
+  "retrieval_method": "manual",
+  "retrieved_at": "2026-11-23",
+  "source_published": "2026年度（令和8年度）",
+  "source_type": "PDF一覧（福岡県公式「令和8年度 各市町村の国民健康保険料(税)率」※2 実際の料率）",
+  "source_url": "https://www.pref.fukuoka.lg.jp/uploaded/attachment/293234.pdf",
+  "verification": {
+   "method": "公式早見表（福岡市「令和8年度国民健康保険料の目安」の給与収入別年額。二次資料finance-no1の転記値で参照）",
+   "reference_url": "https://www.city.fukuoka.lg.jp/hofuku/kokuho/shisei/documents/R7-02kaigisiryou.pdf",
+   "status": "照合済み",
+   "verified_at": "2026-11-23",
+   "verified_cases": 24,
+   "verified_detail": "単身・給与収入300万円（40歳未満）203,700円／単身40〜64歳・同収入 263,100円／単身・給与収入150万円（2割軽減適用）86,300円／単身・給与収入200万円 140,700円／2人世帯・給与収入300万円 235,000円／2人世帯（2人とも40〜64歳）・同収入 304,500円 の6ケースで、自前計算（条例の端数処理: 所得割1円未満切捨て・区分ごと100円未満切捨て）が公式目安と全額一致。運営協議会資料の令和8年度モデル保険料表は試算前提（料率は6月算定時に確定）のため照合には使用していない",
+   "additional_check_2026_11_23": "目安表の全24セル（給与収入6段×世帯4類型）に拡張し全件一致（tools/verify_fukuoka.js）。うち軽減適用は6件（150万円行: 単身2割・2人世帯5割、200万円行: 2人世帯2割）。平等割を含む法定軽減の減額端数については、福岡市国民健康保険条例第18条の2第2項『前項各号ア及びイに掲げる額に1円未満の端数があるときは、これを切り上げるものとする』（子ども分は第7項・第8項で均等割・18歳以上均等割・平等割の各減額に準用）を例規集で直接確認し、現行エンジンの円未満切上げ実装（均等割・18歳以上加算・平等割を個別に切上げ）と一致することを確定した。なお目安表の最終額は区分ごとの100円未満切捨てを経るため、減額端数の切上げ/切捨ての差（最大数円）は最終額では判別できない。端数ルールの根拠は条例文"
+  }
+ },
+ "publication_profile": {
+  "official_decision": "2026-06（6月の保険料算定時に料率確定・告示。条例第14条第3項）",
+  "page_update_month": 6
+ },
+ "rate_pattern_id": "fukuoka",
+ "rate_record": {
+  "base_deduction": {
+   "amount": 430000,
+   "note": "地方税法第314条の2第2項の基礎控除（条例第12条）。合計所得金額で逓減",
+   "tiers": [
+    {
+     "deduction": 430000,
+     "max_total_income": 24000000
+    },
+    {
+     "deduction": 290000,
+     "max_total_income": 24500000
+    },
+    {
+     "deduction": 150000,
+     "max_total_income": 25000000
+    },
+    {
+     "deduction": 0,
+     "max_total_income": null
+    }
+   ]
+  },
+  "components": {
+   "care": {
+    "age_band": [
+     40,
+     64
+    ],
+    "asset_rate": null,
+    "cap": 170000,
+    "income_rate": 0.0261,
+    "per_capita": 10160,
+    "per_capita_adult_addon": null,
+    "per_household": 7751
+   },
+   "child": {
+    "asset_rate": null,
+    "cap": 30000,
+    "income_rate": 0.0028,
+    "note": "均等割967円＋18歳以上均等割72円（18歳以上被保険者のみ）＝大人1人あたり1,039円。18歳未満（18歳に達する日以後最初の3月31日以前）の被保険者は均等割全額減額（市公式チラシ・条例第18条の6）",
+    "per_capita": 967,
+    "per_capita_adult_addon": 72,
+    "per_household": 911
+   },
+   "medical": {
+    "asset_rate": null,
+    "cap": 670000,
+    "income_rate": 0.0558,
+    "per_capita": 19807,
+    "per_capita_adult_addon": null,
+    "per_household": 18664
+   },
+   "support": {
+    "asset_rate": null,
+    "cap": 260000,
+    "income_rate": 0.0314,
+    "per_capita": 10441,
+    "per_capita_adult_addon": null,
+    "per_household": 9838
+   }
+  },
+  "fiscal_year": 2026,
+  "levy_type": "料",
+  "method": "3方式",
+  "rate_pattern_id": "fukuoka",
+  "rounding": {
+   "component_total": "100円未満切捨て（条例第11条第2項。区分ごとに切り捨ててから合算）",
+   "final_total": "区分合計（切捨て後）を合算",
+   "income_levy_per_person": "1円未満切捨て（条例第12条第3項）"
+  }
+ },
+ "scope_group": "seireishi",
+ "unconfirmed": [
+  "市公式「国民健康保険料の計算方法」ページ（2026年6月15日更新）のHTML直接取得は今回も失敗（city.fukuoka.lg.jpのHTMLページが取得ツールで開けない。PDF・例規集は取得可）。料率数値は福岡県公式一覧PDF（実際の料率）で直接確認し、子ども分は市公式チラシでも直接確認、限度額・計算構造・端数処理は条例（例規集）で直接確認したため、未確認はページHTMLそのものの目視のみ",
+  "多子世帯減免（中学生以下の子どもが2人以上いる世帯への減免、申請不要）の減免内容・適用区分は公式直接で未確認（二次情報のみ）。構造化例外としては登録していない",
+  "法定軽減の判定における65歳以上の公的年金等所得15万円控除の福岡市での明記は未確認（全国共通ルールとして扱う）"
+ ]
+}

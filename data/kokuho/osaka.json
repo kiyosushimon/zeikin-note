@@ -1,0 +1,152 @@
+{
+  "common_rules_applied": {
+    "child_component_under18_exemption": {
+      "note": "子ども分の均等割は令和8年3月31日時点で18歳未満の被保険者について10割（全額）軽減（市公式ページで直接確認）"
+    },
+    "preschool_child_reduction": {
+      "applies_to": [
+        "medical",
+        "support",
+        "child"
+      ],
+      "note": "未就学児（令和8年4月1日時点で6歳未満）の均等割5割減額（市公式ページで確認）"
+    },
+    "statutory_reduction": {
+      "applies_to": "均等割額・平等割額（全4区分）",
+      "note": "所得基準による減額（法定軽減）。市公式ページで適用範囲を確認",
+      "salary_earner_adjustment": "(給与所得者等の数-1)×100,000円（0未満は0）",
+      "tiers": [
+        {
+          "reduction_rate": 0.7,
+          "threshold_formula": "430,000 + 調整額"
+        },
+        {
+          "reduction_rate": 0.5,
+          "threshold_formula": "430,000 + 調整額 + 310,000×被保険者数"
+        },
+        {
+          "reduction_rate": 0.2,
+          "threshold_formula": "430,000 + 調整額 + 570,000×被保険者数"
+        }
+      ]
+    }
+  },
+  "exceptions": [
+    {
+      "type": "single_member_household",
+      "conditions": {
+        "note": "後期高齢者医療制度への移行で国保加入者が1人になった世帯（特定世帯）は平等割が半額、その後3年間（特定継続世帯）は4分の3。告示第469号の額: 医療分 通常33,908円／特定世帯16,954円／特定継続世帯25,431円、支援分 通常10,845円／特定世帯5,423円／特定継続世帯8,134円。介護分・子ども分は平等割なし"
+      },
+      "source_note": "大阪市告示第469号（令和8年度分保険料率）",
+      "engine_note": "現行エンジンは倍率（0.5／0.75）で計算するため、支援分の特定世帯・特定継続世帯では告示額と最大1円ずれる場合がある（10,845×0.5=5,422.5 に対し告示は5,423円）"
+    }
+  ],
+  "municipality_code": "27100",
+  "name": "大阪市",
+  "official_pages": {
+    "notice_source": "大阪府「令和8年度大阪府市町村標準保険料率等の算定結果について」（府統一料率）",
+    "rate_page": "https://www.city.osaka.lg.jp/fukushima/page/0000624311.html",
+    "trial_page": null
+  },
+  "prefecture": "大阪府",
+  "provenance": {
+    "retrieval_method": "manual",
+    "retrieved_at": "2026-11-23",
+    "source_published": "2026年度（令和8年度）",
+    "source_type": "HTML表（大阪市公式・区ページ。料率は大阪府統一で市内共通）",
+    "source_url": "https://www.city.osaka.lg.jp/fukushima/page/0000624311.html",
+    "verification": {
+      "status": "照合前"
+    }
+  },
+  "publication_profile": {
+    "official_decision": "2026-01（大阪府の標準保険料率本算定公表）",
+    "page_update_month": 6
+  },
+  "rate_pattern_id": "osaka_unified",
+  "rate_record": {
+    "base_deduction": {
+      "amount": 430000,
+      "note": "市公式ページの計算方法表に明記（総所得金額等－基礎控除430,000円）",
+      "tiers": [
+        {
+          "deduction": 430000,
+          "max_total_income": 24000000
+        },
+        {
+          "deduction": 290000,
+          "max_total_income": 24500000
+        },
+        {
+          "deduction": 150000,
+          "max_total_income": 25000000
+        },
+        {
+          "deduction": 0,
+          "max_total_income": null
+        }
+      ]
+    },
+    "components": {
+      "care": {
+        "age_band": [
+          40,
+          64
+        ],
+        "asset_rate": null,
+        "cap": 170000,
+        "income_rate": 0.026,
+        "per_capita": 18682,
+        "per_capita_adult_addon": null,
+        "per_household": null
+      },
+      "child": {
+        "asset_rate": null,
+        "cap": 30000,
+        "income_rate": 0.0028,
+        "note": "大阪府統一料率のうち大阪市の内訳: 均等割1,745円＋18歳以上96円。18歳未満（令和8年3月31日時点）は均等割全額軽減",
+        "per_capita": 1745,
+        "per_capita_adult_addon": 96,
+        "per_household": null
+      },
+      "medical": {
+        "asset_rate": null,
+        "cap": 660000,
+        "income_rate": 0.095,
+        "per_capita": 34990,
+        "per_capita_adult_addon": null,
+        "per_household": 33908,
+        "per_household_fixed": {
+          "tokutei": 16954,
+          "keizoku": 25431
+        }
+      },
+      "support": {
+        "asset_rate": null,
+        "cap": 260000,
+        "income_rate": 0.0306,
+        "per_capita": 11191,
+        "per_capita_adult_addon": null,
+        "per_household": 10845,
+        "per_household_fixed": {
+          "tokutei": 5423,
+          "keizoku": 8134
+        }
+      }
+    },
+    "fiscal_year": 2026,
+    "levy_type": "料",
+    "method": "3方式",
+    "rate_pattern_id": "osaka_unified",
+    "rounding": {
+      "per_component": "floor_1yen",
+      "note": "区分ごとの10円・100円単位の切捨てはなし。各要素（所得割・均等割・平等割）を1円未満切捨てした額の合算が区分額となる。大阪市国民健康保険条例第12条（基礎賦課額）の現行条文で確認（市議会議案資料に引用）。他区分の条文も同一構造とみられるが、条文単位の直接確認は基礎賦課額のみ",
+      "confirmed_at": "2026-11-23"
+    }
+  },
+  "scope_group": "osaka_unified",
+  "unconfirmed": [
+    "公式の計算例・早見表での照合は未実施（照合前）。公式の静的な計算例は2026-11-23時点で確認できず",
+    "端数処理の条文単位の直接確認は基礎賦課額（条例第12条）のみ。他区分は同一構造の前提"
+  ]
+}

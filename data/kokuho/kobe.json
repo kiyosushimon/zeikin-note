@@ -1,0 +1,159 @@
+{
+ "common_rules_applied": {
+  "child_component_under18_exemption": {
+   "note": "子ども分の均等割は18歳未満（18歳になる日以降最初の3月31日以前）の被保険者について全額軽減"
+  },
+  "preschool_child_reduction": {
+   "applies_to": [
+    "medical",
+    "support",
+    "child"
+   ],
+   "note": "未就学児の均等割5割減額（全国共通制度）"
+  },
+  "statutory_reduction": {
+   "applies_to": "均等割額・平等割額",
+   "note": "所得基準による減額（法定軽減）",
+   "salary_earner_adjustment": "(給与所得者等の数-1)×100,000円（0未満は0）",
+   "tiers": [
+    {
+     "reduction_rate": 0.7,
+     "threshold_formula": "430,000 + 調整額"
+    },
+    {
+     "reduction_rate": 0.5,
+     "threshold_formula": "430,000 + 調整額 + 310,000×被保険者数"
+    },
+    {
+     "reduction_rate": 0.2,
+     "threshold_formula": "430,000 + 調整額 + 570,000×被保険者数"
+    }
+   ]
+  }
+ },
+ "exceptions": [
+  {
+   "type": "transitional_deduction_credit",
+   "conditions": {
+    "note": "神戸市独自の所得控除は令和6年度を最後に廃止。令和7年度から経過措置（激変緩和）を実施: 独自控除を適用した場合と適用しない場合とで保険料に差額が発生する場合、その差額に調整割合を乗じた額を保険料から控除する。調整割合は令和7年度84％、毎年度約17％ずつ（1/6ずつ）引き下げ、令和8年度は67％、令和12年度（2030年度）に終了。旧・独自控除の内訳（所得割算定用所得からの控除。対象は税申告により認定された方）: 18歳以下の子ども33万円×人数／障害者・ひとり親・寡婦26万円×人数／同居特別障害者53万円×人数／住民税非課税の障害者・ひとり親・寡婦92万円"
+   },
+   "source_note": "神戸市公式FAQ『国民健康保険料の神戸市独自の所得控除について教えてください』（faq.city.kobe.lg.jp、2026-11-23確認）および令和6年度第2回神戸市国民健康保険事業の運営に関する協議会資料（city.kobe.lg.jp）",
+   "engine_note": "現行エンジン未実装（控除適用の有無で2通りの全計算を行い差額×割合を引く方式のため）。認定対象者がいる世帯のみに効き、通常ケースの計算には影響しない",
+   "engine_status": "エンジン実装済み（2026-11-23）。18歳以下の加入者への特例控除と障害者扶養・本人該当の26万円控除は反映。住民税非課税者の92万円控除・同居特別障害者の53万円控除は未対応。"
+  }
+ ],
+ "municipality_code": "28100",
+ "name": "神戸市",
+ "official_pages": {
+  "notice_source": "神戸市国民健康保険事業の運営に関する協議会資料（令和8年度第2回）でも同値を確認",
+  "rate_page": "https://www.city.kobe.lg.jp/a52670/kurashi/support/insurance/gaku.html",
+  "trial_page": "https://www.city.kobe.lg.jp/a52670/kurashi/support/insurance/gaku.html（外部試算システムへの誘導）"
+ },
+ "prefecture": "兵庫県",
+ "provenance": {
+  "retrieval_method": "manual",
+  "retrieved_at": "2026-11-23",
+  "source_published": "2026年度（令和8年度）",
+  "source_type": "HTML表（神戸市公式『国民健康保険料の額』）",
+  "source_url": "https://www.city.kobe.lg.jp/a52670/kurashi/support/insurance/gaku.html",
+  "verification": {
+   "method": "照合源は外部試算システムのみ（手入力照合が必要で取得ツールでは実施不可）",
+   "status": "照合前"
+  }
+ },
+ "publication_profile": {
+  "official_decision": "2026-05（料率決定の公表）",
+  "page_update_month": 6
+ },
+ "rate_pattern_id": "kobe",
+ "rate_record": {
+  "base_deduction": {
+   "amount": 430000,
+   "note": "基準総所得金額＝前年中の総所得金額等－基礎控除43万円（加入者ごとに計算し世帯で合算）",
+   "tiers": [
+    {
+     "deduction": 430000,
+     "max_total_income": 24000000
+    },
+    {
+     "deduction": 290000,
+     "max_total_income": 24500000
+    },
+    {
+     "deduction": 150000,
+     "max_total_income": 25000000
+    },
+    {
+     "deduction": 0,
+     "max_total_income": null
+    }
+   ]
+  },
+  "components": {
+   "care": {
+    "age_band": [
+     40,
+     64
+    ],
+    "asset_rate": null,
+    "cap": 170000,
+    "income_rate": 0.0278,
+    "per_capita": 13970,
+    "per_capita_adult_addon": null,
+    "per_household": 6880
+   },
+   "child": {
+    "asset_rate": null,
+    "cap": 30000,
+    "income_rate": 0.0026,
+    "note": "均等割は全員1,280円＋18歳以上50円（合計1,330円）。市公式ページは『全員1,280円』表記、内訳は市運営協議会資料で確認。18歳未満は均等割全額軽減",
+    "per_capita": 1280,
+    "per_capita_adult_addon": 50,
+    "per_household": 830
+   },
+   "medical": {
+    "asset_rate": null,
+    "cap": 670000,
+    "income_rate": 0.0738,
+    "per_capita": 33700,
+    "per_capita_adult_addon": null,
+    "per_household": 21800
+   },
+   "support": {
+    "asset_rate": null,
+    "cap": 260000,
+    "income_rate": 0.0297,
+    "per_capita": 13510,
+    "per_capita_adult_addon": null,
+    "per_household": 8740
+   }
+  },
+  "fiscal_year": 2026,
+  "levy_type": "料",
+  "method": "3方式",
+  "rate_pattern_id": "kobe",
+  "rounding": {
+   "structure": "per_person_income_levy_floor_10yen",
+   "note": "所得割額は加入者ごとに算定し10円未満切捨て（条例第14条第3項を第15条の8・第15条の17・第15条の23で準用）。区分合計の切捨て規定はないため合計は1円単位。未就学児減額の控除額は10円未満切上げ（第18条の3）。第18条の5の18歳未満減額は子ども分の均等割のみが対象で国の制度と同内容であることを確認済み。経過措置の調整額（附則第7・9・11・13項、令和8年度は差額の67%、10円未満切捨て、3区分合計100円未満は0円）はエンジン実装済み。ただし旧控除のうち住民税非課税の障害者・寡婦・ひとり親の92万円控除と同居特別障害者の53万円控除は入力から判定できないため未対応（サイトの前提条件に明記）。",
+   "source_url": "https://www1.g-reiki.net/city.kobe/reiki_honbun/k302RG00000589.html",
+   "confirmed_at": "2026-11-23"
+  },
+  "levy_floor_unit": 10,
+  "preschool_ceil_unit": 10,
+  "transitional": {
+   "ratio": 0.67,
+   "under19_base": 330000,
+   "base_per_disabled_dependent": 260000,
+   "base_self": 260000,
+   "components": [
+    "medical",
+    "support",
+    "care"
+   ]
+  }
+ },
+ "scope_group": "seireishi",
+ "unconfirmed": [
+  "公式の計算例での照合は未実施（料率・端数・算式・経過措置は条例と市公式FAQで確定済み）"
+ ]
+}

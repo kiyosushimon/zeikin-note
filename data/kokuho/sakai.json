@@ -1,0 +1,151 @@
+{
+  "common_rules_applied": {
+    "child_component_under18_exemption": {
+      "note": "子ども分の均等割は18歳未満被保険者について10割（全額）軽減（堺市公式ページで確認）"
+    },
+    "preschool_child_reduction": {
+      "applies_to": [
+        "medical",
+        "support",
+        "child"
+      ],
+      "note": "未就学児の均等割5割減額（全国共通制度）"
+    },
+    "statutory_reduction": {
+      "applies_to": "均等割額・平等割額",
+      "note": "所得基準による減額（法定軽減）",
+      "salary_earner_adjustment": "(給与所得者等の数-1)×100,000円（0未満は0）",
+      "tiers": [
+        {
+          "reduction_rate": 0.7,
+          "threshold_formula": "430,000 + 調整額"
+        },
+        {
+          "reduction_rate": 0.5,
+          "threshold_formula": "430,000 + 調整額 + 310,000×被保険者数"
+        },
+        {
+          "reduction_rate": 0.2,
+          "threshold_formula": "430,000 + 調整額 + 570,000×被保険者数"
+        }
+      ]
+    }
+  },
+  "exceptions": [
+    {
+      "type": "single_member_household",
+      "conditions": {
+        "note": "特定世帯は平等割が半額、特定継続世帯は4分の3（大阪府統一。大阪市の告示額と同額: 医療分 33,908円／16,954円／25,431円、支援分 10,845円／5,423円／8,134円）"
+      },
+      "source_note": "大阪市告示第469号および堺市国民健康保険条例の特定世帯規定",
+      "engine_note": "現行エンジンは倍率（0.5／0.75）で計算するため、支援分の特定世帯・特定継続世帯では告示額と最大1円ずれる場合がある"
+    }
+  ],
+  "municipality_code": "27140",
+  "name": "堺市",
+  "official_pages": {
+    "notice_source": "大阪府「令和8年度 市町村標準保険料率及び都道府県標準保険料率 算定結果」（府統一料率）",
+    "rate_page": "https://www.city.sakai.lg.jp/kurashi/honen/kokuho/hokenryo/shikumi.html",
+    "trial_page": null
+  },
+  "prefecture": "大阪府",
+  "provenance": {
+    "retrieval_method": "manual",
+    "retrieved_at": "2026-11-23",
+    "source_published": "2026-04-01（堺市ページ更新日）",
+    "source_type": "HTML表（堺市公式）＋大阪府の算定結果PDFで相互確認",
+    "source_url": "https://www.city.sakai.lg.jp/kurashi/honen/kokuho/hokenryo/shikumi.html",
+    "verification": {
+      "status": "照合前"
+    }
+  },
+  "publication_profile": {
+    "official_decision": "2026-01（大阪府の標準保険料率本算定公表）",
+    "page_update_month": 4
+  },
+  "rate_pattern_id": "osaka_unified",
+  "rate_record": {
+    "base_deduction": {
+      "amount": 430000,
+      "note": "総所得金額等から市民税の基礎控除額を差し引いた額（堺市公式ページに明記）",
+      "tiers": [
+        {
+          "deduction": 430000,
+          "max_total_income": 24000000
+        },
+        {
+          "deduction": 290000,
+          "max_total_income": 24500000
+        },
+        {
+          "deduction": 150000,
+          "max_total_income": 25000000
+        },
+        {
+          "deduction": 0,
+          "max_total_income": null
+        }
+      ]
+    },
+    "components": {
+      "care": {
+        "age_band": [
+          40,
+          64
+        ],
+        "asset_rate": null,
+        "cap": 170000,
+        "income_rate": 0.026,
+        "per_capita": 18682,
+        "per_capita_adult_addon": null,
+        "per_household": null
+      },
+      "child": {
+        "asset_rate": null,
+        "cap": 30000,
+        "income_rate": 0.0028,
+        "note": "大阪府統一料率のうち堺市の内訳: 均等割1,742円＋18歳以上99円（合計1,841円で府内統一）。18歳未満は均等割全額軽減",
+        "per_capita": 1742,
+        "per_capita_adult_addon": 99,
+        "per_household": null
+      },
+      "medical": {
+        "asset_rate": null,
+        "cap": 660000,
+        "income_rate": 0.095,
+        "per_capita": 34990,
+        "per_capita_adult_addon": null,
+        "per_household": 33908,
+        "per_household_fixed": {
+          "tokutei": 16954,
+          "keizoku": 25431
+        }
+      },
+      "support": {
+        "asset_rate": null,
+        "cap": 260000,
+        "income_rate": 0.0306,
+        "per_capita": 11191,
+        "per_capita_adult_addon": null,
+        "per_household": 10845,
+        "per_household_fixed": {
+          "tokutei": 5423,
+          "keizoku": 8134
+        }
+      }
+    },
+    "fiscal_year": 2026,
+    "levy_type": "料",
+    "method": "3方式",
+    "rate_pattern_id": "osaka_unified",
+    "rounding": {
+      "per_component": "floor_1yen",
+      "note": "区分ごとに1円未満切捨て（区分単位の10円・100円切捨てなし）。堺市国民健康保険条例第9条の2第2項『基礎賦課額に1円未満の端数があるときは、これを切り捨てるものとする』で確認（他区分も同構造の並行規定）。大阪市と同じ大阪府統一料率・同一の条例構造",
+      "confirmed_at": "2026-11-23"
+    }
+  },
+  "scope_group": "osaka_unified",
+  "unconfirmed": [
+    "公式の計算例・早見表での照合は未実施（照合前）。公式の静的な計算例は2026-11-23時点で確認できず"
+  ]
+}

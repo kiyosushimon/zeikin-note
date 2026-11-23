@@ -1,0 +1,161 @@
+{
+ "common_rules_applied": {
+  "child_component_under18_exemption": {
+   "note": "子ども分の均等割（1,665円）は18歳未満（当該年度に18歳に達する日以後の最初の3月31日以前）の被保険者について全額軽減。軽減分は18歳以上均等割（77円）として市内の18歳以上加入者全員で負担（市公式ページで直接確認）"
+  },
+  "preschool_child_reduction": {
+   "applies_to": [
+    "medical",
+    "support",
+    "child"
+   ],
+   "note": "未就学児の均等割5割減額（市公式ページに関連記事あり）"
+  },
+  "statutory_reduction": {
+   "applies_to": "均等割額",
+   "note": "所得基準による軽減措置（法定軽減）。市公式ページに関連記事あり",
+   "salary_earner_adjustment": "(給与所得者等の数-1)×100,000円（0未満は0）",
+   "tiers": [
+    {
+     "reduction_rate": 0.7,
+     "threshold_formula": "430,000 + 調整額"
+    },
+    {
+     "reduction_rate": 0.5,
+     "threshold_formula": "430,000 + 調整額 + 310,000×被保険者数"
+    },
+    {
+     "reduction_rate": 0.2,
+     "threshold_formula": "430,000 + 調整額 + 570,000×被保険者数"
+    }
+   ]
+  }
+ },
+ "exceptions": [
+  {
+   "conditions": {
+    "note": "(1)(2)は令和7年12月31日現在で判定。前年中の合計所得金額が58万円以下の加入者が対象。控除は同一世帯の国保加入者のうち最も賦課基準額が高い加入者から（(3)は当該控除を有する加入者から）。申請不要",
+    "rules": [
+     {
+      "age_max": 15,
+      "amount_per_person": 330000
+     },
+     {
+      "age_max": 18,
+      "age_min": 16,
+      "amount_per_person": 120000
+     },
+     {
+      "amount": null,
+      "condition": "障害者控除",
+      "note": "住民税申告に障害者控除がある加入者について、障害者控除相当額を控除"
+     }
+    ]
+   },
+   "source_note": "川崎市独自の軽減措置（市公式ページで直接確認）。賦課基準額から控除して所得割を算定する",
+   "type": "base_deduction_extra",
+   "engine_status": "年齢帯の定額控除（15歳以下33万円・16〜18歳12万円）はエンジン実装済み（2026-11-23）。障害者控除相当額の控除は、加入者ごとの障害者控除額を入力から特定できないため未対応（サイトの前提条件に明記）。"
+  }
+ ],
+ "municipality_code": "14130",
+ "name": "川崎市",
+ "official_pages": {
+  "notice_source": "川崎市告示第335号（令和8年5月28日）",
+  "rate_page": "https://www.city.kawasaki.jp/350/page/0000187752.html",
+  "trial_page": null
+ },
+ "prefecture": "神奈川県",
+ "provenance": {
+  "retrieval_method": "manual",
+  "retrieved_at": "2026-11-23",
+  "source_published": "2026年度（令和8年度）",
+  "source_type": "HTML表（川崎市公式）",
+  "source_url": "https://www.city.kawasaki.jp/350/page/0000187752.html",
+  "verification": {
+   "status": "照合前"
+  }
+ },
+ "publication_profile": {
+  "official_decision": "2026-05-28（告示第335号）",
+  "page_update_month": 6
+ },
+ "rate_pattern_id": "kawasaki",
+ "rate_record": {
+  "base_deduction": {
+   "amount": 430000,
+   "note": "賦課基準額＝令和7年中の総所得金額等－住民税の基礎控除（市公式ページに明記）",
+   "tiers": [
+    {
+     "deduction": 430000,
+     "max_total_income": 24000000
+    },
+    {
+     "deduction": 290000,
+     "max_total_income": 24500000
+    },
+    {
+     "deduction": 150000,
+     "max_total_income": 25000000
+    },
+    {
+     "deduction": 0,
+     "max_total_income": null
+    }
+   ]
+  },
+  "components": {
+   "care": {
+    "age_band": [
+     40,
+     64
+    ],
+    "asset_rate": null,
+    "cap": 170000,
+    "income_rate": 0.0267,
+    "per_capita": 15828,
+    "per_capita_adult_addon": null,
+    "per_household": null
+   },
+   "child": {
+    "asset_rate": null,
+    "cap": 30000,
+    "income_rate": 0.0032,
+    "note": "均等割1,665円＋18歳以上均等割77円。18歳未満の均等割は全額軽減され、その分は18歳以上均等割として負担",
+    "per_capita": 1665,
+    "per_capita_adult_addon": 77,
+    "per_household": null
+   },
+   "medical": {
+    "asset_rate": null,
+    "cap": 670000,
+    "income_rate": 0.0826,
+    "per_capita": 43261,
+    "per_capita_adult_addon": null,
+    "per_household": null
+   },
+   "support": {
+    "asset_rate": null,
+    "cap": 260000,
+    "income_rate": 0.0289,
+    "per_capita": 15306,
+    "per_capita_adult_addon": null,
+    "per_household": null
+   }
+  },
+  "fiscal_year": 2026,
+  "levy_type": "料",
+  "method": "2方式",
+  "rate_pattern_id": "kawasaki",
+  "rounding": {
+   "per_component": "floor_10yen",
+   "note": "区分ごとに10円未満切捨て。川崎市国民健康保険条例第30条第1項（4賦課額すべてに明記）。法定軽減等の減額額は1円未満切上げ（第32条・第32条の2・第32条の3）。",
+   "source_url": "https://reiki.city.kawasaki.jp/kawasaki/d1w_reiki/H333901010015/H333901010015.html",
+   "confirmed_at": "2026-11-23"
+  },
+  "levy_aggregation": "household"
+ },
+ "scope_group": "seireishi",
+ "unconfirmed": [
+  "公式の計算例・早見表での照合は未実施（料率・端数・算式は条例と市公式ページで確定済み）"
+ ]
+}

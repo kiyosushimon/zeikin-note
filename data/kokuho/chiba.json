@@ -1,0 +1,162 @@
+{
+ "common_rules_applied": {
+  "child_component_under18_exemption": {
+   "note": "子ども分の均等割は18歳未満（高校生年代まで）の被保険者について全額減額（市政だより・市公式ページで確認）"
+  },
+  "preschool_child_reduction": {
+   "applies_to": [
+    "medical",
+    "support",
+    "child"
+   ],
+   "note": "未就学児の均等割5割減額（市政だよりに明記）"
+  },
+  "statutory_reduction": {
+   "applies_to": "均等割額・平等割額",
+   "note": "所得基準による減額（法定軽減）。市政だよりに『被保険者均等割額、世帯別平等割額を7割・5割・2割減額』と明記",
+   "salary_earner_adjustment": "(給与所得者等の数-1)×100,000円（0未満は0）",
+   "tiers": [
+    {
+     "reduction_rate": 0.7,
+     "threshold_formula": "430,000 + 調整額"
+    },
+    {
+     "reduction_rate": 0.5,
+     "threshold_formula": "430,000 + 調整額 + 310,000×被保険者数"
+    },
+    {
+     "reduction_rate": 0.2,
+     "threshold_formula": "430,000 + 調整額 + 570,000×被保険者数"
+    }
+   ]
+  }
+ },
+ "exceptions": [
+  {
+   "type": "single_member_household",
+   "conditions": {
+    "note": "特定世帯は平等割2分の1・特定継続世帯は4分の3（条例第13条・第17条の5）。医療分・支援分のみ（介護分・子ども分に平等割なし）"
+   },
+   "source_note": "千葉市国民健康保険条例",
+   "engine_status": "per_household_fixed として実装済み"
+  },
+  {
+   "type": "discretionary_low_income_relief",
+   "conditions": {
+    "note": "附則第12項〜第14項: 法定軽減に該当しない低所得世帯（総所得金額等の合算額が規則で定める額未満）に均等割・平等割の各2割を減免できる規定。規則の額が未確認のため未対応（サイトの前提条件に明記）"
+   },
+   "source_note": "千葉市国民健康保険条例 附則",
+   "engine_status": "未対応"
+  }
+ ],
+ "municipality_code": "12100",
+ "name": "千葉市",
+ "official_pages": {
+  "notice_source": null,
+  "rate_page": "https://www.city.chiba.jp/hokenfukushi/iryoeisei/hoken/hokenryou-ketteishimashita.html",
+  "trial_page": null
+ },
+ "prefecture": "千葉県",
+ "provenance": {
+  "retrieval_method": "manual",
+  "retrieved_at": "2026-11-23",
+  "source_published": "2026年度（令和8年度）",
+  "source_type": "HTML表（千葉市公式『令和8年度国民健康保険料率の決定』）。千葉県の令和8年度各市町村保険料（税）率設定状況でも相互確認",
+  "source_url": "https://www.city.chiba.jp/hokenfukushi/iryoeisei/hoken/hokenryou-ketteishimashita.html",
+  "verification": {
+   "status": "照合前"
+  }
+ },
+ "publication_profile": {
+  "official_decision": "2026-05（料率決定の公表）",
+  "page_update_month": 6
+ },
+ "rate_pattern_id": "chiba",
+ "rate_record": {
+  "base_deduction": {
+   "amount": 430000,
+   "note": "所得割は（所得－43万円）×料率（被保険者ごと）。市政だよりに明記。合計所得金額2,400万円超で段階的に減少",
+   "tiers": [
+    {
+     "deduction": 430000,
+     "max_total_income": 24000000
+    },
+    {
+     "deduction": 290000,
+     "max_total_income": 24500000
+    },
+    {
+     "deduction": 150000,
+     "max_total_income": 25000000
+    },
+    {
+     "deduction": 0,
+     "max_total_income": null
+    }
+   ]
+  },
+  "components": {
+   "care": {
+    "age_band": [
+     40,
+     64
+    ],
+    "asset_rate": null,
+    "cap": 170000,
+    "income_rate": 0.0257,
+    "per_capita": 16560,
+    "per_capita_adult_addon": null,
+    "per_household": null
+   },
+   "child": {
+    "asset_rate": null,
+    "cap": 30000,
+    "income_rate": 0.0031,
+    "note": "均等割は1,680円＋18歳以上均等割120円（合計1,800円。内訳は千葉県の設定状況資料で確認）。平等割なし",
+    "per_capita": 1680,
+    "per_capita_adult_addon": 120,
+    "per_household": null
+   },
+   "medical": {
+    "asset_rate": null,
+    "cap": 670000,
+    "income_rate": 0.0721,
+    "per_capita": 23280,
+    "per_capita_adult_addon": null,
+    "per_household": 26640,
+    "per_household_fixed": {
+     "tokutei": 13320,
+     "keizoku": 19980
+    }
+   },
+   "support": {
+    "asset_rate": null,
+    "cap": 260000,
+    "income_rate": 0.0285,
+    "per_capita": 8880,
+    "per_capita_adult_addon": null,
+    "per_household": 10320,
+    "per_household_fixed": {
+     "tokutei": 5160,
+     "keizoku": 7740
+    }
+   }
+  },
+  "fiscal_year": 2026,
+  "levy_type": "料",
+  "method": "3方式",
+  "rate_pattern_id": "chiba",
+  "rounding": {
+   "per_component": "floor_10yen_child_assumed",
+   "note": "基礎・支援・介護は区分ごとに10円未満切捨て（条例第31条第2項）。所得割の算定基礎（基礎控除後の総所得金額等）は100円未満切捨て（同条第1項）。子ども・子育て支援分は第31条第2項に列挙がなく規則委任のため、他の区分に合わせて10円未満切捨てで計算（差は最大9円。サイトの前提条件に明記）。法定軽減・未就学児の減額額は1円未満切上げ（第26条・第26条の4）。",
+   "source_url": "https://www1.g-reiki.net/chiba/reiki_honbun/g002RG00000431.html",
+   "confirmed_at": "2026-11-23"
+  },
+  "base_floor_unit": 100,
+  "preschool_ceil_unit": 1
+ },
+ "scope_group": "seireishi",
+ "unconfirmed": [
+  "公式の計算例での照合は未実施（料率・端数・算式は条例で確定済み）"
+ ]
+}

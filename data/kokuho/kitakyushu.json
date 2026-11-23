@@ -1,0 +1,138 @@
+{
+ "common_rules_applied": {
+  "child_component_under18_exemption": {
+   "note": "子ども分の均等割は18歳未満の被保険者について全額減額（福岡県の料率表・市資料で確認）"
+  },
+  "preschool_child_reduction": {
+   "applies_to": [
+    "medical",
+    "support",
+    "child"
+   ],
+   "note": "未就学児の均等割5割減額（全国共通制度）"
+  },
+  "statutory_reduction": {
+   "applies_to": "均等割額・平等割額",
+   "note": "所得基準による減額（法定軽減）",
+   "salary_earner_adjustment": "(給与所得者等の数-1)×100,000円（0未満は0）",
+   "tiers": [
+    {
+     "reduction_rate": 0.7,
+     "threshold_formula": "430,000 + 調整額"
+    },
+    {
+     "reduction_rate": 0.5,
+     "threshold_formula": "430,000 + 調整額 + 310,000×被保険者数"
+    },
+    {
+     "reduction_rate": 0.2,
+     "threshold_formula": "430,000 + 調整額 + 570,000×被保険者数"
+    }
+   ]
+  }
+ },
+ "exceptions": [],
+ "municipality_code": "40100",
+ "name": "北九州市",
+ "official_pages": {
+  "notice_source": "北九州市「令和8年度の国民健康保険運営について」（限度額・料率の決定内容）",
+  "rate_page": "https://www.city.kitakyushu.lg.jp/files/000912222.pdf",
+  "trial_page": null
+ },
+ "prefecture": "福岡県",
+ "provenance": {
+  "retrieval_method": "manual",
+  "retrieved_at": "2026-11-23",
+  "source_published": "2026年度（令和8年度）",
+  "source_type": "PDF（北九州市公式『令和8年度 北九州市国民健康保険料の計算方法』）。料率は福岡県公式『令和8年度 各市町村の国民健康保険料(税)率』の実際の料率とも一致",
+  "source_url": "https://www.city.kitakyushu.lg.jp/files/000912222.pdf",
+  "verification": {
+   "method": "計算方法PDF内の『基本料金』表（医療分＋支援金分の均等割＋平等割）で固定費部分の整合を確認: 1人70,380円＝23,200+9,720+26,400+11,060、以降1人増ごとに+32,920円で6人234,980円まで全て一致。所得割を含む計算例での照合は未実施",
+   "status": "照合前"
+  }
+ },
+ "publication_profile": {
+  "official_decision": "2026-05（料率決定）",
+  "page_update_month": 6
+ },
+ "rate_pattern_id": "kitakyushu",
+ "rate_record": {
+  "base_deduction": {
+   "amount": 430000,
+   "note": "総所得金額等－基礎控除43万円（マイナスになる場合は0円）。市公式の計算方法に明記",
+   "tiers": [
+    {
+     "deduction": 430000,
+     "max_total_income": 24000000
+    },
+    {
+     "deduction": 290000,
+     "max_total_income": 24500000
+    },
+    {
+     "deduction": 150000,
+     "max_total_income": 25000000
+    },
+    {
+     "deduction": 0,
+     "max_total_income": null
+    }
+   ]
+  },
+  "components": {
+   "care": {
+    "age_band": [
+     40,
+     64
+    ],
+    "asset_rate": null,
+    "cap": 170000,
+    "income_rate": 0.029,
+    "per_capita": 9550,
+    "per_capita_adult_addon": null,
+    "per_household": 8220
+   },
+   "child": {
+    "asset_rate": null,
+    "cap": 30000,
+    "income_rate": 0.0028,
+    "note": "均等割880円＋18歳以上均等割50円＋平等割1,000円",
+    "per_capita": 880,
+    "per_capita_adult_addon": 50,
+    "per_household": 1000
+   },
+   "medical": {
+    "asset_rate": null,
+    "cap": 670000,
+    "income_rate": 0.0831,
+    "per_capita": 23200,
+    "per_capita_adult_addon": null,
+    "per_household": 26400
+   },
+   "support": {
+    "asset_rate": null,
+    "cap": 260000,
+    "income_rate": 0.034,
+    "per_capita": 9720,
+    "per_capita_adult_addon": null,
+    "per_household": 11060
+   }
+  },
+  "fiscal_year": 2026,
+  "levy_type": "料",
+  "method": "3方式",
+  "rate_pattern_id": "kitakyushu",
+  "rounding": {
+   "per_component": "floor_10yen",
+   "note": "4区分とも年額は10円未満切捨て（条例第11条第2項・第14条の3第2項・第14条の12第2項・第14条の17第2項）。所得割額は加入者ごとに1円未満切捨て（第11条の2第3項ほか）。未就学児の減額額は10円未満切上げ（第20条の3第2項、市公報で確認）。特定世帯の平等割減額は告示額が未確認のため未対応（サイトの前提条件に明記）。",
+   "source_url": "https://www.city.kitakyushu.lg.jp/shisei/menu05_00016.html",
+   "confirmed_at": "2026-11-23"
+  },
+  "preschool_ceil_unit": 10
+ },
+ "scope_group": "seireishi",
+ "unconfirmed": [
+  "公式の計算例での完全照合は未実施（固定費部分の基本料金表18件はエンジンと全件一致を確認済み。料率・端数・算式は条例で確定済み）",
+  "特定世帯・特定継続世帯の平等割の告示額は未確認"
+ ]
+}

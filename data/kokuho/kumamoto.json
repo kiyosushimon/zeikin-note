@@ -1,0 +1,145 @@
+{
+ "common_rules_applied": {
+  "child_component_under18_exemption": {
+   "note": "子ども分の均等割は、賦課額では18歳以上1,700円・18歳未満0円（18歳未満の10割軽減分を18歳以上に100円上乗せして負担する仕組み。市公式系資料で確認）"
+  },
+  "preschool_child_reduction": {
+   "applies_to": [
+    "medical",
+    "support",
+    "child"
+   ],
+   "note": "未就学児の均等割5割減額（全国共通制度）"
+  },
+  "statutory_reduction": {
+   "applies_to": "均等割額・平等割額",
+   "note": "所得基準による減額（法定軽減）",
+   "salary_earner_adjustment": "(給与所得者等の数-1)×100,000円（0未満は0）",
+   "tiers": [
+    {
+     "reduction_rate": 0.7,
+     "threshold_formula": "430,000 + 調整額"
+    },
+    {
+     "reduction_rate": 0.5,
+     "threshold_formula": "430,000 + 調整額 + 310,000×被保険者数"
+    },
+    {
+     "reduction_rate": 0.2,
+     "threshold_formula": "430,000 + 調整額 + 570,000×被保険者数"
+    }
+   ]
+  }
+ },
+ "exceptions": [],
+ "municipality_code": "43100",
+ "name": "熊本市",
+ "official_pages": {
+  "notice_source": null,
+  "rate_page": "https://www.city.kumamoto.jp/kiji003426/index.html",
+  "trial_page": "https://www.city.kumamoto.jp/kiji003426/index.html（令和8年度 保険料目安表）"
+ },
+ "prefecture": "熊本県",
+ "provenance": {
+  "rate_recheck": "2026-11-23に市公式ページの令和8年度料率表（所得割0.0634/0.0298/0.0294/0.0025、均等割28,400円/13,300円/20,300円/子ども1,600円＋18歳以上100円、平等割18,100円/8,500円、限度額670,000円/260,000円/170,000円/30,000円）と全項目一致を確認",
+  "retrieval_method": "manual",
+  "retrieved_at": "2026-11-23",
+  "source_published": "2026-04-01（料率改定日）",
+  "source_type": "HTML表（熊本市公式『国民健康保険 保険料について』）。熊本県の令和8年度市町村料率等の状況でも相互確認",
+  "source_url": "https://www.city.kumamoto.jp/kiji003426/index.html",
+  "verification": {
+   "method": "市公式ページ『国民健康保険 保険料について』の令和8年度保険料目安表（給与収入別21行×8列・年金収入（65歳未満）8行×2列・年金収入（65歳以上）12行×2列の全208ケース）との照合",
+   "reference_url": "https://www.city.kumamoto.jp/kiji003426/index.html",
+   "status": "照合済み",
+   "verified_at": "2026-11-23",
+   "verified_cases": 208,
+   "verified_detail": "端数処理なし（1円単位）・所得割は世帯合算で201ケースが1円単位まで完全一致（例: 給与500万円・単身40〜64歳=481,863円、給与400万円・単身40〜64歳=381,783円、給与110万円・単身=36,914円）。不一致7ケースは全て市側の誤記と判定: (1) 給与150万円・2人世帯（介護あり）の給与表129,549円は、同一条件の年金表の値129,542円と市の表同士で矛盾し、手計算も129,542円 (2) 給与250万円・4人世帯（介護なし）200,186円は前行（給与225万円）と同額の転記で、同行の介護あり列273,824円（計算一致）との差からも217,068円が正しい (3) 給与800万円・3人/4人世帯の4ケースは、子ども分の均等割を18歳未満にも賦課した額になっており（差額は子ども1人あたり1,700円）、市の明記ルール（賦課は18歳以上のみ）と他の全行と矛盾する (4) 年金（65歳以上）450万円・1人世帯の印刷値3,293,347円は桁の誤記で、計算値329,347円が前後の行の増減とも整合する。端数単位10円では26ケース・100円では0ケースしか一致せず、端数処理なしが確定。照合スクリプトは tools/verify_kumamoto.js"
+  }
+ },
+ "publication_profile": {
+  "official_decision": "2026-04-01（料率改定）",
+  "page_update_month": 4
+ },
+ "rate_pattern_id": "kumamoto",
+ "rate_record": {
+  "base_deduction": {
+   "amount": 430000,
+   "note": "基準総所得金額＝前年中の総所得金額等－基礎控除（市公式ページの算定方法で確認）",
+   "tiers": [
+    {
+     "deduction": 430000,
+     "max_total_income": 24000000
+    },
+    {
+     "deduction": 290000,
+     "max_total_income": 24500000
+    },
+    {
+     "deduction": 150000,
+     "max_total_income": 25000000
+    },
+    {
+     "deduction": 0,
+     "max_total_income": null
+    }
+   ]
+  },
+  "components": {
+   "care": {
+    "age_band": [
+     40,
+     64
+    ],
+    "asset_rate": null,
+    "cap": 170000,
+    "income_rate": 0.0294,
+    "per_capita": 20300,
+    "per_capita_adult_addon": null,
+    "per_household": null
+   },
+   "child": {
+    "asset_rate": null,
+    "cap": 30000,
+    "income_rate": 0.0025,
+    "note": "均等割は被保険者均等割1,600円＋18歳以上被保険者均等割100円（熊本県の料率状況で内訳確認）。賦課額は18歳以上1,700円・18歳未満0円。平等割なし",
+    "per_capita": 1600,
+    "per_capita_adult_addon": 100,
+    "per_household": null
+   },
+   "medical": {
+    "asset_rate": null,
+    "cap": 670000,
+    "income_rate": 0.0634,
+    "per_capita": 28400,
+    "per_capita_adult_addon": null,
+    "per_household": 18100
+   },
+   "support": {
+    "asset_rate": null,
+    "cap": 260000,
+    "income_rate": 0.0298,
+    "per_capita": 13300,
+    "per_capita_adult_addon": null,
+    "per_household": 8500
+   }
+  },
+  "fiscal_year": 2026,
+  "levy_aggregation": "household",
+  "levy_type": "料",
+  "method": "3方式",
+  "rate_pattern_id": "kumamoto",
+  "rounding": {
+   "confirmed_at": "2026-11-23",
+   "note": "賦課額の端数処理を定めた条文は条例本則・施行規則のいずれにも存在せず、市の公式計算方法ページにも記載がない（2026-11-23に例規集を通読確認）。料率決定時の端数（1円未満切上げ）のみ。ただし市の公式ページの令和8年度保険料目安表（給与・年金収入別、全208ケース）と照合した結果、端数処理なしの1円単位計算で201ケースが完全一致し、不一致の7ケースはいずれも市側の誤記と判定できた（詳細は provenance.verification）。このため端数処理なし（1円単位）を採用する。法定軽減・未就学児の減額額は1円未満切上げ（条例第20条・第20条の3、エンジン既定どおり）。所得割は世帯合算方式（基準総所得金額＝世帯内の加入者の基準所得金額を合算した額。市公式ページの定義による）",
+   "source_url": "https://www.city.kumamoto.jp/kiji003426/index.html",
+   "status": "confirmed_by_official_table"
+  }
+ },
+ "scope_group": "seireishi",
+ "unconfirmed": [
+  "目安表は未就学児の均等割減額を計算していない前提の表のため、未就学児減額を含むケースの公式照合は未実施（減額の仕組み自体は条例第20条の3で確認済み）",
+  "特定世帯・特定継続世帯の平等割の減額は、条例で根拠を確認できていないため対象外（サイトの前提条件に明記）",
+  "所得割の世帯合算方式は市公式ページの定義文（基準総所得金額＝加入者の基準所得金額の合算）で確認。目安表は単一所得者世帯のみのため、複数所得者世帯での数値照合は未実施",
+  "目安表の不一致7ケースは市側の誤記と判定して公開した（判定根拠は provenance.verification に記録）。市が目安表を訂正した場合は再照合すること"
+ ]
+}

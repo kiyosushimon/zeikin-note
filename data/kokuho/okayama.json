@@ -1,0 +1,167 @@
+{
+ "common_rules_applied": {
+  "child_component_under18_exemption": {
+   "note": "子ども分の均等割は18歳以上の加入者のみに賦課（市の目安表に『子ども・子育て支援金分 18歳以上の加入者数×1,200円』と明記。18歳未満の均等割は全額免除され、その分を18歳以上が負担）"
+  },
+  "preschool_child_reduction": {
+   "applies_to": [
+    "medical",
+    "support",
+    "child"
+   ],
+   "note": "未就学児の均等割5割減額（全国共通制度）"
+  },
+  "statutory_reduction": {
+   "applies_to": "均等割額・平等割額",
+   "note": "所得基準による減額（法定軽減）。市の軽減制度ページに令和8年度の判定式（43万円＋31万円×加入者数 等）を明記",
+   "salary_earner_adjustment": "(給与所得者等の数-1)×100,000円（0未満は0）",
+   "tiers": [
+    {
+     "reduction_rate": 0.7,
+     "threshold_formula": "430,000 + 調整額"
+    },
+    {
+     "reduction_rate": 0.5,
+     "threshold_formula": "430,000 + 調整額 + 310,000×被保険者数"
+    },
+    {
+     "reduction_rate": 0.2,
+     "threshold_formula": "430,000 + 調整額 + 570,000×被保険者数"
+    }
+   ]
+  }
+ },
+ "exceptions": [
+  {
+   "conditions": {
+    "note": "特定世帯は平等割2分の1・特定継続世帯は4分の3（医療分・後期高齢者支援金分・子ども・子育て支援金分のみ。介護分の平等割には特定世帯の区分なし）"
+   },
+   "engine_status": "per_household_fixed として実装済み（介護分は通常額と同額を固定し、倍率を適用しない）",
+   "source_note": "岡山市国民健康保険条例",
+   "type": "single_member_household"
+  }
+ ],
+ "municipality_code": "33100",
+ "name": "岡山市",
+ "official_pages": {
+  "notice_source": null,
+  "rate_page": "https://www.city.okayama.jp/kurashi/0000011387.html",
+  "trial_page": "https://www.city.okayama.jp/kurashi/0000061578.html（令和8年度年間保険料目安表・算出例）"
+ },
+ "prefecture": "岡山県",
+ "provenance": {
+  "rate_recheck": "2026-11-23に市公式『保険料率の決定の仕組み』ページの令和8年度料率表（所得割0.0815/0.0295/0.0260/0.0029、均等割28,320円/10,320円/10,920円/1,200円、平等割20,880円/6,960円/5,280円/720円、限度額670,000円/260,000円/170,000円/30,000円）と全項目一致を確認",
+  "retrieval_method": "manual",
+  "retrieved_at": "2026-11-23",
+  "source_published": "2026年度（令和8年度）",
+  "source_type": "HTML表（岡山市公式『保険料率の決定の仕組み』）。岡山県の令和8年度保険料(税)率資料でも相互確認",
+  "source_url": "https://www.city.okayama.jp/kurashi/0000011387.html",
+  "verification": {
+   "method": "市公式『令和8年度年間保険料目安表』の算出例・所得割額一覧表との照合",
+   "reference_url": "https://www.city.okayama.jp/kurashi/0000061578.html",
+   "status": "照合済み",
+   "verified_at": "2026-11-23",
+   "verified_cases": 2,
+   "verified_detail": "算出例1（世帯主52歳・単身・給与収入200万円・基礎控除後所得89万円）: 合計209,111円が一致（所得割 医療72,535円・支援26,255円も個別に一致）。所得割額一覧表（営業所得100万円・基礎57万円）: 医療46,455円／支援16,815円／介護14,820円／子ども1,653円／合計79,743円が全て一致"
+  }
+ },
+ "publication_profile": {
+  "official_decision": "2026-03（料率決定）",
+  "page_update_month": 4
+ },
+ "rate_pattern_id": "okayama",
+ "rate_record": {
+  "base_deduction": {
+   "amount": 430000,
+   "tiers": [
+    {
+     "deduction": 430000,
+     "max_total_income": 24000000
+    },
+    {
+     "deduction": 290000,
+     "max_total_income": 24500000
+    },
+    {
+     "deduction": 150000,
+     "max_total_income": 25000000
+    },
+    {
+     "deduction": 0,
+     "max_total_income": null
+    }
+   ]
+  },
+  "components": {
+   "care": {
+    "age_band": [
+     40,
+     64
+    ],
+    "asset_rate": null,
+    "cap": 170000,
+    "income_rate": 0.026,
+    "note": "平等割5,280円。介護分の平等割には特定世帯・特定継続世帯の減額区分なし（条例）。per_household_fixed には通常額と同額を入れ、倍率が適用されないようにしている",
+    "per_capita": 10920,
+    "per_capita_adult_addon": null,
+    "per_household": 5280,
+    "per_household_fixed": {
+     "keizoku": 5280,
+     "tokutei": 5280
+    }
+   },
+   "child": {
+    "asset_rate": null,
+    "cap": 30000,
+    "income_rate": 0.0029,
+    "note": "均等割は被保険者均等割1,140円＋18歳以上被保険者均等割60円（合計1,200円。内訳は岡山県の料率資料で確認）。賦課は18歳以上の加入者のみ（市の目安表の表記）",
+    "per_capita": 1140,
+    "per_capita_adult_addon": 60,
+    "per_household": 720,
+    "per_household_fixed": {
+     "keizoku": 540,
+     "tokutei": 360
+    }
+   },
+   "medical": {
+    "asset_rate": null,
+    "cap": 670000,
+    "income_rate": 0.0815,
+    "per_capita": 28320,
+    "per_capita_adult_addon": null,
+    "per_household": 20880,
+    "per_household_fixed": {
+     "keizoku": 15660,
+     "tokutei": 10440
+    }
+   },
+   "support": {
+    "asset_rate": null,
+    "cap": 260000,
+    "income_rate": 0.0295,
+    "per_capita": 10320,
+    "per_capita_adult_addon": null,
+    "per_household": 6960,
+    "per_household_fixed": {
+     "keizoku": 5220,
+     "tokutei": 3480
+    }
+   }
+  },
+  "fiscal_year": 2026,
+  "levy_type": "料",
+  "method": "3方式",
+  "preschool_ceil_unit": 1,
+  "rate_pattern_id": "okayama",
+  "rounding": {
+   "confirmed_at": "2026-11-23",
+   "note": "年額の100円未満切捨ての規定は条例になく、1円単位で計算（岡山市国民健康保険条例を通読して確認、2026-11-23）。所得割額は加入者ごとに1円未満切捨て（第12条の5）。法定軽減の減額額は1円未満切上げ（第16条第2項が料率条第2項を準用、エンジン既定どおり）。未就学児の減額額は1円未満切上げ（第16条の3）。特定世帯の平等割は医療分・後期高齢者支援金分・子ども分の3区分で通常額の2分の1（特定世帯）・4分の3（特定継続世帯）を乗じる方式で、介護分の平等割には特定世帯の区分なし。料率は条例固定ではなく毎年度の告示で決定（賦課総額を所得割50%・均等割35%・平等割15%で按分）。限度額は条例固定（医療670,000円・支援260,000円・介護170,000円・子ども30,000円）",
+   "per_component": "none"
+  }
+ },
+ "scope_group": "seireishi",
+ "unconfirmed": [
+  "料率は毎年度の告示で決まるため、令和9年度以降は告示での再確認が必要",
+  "公式の計算例との照合は市の目安表の算出例（合計209,111円）・所得割額一覧表で実施済み。特定世帯・未就学児減額を含むケースの公式計算例での照合は未実施"
+ ]
+}

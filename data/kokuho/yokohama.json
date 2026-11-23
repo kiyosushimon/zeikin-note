@@ -1,0 +1,164 @@
+{
+ "common_rules_applied": {
+  "child_component_under18_exemption": {
+   "note": "子ども分の均等割（1,690円＋80円）は18歳未満の被保険者について全額減額（告示の料率構成と市ページで確認）"
+  },
+  "preschool_child_reduction": {
+   "applies_to": [
+    "medical",
+    "support",
+    "child"
+   ],
+   "note": "未就学児の均等割5割減額（全国共通制度）"
+  },
+  "statutory_reduction": {
+   "applies_to": "均等割額",
+   "note": "所得基準による減額（法定軽減）。減額額そのものが告示第224号で公示されている（医療分: 7割=28,609円・5割=20,435円・2割=8,174円。いずれも均等割40,870円×割合と一致）。判定基準の式は市公式ページ参照",
+   "salary_earner_adjustment": "(給与所得者等の数-1)×100,000円（0未満は0）",
+   "tiers": [
+    {
+     "reduction_rate": 0.7,
+     "threshold_formula": "430,000 + 調整額"
+    },
+    {
+     "reduction_rate": 0.5,
+     "threshold_formula": "430,000 + 調整額 + 310,000×被保険者数"
+    },
+    {
+     "reduction_rate": 0.2,
+     "threshold_formula": "430,000 + 調整額 + 570,000×被保険者数"
+    }
+   ]
+  }
+ },
+ "exceptions": [
+  {
+   "conditions": {
+    "has_member_under": 19
+   },
+   "formula_ref": "確定（条例附則第2項『子ども世帯の保険料に係る所得割額の算定の特例』）: 世帯主（被保険者）の基礎控除後の総所得金額等から子ども世帯控除額を控除して全4区分の所得割を算定する。子ども世帯控除額 = 33万円×控除対象者（16歳未満）の数 + 12万円×控除対象者（16歳以上19歳未満）の数 + 33万円×控除対象出生者の数。年齢は前年（当該年度の前年度）12月31日現在で判定",
+   "source_note": "横浜市子ども世帯軽減。19歳未満の世帯員がいる世帯の世帯主の所得割額を減額する市独自制度",
+   "type": "household_head_credit",
+   "formula": {
+    "target": "世帯主（被保険者である世帯主）の所得割算定基礎のみ",
+    "applies_to": [
+     "medical",
+     "support",
+     "care",
+     "child"
+    ],
+    "amounts": {
+     "under16_per_person": 330000,
+     "age16_18_per_person": 120000,
+     "newborn_per_person": 330000
+    },
+    "conditions": "控除対象者=同一世帯に属する被保険者で、前年12月31日現在19歳未満、かつ同日の属する年の合計所得金額が地方税法第292条第1項第9号に規定する金額以下である者。控除対象出生者=前年12月31日の翌日から当該年度の賦課期日までの間に出生した者",
+    "source_url": "https://cgi.city.yokohama.lg.jp/somu/reiki/reiki_honbun/g202RG00000690.html?id=j16-8",
+    "confirmed_at": "2026-11-23",
+    "engine_status": "エンジン実装済み（2026-11-23）。世帯主=入力の1人目として、合計所得58万円以下の19歳未満の世帯員数で控除額を算定。出生者は年齢0歳として16歳未満側に含まれる（同額のため結果は同じ）。"
+   }
+  }
+ ],
+ "municipality_code": "14100",
+ "name": "横浜市",
+ "official_pages": {
+  "notice_source": "横浜市告示第223号（横浜市報 定期第231号・令和8年5月25日）",
+  "rate_page": "https://www.city.yokohama.lg.jp/city-info/gyosei-kansa/jorei/shiho/shiho.files/0775_20260522.pdf",
+  "trial_page": "https://www.city.yokohama.lg.jp/kurashi/koseki-zei-hoken/kokuho/hokenryo/kokuhoshisan.html（外部試算システムへの誘導ページ）"
+ },
+ "prefecture": "神奈川県",
+ "provenance": {
+  "retrieval_method": "manual",
+  "retrieved_at": "2026-11-23",
+  "source_published": "2026-05-25",
+  "source_type": "告示PDF（横浜市報）",
+  "source_url": "https://www.city.yokohama.lg.jp/city-info/gyosei-kansa/jorei/shiho/shiho.files/0775_20260522.pdf",
+  "verification": {
+   "method": "公式試算システム（手入力照合が必要。取得ツールでは実施不可）。公式の静的な計算例・早見表は2026-11-23時点で確認できず",
+   "reference_url": "https://www.city.yokohama.lg.jp/kurashi/koseki-zei-hoken/kokuho/hokenryo/kokuhoshisan.html",
+   "status": "照合前"
+  }
+ },
+ "publication_profile": {
+  "official_decision": "2026-05-25（告示）",
+  "page_update_month": 6
+ },
+ "rate_pattern_id": "yokohama",
+ "rate_record": {
+  "base_deduction": {
+   "amount": 430000,
+   "note": "市民税の基礎控除額。前年の合計所得金額で判定（市公式『保険料に関する用語説明』）",
+   "tiers": [
+    {
+     "deduction": 430000,
+     "max_total_income": 24000000
+    },
+    {
+     "deduction": 290000,
+     "max_total_income": 24500000
+    },
+    {
+     "deduction": 150000,
+     "max_total_income": 25000000
+    },
+    {
+     "deduction": 0,
+     "max_total_income": null
+    }
+   ]
+  },
+  "components": {
+   "care": {
+    "age_band": [
+     40,
+     64
+    ],
+    "asset_rate": null,
+    "cap": 170000,
+    "income_rate": 0.0284,
+    "per_capita": 16200,
+    "per_capita_adult_addon": null,
+    "per_household": null
+   },
+   "child": {
+    "asset_rate": null,
+    "cap": 30000,
+    "income_rate": 0.0034,
+    "note": "均等割1,690円＋18歳以上均等割80円（18歳以上被保険者のみ）。18歳未満の被保険者は均等割全額減額",
+    "per_capita": 1690,
+    "per_capita_adult_addon": 80,
+    "per_household": null
+   },
+   "medical": {
+    "asset_rate": null,
+    "cap": 670000,
+    "income_rate": 0.0833,
+    "per_capita": 40870,
+    "per_capita_adult_addon": null,
+    "per_household": null
+   },
+   "support": {
+    "asset_rate": null,
+    "cap": 260000,
+    "income_rate": 0.0262,
+    "per_capita": 13380,
+    "per_capita_adult_addon": null,
+    "per_household": null
+   }
+  },
+  "fiscal_year": 2026,
+  "levy_type": "料",
+  "method": "2方式",
+  "rate_pattern_id": "yokohama",
+  "rounding": {
+   "per_component": "floor_10yen",
+   "note": "区分ごとに10円未満切捨て。横浜市国民健康保険条例で区分ごとに明記: 基礎賦課額=第14条第2項、後期高齢者支援金等賦課額=第16条の3第2項、介護納付金賦課額=第16条の8第2項、子ども・子育て支援納付金賦課額=第17条の3第2項",
+   "source_url": "https://cgi.city.yokohama.lg.jp/somu/reiki/reiki_honbun/g202RG00000690.html?id=j16-8",
+   "confirmed_at": "2026-11-23"
+  }
+ },
+ "scope_group": "seireishi",
+ "unconfirmed": [
+  "照合は未実施（公式の静的な計算例・早見表は確認できず、照合源は外部試算システムのみ）"
+ ]
+}

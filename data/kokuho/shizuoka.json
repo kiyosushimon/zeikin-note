@@ -1,0 +1,153 @@
+{
+ "common_rules_applied": {
+  "child_component_under18_exemption": {
+   "note": "子ども分の均等割は18歳に達する日以後の最初の3月31日以前の被保険者について10割（全額）減額"
+  },
+  "preschool_child_reduction": {
+   "applies_to": [
+    "medical",
+    "support"
+   ],
+   "note": "未就学児の均等割軽減は医療分・後期高齢者支援金分が対象（市の自動計算ページの注記で確認）"
+  },
+  "statutory_reduction": {
+   "applies_to": "均等割額・平等割額",
+   "note": "所得基準による減額（法定軽減）。市の自動計算ページは法定軽減を含まない旨を明記",
+   "salary_earner_adjustment": "(給与所得者等の数-1)×100,000円（0未満は0）",
+   "tiers": [
+    {
+     "reduction_rate": 0.7,
+     "threshold_formula": "430,000 + 調整額"
+    },
+    {
+     "reduction_rate": 0.5,
+     "threshold_formula": "430,000 + 調整額 + 310,000×被保険者数"
+    },
+    {
+     "reduction_rate": 0.2,
+     "threshold_formula": "430,000 + 調整額 + 570,000×被保険者数"
+    }
+   ]
+  }
+ },
+ "exceptions": [
+  {
+   "type": "single_member_household",
+   "conditions": {
+    "note": "特定世帯は平等割2分の1・特定継続世帯は4分の3（条例第11条・第14条の3、金額は条例で固定）"
+   },
+   "source_note": "静岡市国民健康保険条例",
+   "engine_status": "per_household_fixed として実装済み"
+  }
+ ],
+ "municipality_code": "22100",
+ "name": "静岡市",
+ "official_pages": {
+  "notice_source": null,
+  "rate_page": "https://www.pref.shizuoka.jp/_res/projects/default_project/_page_/001/024/897/r8hokenryouritsu.pdf",
+  "trial_page": "静岡市公式『令和8年度国民健康保険料自動計算ページ』（対話式）"
+ },
+ "prefecture": "静岡県",
+ "provenance": {
+  "retrieval_method": "manual",
+  "retrieved_at": "2026-11-23",
+  "source_published": "2026年度（令和8年度）",
+  "source_type": "PDF（静岡県公式『令和8年度国民健康保険市町保険料（税）率』＝実際の料率の一覧）。広報しずおか令和8年6月号（静岡市公式）の料率表とも一致",
+  "source_url": "https://www.pref.shizuoka.jp/_res/projects/default_project/_page_/001/024/897/r8hokenryouritsu.pdf",
+  "verification": {
+   "method": "照合源は市の自動計算ページ（対話式）のみで取得ツールでは実施不可",
+   "status": "照合前"
+  }
+ },
+ "publication_profile": {
+  "official_decision": "2026-03（料率決定）",
+  "page_update_month": 6
+ },
+ "rate_pattern_id": "shizuoka",
+ "rate_record": {
+  "base_deduction": {
+   "amount": 430000,
+   "tiers": [
+    {
+     "deduction": 430000,
+     "max_total_income": 24000000
+    },
+    {
+     "deduction": 290000,
+     "max_total_income": 24500000
+    },
+    {
+     "deduction": 150000,
+     "max_total_income": 25000000
+    },
+    {
+     "deduction": 0,
+     "max_total_income": null
+    }
+   ]
+  },
+  "components": {
+   "care": {
+    "age_band": [
+     40,
+     64
+    ],
+    "asset_rate": null,
+    "cap": 170000,
+    "income_rate": 0.0233,
+    "per_capita": 18400,
+    "per_capita_adult_addon": null,
+    "per_household": null
+   },
+   "child": {
+    "asset_rate": null,
+    "cap": 30000,
+    "income_rate": 0.0028,
+    "note": "均等割1,700円＋18歳以上被保険者均等割100円（合計1,800円）。平等割なし",
+    "per_capita": 1700,
+    "per_capita_adult_addon": 100,
+    "per_household": null
+   },
+   "medical": {
+    "asset_rate": null,
+    "cap": 670000,
+    "income_rate": 0.0673,
+    "per_capita": 29400,
+    "per_capita_adult_addon": null,
+    "per_household": 20900,
+    "per_household_fixed": {
+     "tokutei": 10450,
+     "keizoku": 15675
+    }
+   },
+   "support": {
+    "asset_rate": null,
+    "cap": 260000,
+    "income_rate": 0.0257,
+    "per_capita": 10500,
+    "per_capita_adult_addon": null,
+    "per_household": 7900,
+    "per_household_fixed": {
+     "tokutei": 3950,
+     "keizoku": 5925
+    }
+   }
+  },
+  "fiscal_year": 2026,
+  "levy_type": "料",
+  "method": "3方式",
+  "rate_pattern_id": "shizuoka",
+  "rounding": {
+   "per_component": "floor_100yen",
+   "note": "4区分とも100円未満切捨て（条例第8条第2項）。法定軽減の減額額は10円未満切上げ（第23条第5項）、未就学児の減額額も10円未満切上げ（第23条の3）。特定世帯の平等割は条例で金額を固定（医療分20,900円→10,450円・15,675円、支援分7,900円→3,950円・5,925円）。",
+   "source_url": "https://www.city.shizuoka.lg.jp/p000306.html",
+   "confirmed_at": "2026-11-23"
+  },
+  "reduction_ceil_unit": 10,
+  "preschool_ceil_unit": 10
+ },
+ "scope_group": "seireishi",
+ "unconfirmed": [
+  "公式の計算例での照合は未実施（料率・端数・算式は条例で確定済み）"
+ ]
+}

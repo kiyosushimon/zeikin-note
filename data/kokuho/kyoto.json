@@ -1,0 +1,167 @@
+{
+ "common_rules_applied": {
+  "child_component_under18_exemption": {
+   "note": "子ども分の均等割は18歳未満の被保険者について全額減額"
+  },
+  "preschool_child_reduction": {
+   "applies_to": [
+    "medical",
+    "support",
+    "child"
+   ],
+   "note": "未就学児の均等割5割減額（全国共通制度）"
+  },
+  "statutory_reduction": {
+   "applies_to": "均等割額・平等割額",
+   "note": "所得基準による減額（法定軽減）",
+   "salary_earner_adjustment": "(給与所得者等の数-1)×100,000円（0未満は0）",
+   "tiers": [
+    {
+     "reduction_rate": 0.7,
+     "threshold_formula": "430,000 + 調整額"
+    },
+    {
+     "reduction_rate": 0.5,
+     "threshold_formula": "430,000 + 調整額 + 310,000×被保険者数"
+    },
+    {
+     "reduction_rate": 0.2,
+     "threshold_formula": "430,000 + 調整額 + 570,000×被保険者数"
+    }
+   ]
+  }
+ },
+ "exceptions": [
+  {
+   "conditions": {
+    "note": "後期高齢者医療制度への移行で国保加入者が1人になった世帯（特定世帯）・その後5〜8年目（特定継続世帯）の平等割減額。介護分は対象外（告示に特定世帯の定めなし）",
+    "reduced_per_household": {
+     "child": {
+      "specific_continuing_household": 500,
+      "specific_household": 330,
+      "standard": 660
+     },
+     "medical": {
+      "specific_continuing_household": 13450,
+      "specific_household": 8970,
+      "standard": 17930
+     },
+     "support": {
+      "specific_continuing_household": 4640,
+      "specific_household": 3090,
+      "standard": 6180
+     }
+    }
+   },
+   "source_note": "京都市告示第762号（令和8年3月31日）で料率とあわせて公示",
+   "type": "single_member_household",
+   "engine_status": "per_household_fixed として実装済み（告示額をそのまま使用）"
+  }
+ ],
+ "municipality_code": "26100",
+ "name": "京都市",
+ "official_pages": {
+  "notice_source": "京都市告示第762号（令和8年3月31日）",
+  "rate_page": "https://www.city.kyoto.lg.jp/hokenfukushi/page/0000351038.html",
+  "trial_page": "https://www.city.kyoto.lg.jp/hokenfukushi/page/0000351038.html（試算への誘導あり）"
+ },
+ "prefecture": "京都府",
+ "provenance": {
+  "retrieval_method": "manual",
+  "retrieved_at": "2026-11-23",
+  "source_published": "2026-03-31（告示）",
+  "source_type": "HTML表（京都市公式）＋告示PDFで相互確認",
+  "source_url": "https://www.city.kyoto.lg.jp/hokenfukushi/page/0000351038.html",
+  "verification": {
+   "method": "市公式チラシのモデル世帯3件は収入が『約』表記のため厳密照合は不可",
+   "reference_url": "https://www.city.kyoto.lg.jp/hokenfukushi/cmsfiles/contents/0000351/351038/madoguchi_chirashi.pdf",
+   "status": "照合前"
+  }
+ },
+ "publication_profile": {
+  "official_decision": "2026-03-31（告示第762号）",
+  "page_update_month": 4
+ },
+ "rate_pattern_id": "kyoto",
+ "rate_record": {
+  "base_deduction": {
+   "amount": 430000,
+   "note": "市公式ページの料率表に明記（総所得金額等－基礎控除43万円）",
+   "tiers": [
+    {
+     "deduction": 430000,
+     "max_total_income": 24000000
+    },
+    {
+     "deduction": 290000,
+     "max_total_income": 24500000
+    },
+    {
+     "deduction": 150000,
+     "max_total_income": 25000000
+    },
+    {
+     "deduction": 0,
+     "max_total_income": null
+    }
+   ]
+  },
+  "components": {
+   "care": {
+    "age_band": [
+     40,
+     64
+    ],
+    "asset_rate": null,
+    "cap": 170000,
+    "income_rate": 0.0251,
+    "per_capita": 11090,
+    "per_capita_adult_addon": null,
+    "per_household": 5370
+   },
+   "child": {
+    "asset_rate": null,
+    "cap": 30000,
+    "income_rate": 0.0028,
+    "note": "均等割1,110円＋18歳以上均等割60円＋平等割660円（特定世帯330円・特定継続世帯500円）",
+    "per_capita": 1110,
+    "per_capita_adult_addon": 60,
+    "per_household": 660
+   },
+   "medical": {
+    "asset_rate": null,
+    "cap": 670000,
+    "income_rate": 0.0794,
+    "per_capita": 30080,
+    "per_capita_adult_addon": null,
+    "per_household": 17930
+   },
+   "support": {
+    "asset_rate": null,
+    "cap": 260000,
+    "income_rate": 0.0266,
+    "per_capita": 10360,
+    "per_capita_adult_addon": null,
+    "per_household": 6180
+   }
+  },
+  "fiscal_year": 2026,
+  "levy_type": "料",
+  "method": "3方式",
+  "rate_pattern_id": "kyoto",
+  "rounding": {
+   "structure": "per_person_income_levy_floor_10yen_care_floor_1yen",
+   "note": "所得割額は加入者ごとに算定し10円未満切捨て（基礎=条例第12条第2項、支援=第14条の4第2項、子ども=第15条の4第2項）。介護の所得割には同種の規定がなく1円未満切捨て。区分合計の切捨て規定はないため合計は1円単位。法定軽減の減額額は1円未満切上げ（第17条の2第3項）。第17条の6の18歳未満減額は子ども分の均等割のみが対象で、国の制度（子ども分の18歳未満均等割の全額減額）と同内容であることを確認済み。",
+   "source_url": "https://en3-jg.d1-law.com/kyoto/d1w_reiki/H336901010015/H336901010015_j.html",
+   "confirmed_at": "2026-11-23"
+  },
+  "levy_floor_unit": 10,
+  "levy_floor_unit_by_component": {
+   "care": 1
+  }
+ },
+ "scope_group": "seireishi",
+ "unconfirmed": [
+  "市の公式簡易計算表（Excel）の数式照合は未実施。モデル世帯のチラシは収入が概数表記のため厳密照合は不可。料率・端数・算式は条例と告示で確定済み"
+ ]
+}
