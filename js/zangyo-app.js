@@ -148,10 +148,19 @@ if (c.hours > 0) lines.push('・' + c.name + ': ' + hrs(c.hours) + '時間 × ' 
 lines.push('・本来もらえる残業代: ' + yen(r.total) + '（うち割増賃金 ' + yen(r.premiumTotal) + '）');
 if (r.fixedCheck) lines.push('・固定残業代のチェック: 法定の計算額 ' + yen(r.fixedCheck.statutory) + ' に対して固定残業代 ' + yen(r.fixedCheck.fixed) + '、不足額 ' + yen(r.fixedCheck.shortfall));
 if (r.diff) lines.push('・給与明細の残業代: ' + yen(r.diff.actualPaid) + '（差額 ' + yen(r.diff.diff) + '）');
+lines.push('');
+lines.push('【計算過程】');
+if (i.payType === 'monthly') {
+lines.push('・1時間当たりの賃金: 算定基礎賃金（基本給 ' + yen(i.baseSalary) + ' ＋ 算入する手当 ' + yen(i.includeAllowances) + ' ＝ ' + yen(r.baseMonthly) + '）÷ 1か月平均所定労働時間 ' + hrs(i.avgHours) + '時間 ＝ ' + yen(r.hourlyWage) + '（端数は50銭ルール: 50銭未満切り捨て・50銭以上切り上げ）');
+} else {
+lines.push('・1時間当たりの賃金: 時間給 ' + yen(i.hourlyWage) + ' をそのまま使用');
+}
+lines.push('・区分ごとの金額: 1時間当たりの賃金 × 時間数 × 倍率（時間外1.25倍／月60時間超1.50倍／深夜は+0.25倍／法定休日1.35倍／法定内1.00倍）で計算し、区分ごとに50銭ルールで丸め。上記の内訳がその式の結果です');
+lines.push('・合計: 本来もらえる残業代 ' + yen(r.total) + ' は全区分の合計で、うち割増賃金（法定内残業を除く区分の合計）が ' + yen(r.premiumTotal) + '。固定残業代のチェック・給与明細との差額は、この法定の金額との比較です');
 }
 lines.push('');
 lines.push('前提: 割増率は労働基準法の最低率（時間外25%・月60時間超50%・深夜25%・法定休日35%）で計算。1時間当たりの賃金は施行規則第19条の換算方法で、算定基礎から除外できる手当は法第37条第5項・施行規則第21条の7種（実質条件を満たすものだけ）。金額の端数処理は通達（基発第150号）の50銭ルールを採用し、時間数の30分丸めは適用していない。代替休暇を取得した場合の金額調整は対象外。固定残業代のチェックは、契約で固定残業代として判別できる形で定められている前提。');
-lines.push('根拠: 労働基準法第37条・同法施行規則第19条・第21条、厚生労働省「確かめよう労働条件」、山口労働局「労務管理の基本的ルール」（公式計算例）');
+lines.push('根拠: 労働基準法第37条・同法施行規則第19条・第21条（e-Gov法令検索） https://laws.e-gov.go.jp/law/322AC0000000049、厚生労働省「確かめよう労働条件」 https://www.check-roudou.mhlw.go.jp/top.html、山口労働局「労務管理の基本的ルール」（公式計算例）');
 lines.push('');
 lines.push('聞きたいこと: ①この試算の前提で見落としはないか ②差額がある場合、会社への確認の進め方と、労働基準監督署・総合労働相談コーナーへの相談の目安 ③固定残業代や手当の扱いで、契約書・就業規則のどこを確認すべきか');
 lines.push('');
