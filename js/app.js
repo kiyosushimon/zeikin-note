@@ -241,9 +241,28 @@
     lines.push('・最も税額が小さい受け取り方: DCを ' + best.dcYear + ' 年に受け取る（' + patternLabel(best) + '）');
     lines.push('・その場合の合計税額: ' + yen(best.totalTax) + ' ／ 手取り合計: ' + yen(best.netTotal));
     lines.push('');
+    lines.push('【計算過程】');
+    lines.push('・退職所得控除額の式: 勤続20年以下は40万円×勤続年数（最低80万円）、20年超は800万円＋70万円×（勤続年数−20年）。受け取り間隔が調整期間（DC先行9年／退職金先行19年）内の場合は、後に受け取る分の控除額から重複期間の相当額を差し引く。');
+    function receiptProcess(label, receipt) {
+      if (receipt.deductionBefore !== undefined && receipt.deductionBefore !== null) {
+        lines.push('・' + label + ': 控除額は調整前 ' + yen(receipt.deductionBefore) + ' − 重複相当額 ' + yen(receipt.overlapEquivalent) + ' ＝ ' + yen(receipt.deduction) + (receipt.floorApplied ? '（80万円の最低額を適用）' : ''));
+      } else {
+        lines.push('・' + label + ': 控除額 ' + yen(receipt.deduction) + (receipt.floorApplied ? '（80万円の最低額を適用）' : ''));
+      }
+      lines.push('　課税退職所得金額: （' + yen(receipt.income) + ' − ' + yen(receipt.deduction) + '）に1/2課税を適用 ＝ ' + yen(receipt.taxable) + '（1,000円未満切り捨て）');
+      lines.push('　所得税額: 課税退職所得金額に退職所得の源泉徴収税額の速算表（税率・控除額）を適用し、×1.021（復興特別所得税）＝ ' + yen(receipt.incomeTax));
+      lines.push('　住民税額: ' + yen(receipt.taxable) + ' × 6% ＝ ' + yen(receipt.residentMunicipal) + '（市町村民税）／ × 4% ＝ ' + yen(receipt.residentPrefectural) + '（道府県民税）。各々100円未満切り捨て');
+    }
+    if (best.combined) {
+      receiptProcess('同年に受け取る場合（合算）', best.combined);
+    } else {
+      receiptProcess('退職金', best.retirement);
+      receiptProcess('DC老齢一時金', best.dc);
+    }
+    lines.push('');
     lines.push('【計算の前提】');
     lines.push('・退職所得控除は勤続年数で計算し、退職金とDCの受け取り間隔によって重なり調整がかかります（DCを先に受け取った場合は9年、退職金を先に受け取った場合は19年の調整期間。2026年1月1日以後の受給分）。');
-    lines.push('・根拠: 国税庁タックスアンサー No.1420（退職金を受け取ったとき）、No.2732（確定拠出年金と退職手当等の重なり調整）');
+    lines.push('・根拠: 国税庁タックスアンサー No.1420（退職金を受け取ったとき）' + SOURCES.no1420 + '、No.2732（確定拠出年金と退職手当等の重なり調整）' + SOURCES.no2732 + '、退職所得の源泉徴収税額の速算表 ' + SOURCES.besshi);
     lines.push('');
     lines.push('【聞きたいこと】');
     lines.push('1. この受け取り方が有利になる仕組みを、かみくだいて説明してください。');
