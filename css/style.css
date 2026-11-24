@@ -484,6 +484,26 @@ a.tool-card:active { transform: translate(2px, 2px); box-shadow: 4px 4px 0 rgba(
 ul.plain { padding-left: 1.25em; }
 ul.plain li { margin-bottom: 8px; }
 tr.total-row th, tr.total-row td { font-weight: 800; background: #fff8d6; }
+/* 年収の壁チェッカーの壁カード */
+.wall-item {
+  background: var(--card);
+  border: 3px solid var(--ink); border-radius: 12px;
+  box-shadow: 4px 4px 0 rgba(38, 34, 26, 0.9);
+  padding: 12px 16px 14px; margin: 0 0 14px;
+}
+.wall-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.wall-name { font-weight: 800; font-size: 1.05rem; }
+.wall-amount { font-weight: 800; white-space: nowrap; }
+.wall-state {
+  display: inline-block; font-size: 0.8rem; font-weight: 800;
+  border: 2px solid var(--ink); border-radius: 999px;
+  padding: 1px 10px; margin-left: 8px; white-space: nowrap;
+  background: var(--best-bg);
+}
+.wall-state.is-over { background: #f6c9c9; }
+.wall-state.is-na { background: #e8e2d2; }
+.wall-desc { margin: 8px 0 0; }
+.wall-impact { font-weight: 800; margin: 6px 0 0; }
 /* main の外にあるフッター（国保・健保比較・住民税・ふるさと納税）は本文幅に揃える */
 body > footer { max-width: 880px; margin-left: auto; margin-right: auto; padding: 0 16px; }
 
