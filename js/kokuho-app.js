@@ -218,6 +218,25 @@ lines.push('・年間保険料: ' + yen(result.total) + '（月あたり約 ' + 
 lines.push('・内訳: 医療分 ' + yen(result.components.medical) + '／後期高齢者支援金分 ' + yen(result.components.support) + '／介護分 ' + yen(result.components.care) + '／子ども・子育て支援金分 ' + yen(result.components.child));
 if (result.reductionRate > 0) lines.push('・所得の低い世帯への軽減（' + Math.round(result.reductionRate * 10) + '割）が適用されています。');
 lines.push('');
+lines.push('【計算過程】');
+var rr = cityData.rate_record;
+var compLabels = { medical: '医療分', support: '後期高齢者支援金分', care: '介護分', child: '子ども・子育て支援金分' };
+lines.push('・賦課のもとになる判定所得の合計: ' + yen(result.judgementIncome) + '。区分ごとの所得割は、各被保険者の所得から基礎控除（' + yen((rr.base_deduction && rr.base_deduction.amount) || 430000) + '）を引いた額に所得割率を掛けて計算します（区分ごとの所得割・均等割の内訳はエンジンの結果に含まれないため、式の一般形で示します）。');
+['medical', 'support', 'care', 'child'].forEach(function (key) {
+var c = rr.components[key];
+if (!c || result.components[key] === undefined) return;
+var s = '・' + compLabels[key] + ': 所得割率 ' + (Math.round(c.income_rate * 10000) / 100) + '%／均等割 ' + yen(c.per_capita || 0);
+if (c.per_capita_adult_addon) s += '（大人1人あたり加算 ' + yen(c.per_capita_adult_addon) + '）';
+if (c.per_household) s += '／平等割 ' + yen(c.per_household);
+if (c.cap) s += '／賦課限度額 ' + yen(c.cap);
+s += ' → 区分の金額 ' + yen(result.components[key]);
+lines.push(s);
+});
+lines.push('・各区分とも、所得割＋均等割（＋平等割）を合算し、賦課限度額を上限として、区分ごとに ' + CITIES[cityKey].roundingUnit + '円未満を切り捨ててから合計します。');
+if (result.reductionRate > 0) lines.push('・法定軽減: 均等割・平等割に ' + Math.round(result.reductionRate * 10) + '割の軽減を適用（判定所得と世帯人数・就業者数から判定。1人当たりの減額額は円未満切り上げ）。');
+if (result.adjustment) lines.push('・世帯類型などによる調整額: −' + yen(result.adjustment));
+lines.push('・根拠: 料率は' + CITIES[cityKey].label + 'の令和8年度の公式料率' + (cityData.official_pages && cityData.official_pages.rate_page ? '（公式ページ ' + cityData.official_pages.rate_page + '）' : '（自治体公式ページで確認）'));
+lines.push('');
 lines.push('');
 lines.push('1. この金額が決まる仕組みを、かみくだいて説明してください。');
 lines.push('2. 退職して会社の健康保険から国民健康保険に切り替える場合、任意継続と比べて考えるべき点を教えてください。');
