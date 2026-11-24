@@ -188,7 +188,7 @@ footer .small { color: var(--ink); }
 /* サイト共通: ヘッダー・ナビ・パンくず・ツールカード・フッター */
 .site-header {
   max-width: 880px; margin: 0 auto;
-  padding: 16px 16px 0;
+  padding: 20px 16px 0;
   display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
   position: relative;
 }
@@ -409,7 +409,88 @@ a.tool-card:active { transform: translate(2px, 2px); box-shadow: 4px 4px 0 rgba(
 .verdict { font-size: 1.25rem; font-weight: 800; background: #B8E986; border: 3px solid #26221A; border-radius: 12px; padding: 12px 14px; box-shadow: 4px 4px 0 #26221A; }
 .crosslink { font-weight: 700; margin-top: 18px; }
 
-.scope-box { background: #FFF7D6; border: 3px solid var(--ink); border-radius: 14px; padding: 12px 16px; margin: 18px 0; box-shadow: 4px 4px 0 var(--ink); }
+.scope-box { background: #FFF7D6; border: 3px solid var(--ink); border-radius: 14px; padding: 14px 18px; margin: 18px 0; box-shadow: 4px 4px 0 var(--ink); }
 .scope-box .scope-title { font-weight: 800; margin: 0 0 6px; }
 .scope-box ul { margin: 0 0 6px; padding-left: 1.3em; }
 .scope-box li { margin: 2px 0; }
+
+/* ===== 後発ページ（住民税・ふるさと納税・健保比較・プライバシー）の共通部品 =====
+   これらのページのHTMLが使う部品クラスを、既存ページ（fieldset/.summary等）と
+   同じ見た目・余白に揃えるための定義。 */
+.card {
+  background: var(--card);
+  border: 3px solid var(--ink);
+  border-radius: 16px;
+  box-shadow: 6px 6px 0 rgba(38, 34, 26, 0.9);
+  padding: 20px 20px 22px;
+  margin: 0 0 24px;
+}
+.card > h2:first-child {
+  margin: -20px -20px 16px;
+  border-radius: 13px 13px 0 0;
+  box-shadow: none;
+}
+.card > p:first-child { margin-top: 0; }
+.card > p:last-child { margin-bottom: 0; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 18px; }
+.grid2 .field { min-width: 0; }
+.yen-wrap { display: flex; align-items: center; gap: 8px; }
+.yen-wrap input { flex: 1 1 auto; min-width: 0; }
+.unit { font-weight: 700; flex: none; }
+.big-result {
+  font-size: 1.55rem; font-weight: 800; line-height: 1.4;
+  background: var(--best-bg);
+  border: 3px solid var(--ink); border-radius: 12px;
+  box-shadow: 4px 4px 0 rgba(38, 34, 26, 0.9);
+  padding: 12px 18px; margin: 16px 0 8px;
+}
+.big-label { font-size: 1rem; font-weight: 800; }
+.btn-ai {
+  font: inherit; font-weight: 800; font-size: 1.02rem;
+  background: var(--best-line); color: #fff;
+  border: 3px solid var(--ink); border-radius: 999px;
+  padding: 12px 26px; cursor: pointer;
+  box-shadow: 4px 4px 0 rgba(38, 34, 26, 0.9);
+  margin: 14px 0 18px;
+}
+.btn-ai:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 rgba(38, 34, 26, 0.9); }
+.btn-sub { background: var(--card); color: var(--ink); padding: 8px 16px; font-size: 0.92rem; margin: 4px 0 10px; }
+.btn-del { background: var(--card); color: #b03a3a; border-color: #b03a3a; padding: 5px 12px; font-size: 0.85rem; }
+.member-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.h2-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 1.55em; height: 1.55em; flex: none;
+  background: #fff; color: var(--ink); border-radius: 50%;
+  vertical-align: -0.38em; margin-right: 0.45em;
+}
+.title-row { display: flex; align-items: flex-start; gap: 12px; margin-top: 14px; }
+.title-row h1 { margin-top: 0; }
+.title-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 60px; height: 60px; flex: none;
+  background: var(--card); border: 3px solid var(--ink); border-radius: 50%;
+  box-shadow: inset 0 0 0 4px var(--bg), 3px 3px 0 rgba(38, 34, 26, 0.9);
+  margin-top: 6px;
+}
+.crumbs { font-size: 0.9rem; font-weight: 700; margin: 6px 0 0; }
+.crumbs a { color: var(--ink); }
+.footer-nav { font-weight: 700; font-size: 0.92rem; margin: 10px 0 2px; }
+.footer-nav a { color: var(--ink); }
+.copy { font-size: 0.88rem; }
+.subhead { border-bottom: 2.5px dashed #d8d2c2; padding-bottom: 5px; }
+.check { display: block; font-weight: 700; margin: 10px 0; }
+.check input { width: 1.05em; height: 1.05em; vertical-align: -0.12em; margin-right: 4px; }
+ul.plain { padding-left: 1.25em; }
+ul.plain li { margin-bottom: 8px; }
+tr.total-row th, tr.total-row td { font-weight: 800; background: #fff8d6; }
+/* main の外にあるフッター（国保・健保比較・住民税・ふるさと納税）は本文幅に揃える */
+body > footer { max-width: 880px; margin-left: auto; margin-right: auto; padding: 0 16px; }
+
+@media (max-width: 640px) {
+  .card { box-shadow: 4px 4px 0 rgba(38, 34, 26, 0.9); padding: 16px 14px 18px; }
+  .card > h2:first-child { margin: -16px -14px 14px; }
+  .grid2 { grid-template-columns: 1fr; }
+  .big-result { font-size: 1.3rem; }
+  .title-badge { width: 48px; height: 48px; }
+  .title-row { margin-top: 8px; }
+}
