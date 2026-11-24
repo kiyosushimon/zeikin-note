@@ -222,7 +222,7 @@
     var detailRow = result.rows.filter(function (r) { return r.dcYear === selectedYear; })[0];
     out.innerHTML = renderSummary(result) + renderTable(result) + '<div id="detail">' + renderDetail(result, detailRow) + '</div>' +
       '<div class="consult"><button type="button" id="copy-prompt" class="consult-btn"><span class="in-flex"><svg class="icon" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>AIに相談する用の文をコピー</span></button>' +
-      '<p class="small">この計算結果をまとめた文をコピーします。ChatGPTやClaudeなど、自分のAIに貼ると、結果の意味や注意点を相談できます。</p></div>';
+      '<p class="small">この計算結果をまとめた文をコピーします。ChatGPTやClaudeなど、自分のAIに貼ると、結果の意味や注意点を相談できます。貼る前に、個人が特定できる情報が含まれていないか確認してください。</p></div>';
     animateCounts(out);
     el('copy-prompt').addEventListener('click', function () {
       copyText(buildPrompt(result));
@@ -266,7 +266,7 @@
   }
 
   function copyText(text) {
-    function done() { showToast('コピーしました。自分のAIに貼ってください'); }
+    function done() { showToast('コピーしました。貼る前に、個人が特定できる情報が入っていないか確認してください'); }
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(done, function () { fallback(); });
     } else {

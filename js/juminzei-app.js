@@ -170,7 +170,7 @@ $('spouseElderlyWrap').style.display = yes? '': 'none';
 });
 $('copyPrompt').addEventListener('click', function () {
 var text = buildPrompt(); if (!text) return;
-function done() { toast('コピーしました。お使いのAIに貼ってください');}
+function done() { toast('コピーしました。貼る前に、個人が特定できる情報が入っていないか確認してください');}
 if (navigator.clipboard && navigator.clipboard.writeText) {
 navigator.clipboard.writeText(text).then(done, function () { fallback();});
 } else { fallback();}

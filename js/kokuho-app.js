@@ -144,7 +144,7 @@ html += '<tr><td>' + COMP_LABEL[k] + '</td><td>' + yen(result.components[k]) + '
 html += '<tr><td><strong>合計</strong></td><td><strong>' + yen(result.total) + '</strong></td></tr>';
 html += '</tbody></table></div>';
 html += '<div class="consult"><button type="button" id="copy-prompt" class="consult-btn"><span class="in-flex"><svg class="icon" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>AIに相談する用の文をコピー</span></button>' +
-'<p class="small">この計算結果をまとめた文をコピーします。ChatGPTやClaudeなど、自分のAIに貼ると、結果の意味や注意点を相談できます。</p></div>';
+'<p class="small">この計算結果をまとめた文をコピーします。ChatGPTやClaudeなど、自分のAIに貼ると、結果の意味や注意点を相談できます。貼る前に、個人が特定できる情報が含まれていないか確認してください。</p></div>';
 out.innerHTML = html;
 animateCounts(out);
 el('copy-prompt').addEventListener('click', function () {
@@ -175,7 +175,7 @@ return lines.join('\n');
 }
 
 function copyText(text) {
-function done() { showToast('コピーしました。自分のAIに貼ってください');}
+function done() { showToast('コピーしました。貼る前に、個人が特定できる情報が入っていないか確認してください');}
 if (navigator.clipboard && navigator.clipboard.writeText) {
 navigator.clipboard.writeText(text).then(done, function () { fallback();});
 } else {
