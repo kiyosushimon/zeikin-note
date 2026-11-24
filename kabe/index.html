@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>年収の壁チェッカー（106万・130万・178万の壁をまとめて判定）｜ぜいきんノート</title>
+<meta name="description" content="パート・アルバイトの年収見込みを入力すると、住民税・106万円（社会保険の加入）・130万円（被扶養者）・配偶者控除・所得税178万円など、関係する「年収の壁」をまとめて判定します。令和8年分の改正後の金額で判定し、壁を超えた場合の手取りの変化も計算します。無料・登録不要・入力は送信されません。">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3785696031006214" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NYC15XQ95K"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-NYC15XQ95K');
+  </script>
+</head>
+<body>
+<header class="site-header">
+  <a class="logo" href="../"><span class="logo-mark"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><line x1="8.5" y1="7.5" x2="15.5" y2="7.5"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15.5" r="1" fill="currentColor" stroke="none"/></svg></span>ぜいきんノート</a>
+  <nav class="site-nav"><a href="../#tools">ツール一覧</a><a href="../#about">このサイトについて</a>｜<a href="../privacy/">プライバシーポリシー</a></nav>
+  <details class="menu"><summary class="menu-btn" aria-label="メニュー"><span class="burger"></span></summary><nav class="menu-panel"><a href="../taishoku-dc/">退職金 × iDeCo/DC</a><a href="../kokuho/">国民健康保険料</a><a href="../taishoku-hoken/">退職後の健康保険 比較</a><a href="../juminzei/">住民税</a><a href="../furusato/">ふるさと納税</a><a href="../bonus/">賞与の手取り計算</a><a href="../setai/">世帯年収の手取り</a><a href="../kabe/">年収の壁チェッカー</a><a href="../privacy/">プライバシーポリシー</a></nav></details>
+</header>
+<main class="wrap">
+<nav class="crumbs"><a href="../">トップ</a> ＞ 年収の壁チェッカー</nav>
+<h1><span class="h1-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M3 21h18M5 21V10M10 21V6M15 21v-9M20 21V4"/></svg></span>年収の壁チェッカー</h1>
+<p class="lead">「年収の壁」は1つの金額ではなく、税金と社会保険と家族側の控除にまたがる複数の線の束です。年収の見込みを入力すると、関係する壁について「超えているか／あといくらで到達するか／超えると手取りがどう変わるか」をまとめて表示します。所得税の壁は令和8年分の改正後の178万円で判定します。</p>
+
+<div class="scope-box">
+  <p class="scope-title">このツールで計算できないケース</p>
+  <ul>
+    <li>自営業・副業・年金・不動産など、給与以外の所得がある場合（給与収入のみが対象です）</li>
+    <li>複数の勤務先で働いている場合（ダブルワーク）</li>
+    <li>扶養を外れた場合の国民健康保険料・国民年金保険料の金額（自治体や世帯構成で決まるため、金額は計算しません）</li>
+    <li>本人が家族を扶養している場合の住民税の非課税限度額（単身前提で判定します）</li>
+    <li>60歳以上・障害者の被扶養者の収入要件（180万円の線）</li>
+    <li>配偶者手当（家族手当）など、勤務先独自の制度の壁</li>
+    <li>障害者控除・寡婦控除・ひとり親控除に該当する場合</li>
+    <li>令和7年分以前・令和9年分以後の所得税（令和8年分専用です）</li>
+  </ul>
+  <p class="small">詳しい前提条件は、ページ下部の「前提条件・対象外のもの」にまとめています。</p>
+</div>
+
+<div id="formError"></div>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 20l1.2-4.2L16.7 4.3a2.15 2.15 0 0 1 3 3L8.2 18.8 4 20z"/><line x1="14.8" y1="6.2" x2="17.8" y2="9.2"/></svg></span>入力</span></h2>
+<div class="field">
+<label for="mode">立場<span class="hint">働く本人の立場で、表示する壁が変わります</span></label>
+<select id="mode">
+<option value="spouse" selected>配偶者として働く（パート・アルバイト）</option>
+<option value="student">学生（子）として働く（親の扶養に入っている）</option>
+<option value="self">自分自身の税金を見る</option>
+</select>
+</div>
+<div class="grid2">
+<div class="field">
+<label for="income">本人の年収見込み（給与収入・今後1年）<span class="hint">被扶養者の判定は「今後1年の収入見込み」で行われるため、見込み額を入れてください</span></label>
+<div class="yen-wrap"><input type="number" id="income" min="0" step="10000" value="1050000"><span class="unit">円</span></div>
+</div>
+<div class="field" id="studentAgeWrap" style="display:none">
+<label for="studentAgeBand">本人の年齢（その年の12月31日時点）<span class="hint">19〜22歳は被扶養者の線が150万円になり、親側に特定親族特別控除があります</span></label>
+<select id="studentAgeBand">
+<option value="under19">19歳未満</option>
+<option value="19to22" selected>19〜22歳</option>
+<option value="23plus">23歳以上</option>
+</select>
+</div>
+<div class="field" id="supporterWrap">
+<label for="supporterIncome"><span id="supporterLabel">扶養者（配偶者）の年収</span><span class="hint">配偶者控除などの判定と、世帯手取りの計算に使います</span></label>
+<div class="yen-wrap"><input type="number" id="supporterIncome" min="0" step="100000" value="6000000"><span class="unit">円</span></div>
+</div>
+</div>
+<div id="workGroup">
+<h3 class="subhead">勤務先の働き方（106万円の壁の判定）</h3>
+<div class="grid2">
+<div class="field">
+<label for="monthlyWage">月の所定内賃金<span class="hint">残業代・賞与・通勤手当は含みません。初期値は年収÷12の自動計算で、変更できます</span></label>
+<div class="yen-wrap"><input type="number" id="monthlyWage" min="0" step="1000" value="87500"><span class="unit">円</span></div>
+<button type="button" id="wageAutoBtn" class="btn-ai btn-sub" style="display:none">年収÷12の自動計算に戻す</button>
+</div>
+<div class="field">
+<label for="weeklyHours">週の所定労働時間</label>
+<select id="weeklyHours">
+<option value="lt20">20時間未満</option>
+<option value="ge20" selected>20時間以上（正社員の4分の3未満）</option>
+<option value="full">正社員の4分の3以上（週30時間以上が目安）</option>
+</select>
+</div>
+<div class="field">
+<label for="employees">勤務先の従業員数（厚生年金保険の被保険者数）</label>
+<select id="employees">
+<option value="51plus" selected>51人以上</option>
+<option value="le50">50人以下</option>
+<option value="unknown">分からない</option>
+</select>
+</div>
+<div class="field" id="studentCheckWrap">
+<label class="check" for="isStudent"><input type="checkbox" id="isStudent">学生である<span class="hint">学生は106万円の壁（4要件）の対象外です</span></label>
+</div>
+</div>
+</div>
+<h3 class="subhead">共通の条件</h3>
+<div class="grid2">
+<div class="field">
+<label for="prefecture">勤務先の都道府県<span class="hint">協会けんぽの料率は事業所の所在地で決まります</span></label>
+<select id="prefecture"></select>
+</div>
+<div class="field">
+<label for="selfAge">本人の年齢区分</label>
+<select id="selfAge">
+<option value="under40" selected>40歳未満</option>
+<option value="40to64">40〜64歳（介護保険料がかかります）</option>
+<option value="65to69">65〜69歳</option>
+</select>
+</div>
+<div class="field" id="supporterAgeWrap">
+<label for="supporterAge">扶養者の年齢区分</label>
+<select id="supporterAge">
+<option value="under40" selected>40歳未満</option>
+<option value="40to64">40〜64歳（介護保険料がかかります）</option>
+<option value="65to69">65〜69歳</option>
+</select>
+</div>
+</div>
+</section>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M3 21h18M5 21V10M10 21V6M15 21v-9M20 21V4"/></svg></span>壁の判定結果</span></h2>
+<p class="note">本ツールは一般的な仕組みに基づく試算であり、個別の税務・労務相談ではありません。実際の税額・保険料・扶養認定は勤務先や保険者の判断により異なる場合があります。</p>
+<div id="wallList"></div>
+<ul class="note" id="wallNotes"></ul>
+</section>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><line x1="8.5" y1="7.5" x2="15.5" y2="7.5"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15.5" r="1" fill="currentColor" stroke="none"/></svg></span>現在の手取りと内訳</span></h2>
+<div class="big-result"><span class="big-label" id="netBigLabel">世帯手取り（年額）</span> <span id="netBig">— 円</span></div>
+<div id="breakdown"></div>
+<ul class="note" id="detailNotes"></ul>
+</section>
+
+<section class="card" id="stepCard">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg></span>年収を変えたら（世帯手取り）</span></h2>
+<div class="table-wrap">
+<table class="result-table">
+<tr><th>配偶者の年収</th><th>配偶者の社会保険</th><th>配偶者の社会保険料</th><th>世帯手取り</th></tr>
+<tbody id="stepRows"></tbody>
+</table>
+</div>
+<p class="note" id="recoveryText"></p>
+<p class="note">他の条件を固定して、配偶者の年収だけを動かした試算です。社会保険の扱いは、年収から見た月額賃金が8.8万円以上で、勤務先の要件（週20時間以上・従業員51人以上・学生でない）を満たす場合は「加入」、130万円未満は「扶養（被扶養者）」として計算しています。</p>
+</section>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 13.5v-8A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v8a1.5 1.5 0 0 1-1.5 1.5H13l-4.5 4.2v-4.2H5.5A1.5 1.5 0 0 1 4 13.5z"/></svg></span>自分のAIに相談する</span></h2>
+<p>計算の内容をまとめた文をコピーできます。ChatGPTやClaudeなど、お使いのAIに貼ると、そのまま相談できます。貼る前に、個人が特定できる情報が含まれていないか確認してください。</p>
+<button type="button" id="copyPrompt" class="btn-ai">AIに相談する用の文をコピー</button>
+</section>
+
+<details class="card accordion">
+<summary>前提条件・対象外のもの</summary>
+<ul>
+<li>対象は給与収入のみの人（パート・アルバイト・正社員の配偶者や学生）です。給与以外の収入（年金・副業・不動産等）がある場合の合計所得金額の判定は扱いません。</li>
+<li>所得税は令和8年分（2026年分）、社会保険は令和8年度の制度で判定します。106万円の壁は現行要件（賃金要件あり）で判定し、2026年10月の賃金要件撤廃は予定として注記しています。住民税は令和8年度のルールを入力した年の所得に適用した目安で、実際には翌年度に課税されます。</li>
+<li>住民税の壁は1級地（単身・110万円）を既定として判定し、2級地106.5万円・3級地103万円を併記します。級地はお住まいの自治体ごとに定まります。</li>
+<li>社会保険料は協会けんぽ前提の試算であり、標準報酬月額は年収から導出した目安です。健康保険組合では料率が異なります。</li>
+<li>被扶養者の認定は最終的に保険者（健保組合・協会けんぽ）が行います。本ツールの判定は収入要件の線だけによる目安であり、「扶養者の収入の半分未満」等の条件や世帯の生計状況は判定に入れていません。</li>
+<li>扶養を外れた場合の行き先が国民健康保険・国民年金になるケースでは、保険料の金額は計算しません（自治体・世帯構成で決まるため）。その場合の手取り表示は社会保険料を除いた参考値です。</li>
+<li>学生モードの親の社会保険料は、年齢区分40〜64歳（介護保険料あり）として計算しています。</li>
+<li>本ツールは一般的な仕組みに基づく試算であり、個別の税務・労務相談ではありません。実際の税額・保険料・扶養認定は勤務先や保険者の判断により異なる場合があります。個別の事情がある場合は、勤務先の給与担当・税理士・税務署・自治体窓口にご確認ください。</li>
+<li>計算はすべてブラウザの中で行い、入力した内容をサーバーへ送信することはありません。</li>
+</ul>
+</details>
+
+<details class="card accordion">
+<summary>出典・計算の根拠</summary>
+<ul>
+<li>国税庁タックスアンサー No.1191「配偶者控除」・No.1195「配偶者特別控除」: 配偶者（特別）控除の要件と金額（令和8年分）<br><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1191.htm" target="_blank" rel="noopener">https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1191.htm</a><br><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1195.htm" target="_blank" rel="noopener">https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1195.htm</a></li>
+<li>国税庁タックスアンサー No.1199「基礎控除」・国税庁「令和8年分 年末調整のしかた」: 基礎控除（最大104万円）・給与所得控除の最低保障74万円・特定親族特別控除・扶養親族等の所得要件62万円・勤労学生控除の所得要件89万円<br><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1199.htm" target="_blank" rel="noopener">https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1199.htm</a></li>
+<li>厚生労働省「短時間労働者に対する健康保険・厚生年金保険の更なる適用拡大に係る事務の取扱いについて」: 短時間労働者の4要件（週20時間以上・月額賃金8.8万円以上・学生でない・特定適用事業所）<br><a href="https://www.mhlw.go.jp/web/t_doc?dataId=00tc8889&dataType=1&pageNo=1" target="_blank" rel="noopener">https://www.mhlw.go.jp/web/t_doc?dataId=00tc8889&dataType=1&pageNo=1</a></li>
+<li>厚生労働省リーフレット「短時間労働者の社会保険（健康保険・厚生年金保険）の加入拡大のポイント」（令和8年1月作成）: 賃金要件の令和8年10月撤廃予定・企業規模要件の段階的縮小<br><a href="https://www.mhlw.go.jp/content/12500000/001633788.pdf" target="_blank" rel="noopener">https://www.mhlw.go.jp/content/12500000/001633788.pdf</a></li>
+<li>日本年金機構「従業員が家族を被扶養者にするとき」: 被扶養者の収入要件（年間収入130万円未満・扶養者の半分未満）<br><a href="https://www.nenkin.go.jp/service/kounen/tekiyo/hihokensha1/20141202.html" target="_blank" rel="noopener">https://www.nenkin.go.jp/service/kounen/tekiyo/hihokensha1/20141202.html</a></li>
+<li>日本年金機構「19歳以上23歳未満の方の被扶養者認定における年間収入要件が変わります」（2025年8月19日）: 19〜22歳の被扶養者の年間収入要件150万円未満<br><a href="https://www.nenkin.go.jp/oshirase/taisetu/2025/202508/0819.html" target="_blank" rel="noopener">https://www.nenkin.go.jp/oshirase/taisetu/2025/202508/0819.html</a></li>
+<li>政府広報オンライン「『年収の壁』対策がスタート！」: 事業主の証明による被扶養者認定の円滑化（一時的な収入増・原則連続2回まで）<br><a href="https://www.gov-online.go.jp/article/202312/entry-5288.html" target="_blank" rel="noopener">https://www.gov-online.go.jp/article/202312/entry-5288.html</a></li>
+<li>札幌市「税額の算出方法」ほか自治体公式ページ: 住民税の非課税限度額（級地別）・配偶者控除等の住民税側の所得要件58万円・特定親族特別控除（住民税）・勤労学生控除（住民税）<br><a href="https://www.city.sapporo.jp/citytax/syurui/shiminzei/kojin_zeigaku.html" target="_blank" rel="noopener">https://www.city.sapporo.jp/citytax/syurui/shiminzei/kojin_zeigaku.html</a></li>
+<li>協会けんぽ「令和8年度の都道府県単位保険料率」: 都道府県別の健康保険料率、介護保険料率、子ども・子育て支援金率、等級表<br><a href="https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/rate_prefectures/r08/index.html" target="_blank" rel="noopener">https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/rate_prefectures/r08/index.html</a></li>
+</ul>
+</details>
+</main>
+<footer class="site-footer">
+<p class="disclaimer">このサイトの計算は一般的な税制の仕組みに基づく試算であり、個別の税務相談ではありません。実際の税額は、確定申告の内容や勤務先の給与計算、お住まいの自治体の課税により確定します。個別の事情がある場合は、税理士等の専門家または勤務先の給与担当にご確認ください。</p>
+<nav class="footer-nav">
+<a href="../taishoku-dc/">退職金×iDeCo/DC</a>
+<a href="../kokuho/">国民健康保険料</a>
+<a href="../taishoku-hoken/">退職後の健康保険 比較</a>
+<a href="../juminzei/">住民税</a>
+<a href="../furusato/">ふるさと納税</a>
+<a href="../bonus/">賞与の手取り計算</a>
+<a href="../setai/">世帯年収の手取り</a>
+<a href="../kabe/">年収の壁チェッカー</a>
+<a href="../privacy/">プライバシーポリシー</a>
+</nav>
+<p class="copy">© 2026 ぜいきんノート（zeikin-note.com）</p>
+</footer>
+<div class="toast" id="toast" role="status"></div>
+<script src="../js/nencho-engine.js"></script>
+<script src="../js/shaho-engine.js"></script>
+<script src="../js/setai-engine.js"></script>
+<script src="../js/kabe-engine.js"></script>
+<script src="../js/kabe-app.js"></script>
+</body>
+</html>
