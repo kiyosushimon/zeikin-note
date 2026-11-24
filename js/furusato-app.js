@@ -97,6 +97,9 @@ lines.push('');
 lines.push('・住民税所得割額（調整控除後）: ' + yen(num('dLevy')));
 lines.push('・所得税の限界税率: ' + ($('dRate').value * 100) + '％');
 lines.push('・上限額の目安: ' + yen(lastDetail.limit));
+lines.push('');
+lines.push('【計算過程】');
+lines.push('・上限額の式: 住民税所得割額 ' + yen(num('dLevy')) + ' × 20% ÷（90% − 所得税の限界税率 ' + ($('dRate').value * 100) + '% × 1.021）＋ 2,000円 ＝ ' + yen(lastDetail.limit) + '（1,000円未満切り捨て）。寄附金控除の特例分が所得割額の2割に収まる範囲が、自己負担2,000円で収まる上限です');
 } else if (lastSimple) {
 var i = lastSimple.input, r = lastSimple.result;
 lines.push('');
@@ -111,10 +114,18 @@ lines.push('・上限額の目安（自己負担2,000円で収まる寄附額）
 if (lastBreak) {
 lines.push('・寄附予定額 ' + yen(lastBreak.donation) + ' の場合の実質自己負担: ' + yen(lastBreak.selfPay));
 }
+lines.push('');
+lines.push('【計算過程】');
+lines.push('・給与所得: 給与収入 ' + yen(i.revenue) + ' − 給与所得控除 ＝ ' + yen(r.salaryIncome));
+lines.push('・住民税の課税所得: 給与所得 ' + yen(r.salaryIncome) + ' − 社会保険料 ' + yen(r.socialInsurance) + ' − 住民税の控除（基礎43万円・配偶者控除33万円・扶養控除 一般33万円/特定45万円・医療費控除等）＝ ' + yen(r.taxableResidentTax) + '（1,000円未満切り捨て）');
+lines.push('・住民税所得割額: ' + yen(r.taxableResidentTax) + ' × 10% − 調整控除 ' + yen(r.adjustmentCredit) + ' ＝ ' + yen(r.residentLevy));
+lines.push('・特例分の判定に使う所得税率: ' + (r.rateForTokurei * 100) + '%（住民税の課税所得から人的控除の差額と基礎控除の調整額を差し引いた額で、所得税の速算表の段を判定）');
+lines.push('・上限額: 所得割額 ' + yen(r.residentLevy) + ' × 20% ÷（90% − ' + (r.rateForTokurei * 100) + '% × 1.021）＋ 2,000円 ＝ ' + yen(Math.round(r.limitRaw)) + ' → 1,000円未満切り捨てで ' + yen(r.limit));
+lines.push('・所得税（参考）: 課税所得 ' + yen(r.taxableIncomeTax) + '、税額 ' + yen(r.incomeTax) + '、限界税率 ' + (r.rateIncomeTax * 100) + '%、基礎控除 ' + yen(r.basicDeduction));
 }
 lines.push('');
 lines.push('簡易モデルは令和8年分（2026年分）の税制改正を反映しています（所得税の基礎控除は合計所得金額に応じて最大104万円、給与所得控除の最低保障額は74万円、社会保険料＝収入の15％と仮定）。総務省の目安表は改正前の前提で作られており、本ツールの結果と異なる場合があります。上限額は翌年度の住民税に基づく目安で、確定額ではありません。');
-lines.push('総務省ふるさと納税ポータル「税金の控除について」、国税庁タックスアンサー No.1155（寄附金控除）、No.1120（医療費控除）');
+lines.push('総務省ふるさと納税ポータル「税金の控除について」 https://www.soumu.go.jp/main_sosiki/jichi_zeisei/czaisei/czaisei_seido/furusato/mechanism/deduction.html、国税庁タックスアンサー No.1155（ふるさと納税（寄附金控除）） https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1155.htm、No.1120（医療費控除） https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1120.htm');
 lines.push('');
 lines.push('聞きたいこと: ①この試算の前提で見落としはないか ②上限額を超えて寄附した場合の自己負担の増え方 ③私の状況で注意すべき点');
 lines.push('');
