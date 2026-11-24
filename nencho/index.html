@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>年末調整・還付シミュレーター（令和8年分・いくら戻るか計算）｜ぜいきんノート</title>
+<meta name="description" content="年末調整でいくら戻るか（還付）、いくら追加で引かれるか（徴収）を試算します。令和8年分（2026年分）対応。基礎控除の引上げ（最大104万円）など令和8年度改正を織り込み、源泉徴収簿と同じ手順で計算。無料・登録不要・入力は送信されません。">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3785696031006214" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NYC15XQ95K"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-NYC15XQ95K');
+  </script>
+</head>
+<body>
+<header class="site-header">
+  <a class="logo" href="../"><span class="logo-mark"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><line x1="8.5" y1="7.5" x2="15.5" y2="7.5"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15.5" r="1" fill="currentColor" stroke="none"/></svg></span>ぜいきんノート</a>
+  <nav class="site-nav"><a href="../#tools">ツール一覧</a><a href="../#about">このサイトについて</a>｜<a href="../privacy/">プライバシーポリシー</a></nav>
+  <details class="menu"><summary class="menu-btn" aria-label="メニュー"><span class="burger"></span></summary><nav class="menu-panel"><a href="../taishoku-dc/">退職金 × iDeCo/DC</a><a href="../kokuho/">国民健康保険料</a><a href="../taishoku-hoken/">退職後の健康保険 比較</a><a href="../juminzei/">住民税</a><a href="../furusato/">ふるさと納税</a><a href="../bonus/">賞与の手取り計算</a><a href="../nencho/">年末調整・還付</a><a href="../privacy/">プライバシーポリシー</a></nav></details>
+</header>
+<main class="wrap">
+<nav class="crumbs"><a href="../">トップ</a> ＞ 年末調整・還付シミュレーター</nav>
+<h1><span class="h1-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M6 2.8h9L19 6.8V21a.9.9 0 0 1-.9.9H6A.9.9 0 0 1 5.1 21V3.7A.9.9 0 0 1 6 2.8z"/><path d="M14.5 3v4.2H19"/><line x1="8.2" y1="12" x2="15.8" y2="12"/><line x1="8.2" y1="15.8" x2="13" y2="15.8"/></svg></span>年末調整・還付シミュレーター</h1>
+<p class="lead">年末調整でいくら戻るか（還付）、いくら追加で引かれるか（徴収）を試算します。対象は令和8年分（2026年分）の年末調整です。基礎控除の引上げ（最大104万円）など令和8年度の改正を織り込み、源泉徴収簿と同じ手順で計算します。</p>
+
+<div class="scope-box">
+  <p class="scope-title">このツールで計算できないケース</p>
+  <ul>
+    <li>医療費控除・ふるさと納税などの寄附金控除を受けたい方（年末調整では扱えず、確定申告が必要です）</li>
+    <li>給与収入が2,000万円を超える方、災害減免法の徴収猶予を受けた方、従たる給与（乙欄）の方</li>
+    <li>給与以外の所得（副業・不動産など）にかかる税金そのもの（控除の判定には使いますが、税額は計算しません）</li>
+    <li>住宅ローン控除の1年目の方、控除額そのものの計算（このツールは申告書で計算された控除額を入力します）</li>
+    <li>令和7年分以前・令和9年分以後の年末調整</li>
+  </ul>
+  <p class="small">詳しい前提条件は、ページ下部の「前提条件・対象外のもの」にまとめています。</p>
+</div>
+
+<div id="formError"></div>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 20l1.2-4.2L16.7 4.3a2.15 2.15 0 0 1 3 3L8.2 18.8 4 20z"/><line x1="14.8" y1="6.2" x2="17.8" y2="9.2"/></svg></span>入力</span></h2>
+<h3 class="subhead">収入と源泉徴収</h3>
+<div class="grid2">
+<div class="field">
+<label for="income">年間給与収入（給与・賞与の総支給額の合計）<span class="hint">源泉徴収票の「支払金額」欄、年末調整前なら給与明細の年間支給累計（賞与を含みます）。転職した方は前職分も合算してください</span></label>
+<div class="yen-wrap"><input type="number" id="income" min="0" max="20000000" step="10000" value="5000000"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="withheld">源泉徴収税額の年間合計（年末調整前の額）<span class="hint">年末調整前の給与明細の所得税の年間累計です。源泉徴収票の「源泉徴収税額」は年末調整後の額（年調年税額）になるため使えません</span></label>
+<div class="yen-wrap"><input type="number" id="withheld" min="0" step="1000" value="120000"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="social">社会保険料等の年間合計<span class="hint">源泉徴収票の「社会保険料等の金額」欄から、小規模企業共済等掛金の内訳額を除いた額。給与明細の社会保険料の年間累計＋自分で支払った国民年金・国保なども含みます</span></label>
+<div class="yen-wrap"><input type="number" id="social" min="0" step="1000" value="750000"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="smallBiz">小規模企業共済等掛金の年間合計<span class="hint">源泉徴収票の「社会保険料等の金額」の内訳にある小規模企業共済等掛金の額。iDeCoの掛金は払込証明書・給与明細の掛金控除累計で確認できます</span></label>
+<div class="yen-wrap"><input type="number" id="smallBiz" min="0" step="1000" value="0"><span class="unit">円</span></div>
+</div>
+</div>
+
+<h3 class="subhead">保険料の控除</h3>
+<div class="grid2">
+<div class="field">
+<label for="lifeNewGeneral">生命保険料（新契約・一般）<span class="hint">生命保険料控除証明書の金額。平成24年1月1日以後の契約が新契約です</span></label>
+<div class="yen-wrap"><input type="number" id="lifeNewGeneral" min="0" step="1000" value="60000"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="lifeOldGeneral">生命保険料（旧契約・一般）<span class="hint">平成23年12月31日以前の契約が旧契約です</span></label>
+<div class="yen-wrap"><input type="number" id="lifeOldGeneral" min="0" step="1000" value="0"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="lifeCare">介護医療保険料<span class="hint">生命保険料控除証明書の金額（介護医療保険は新契約のみです）</span></label>
+<div class="yen-wrap"><input type="number" id="lifeCare" min="0" step="1000" value="40000"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="lifeNewPension">個人年金保険料（新契約）</label>
+<div class="yen-wrap"><input type="number" id="lifeNewPension" min="0" step="1000" value="0"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="lifeOldPension">個人年金保険料（旧契約）</label>
+<div class="yen-wrap"><input type="number" id="lifeOldPension" min="0" step="1000" value="0"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="quake">地震保険料<span class="hint">地震保険料控除証明書の金額</span></label>
+<div class="yen-wrap"><input type="number" id="quake" min="0" step="1000" value="0"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="oldLong">旧長期損害保険料<span class="hint">地震保険料控除証明書の金額。1つの契約が地震保険料と旧長期の両方に当たる場合は、どちらか一方に寄せて入力してください</span></label>
+<div class="yen-wrap"><input type="number" id="oldLong" min="0" step="1000" value="0"><span class="unit">円</span></div>
+</div>
+</div>
+<label class="check"><input type="checkbox" id="youngDep"> 年齢23歳未満の扶養親族がいる（16歳未満の子を含みます。一般の生命保険料控除の特例と、所得金額調整控除の判定に使います）</label>
+
+<h3 class="subhead">家族の控除</h3>
+<div class="grid2">
+<div class="field">
+<label for="spouseHas">配偶者</label>
+<select id="spouseHas">
+<option value="none" selected>いない</option>
+<option value="has">いる</option>
+</select>
+</div>
+<div class="field">
+<label for="specCount">特定親族の人数<span class="hint">年齢19歳以上23歳未満の親族（配偶者・事業専従者を除きます）。扶養控除の対象になる子は、ここではなく下の扶養親族に入れてください</span></label>
+<select id="specCount">
+<option value="0" selected>0人</option>
+<option value="1">1人</option>
+<option value="2">2人</option>
+<option value="3">3人</option>
+<option value="4">4人</option>
+<option value="5">5人</option>
+</select>
+</div>
+</div>
+<div id="spouseWrap" hidden>
+<div class="grid2">
+<div class="field">
+<label for="spouseMode">配偶者の所得の入力方法<span class="hint">配偶者控除等申告書の「配偶者の本年中の合計所得金額の見積額」が合計所得金額です。配偶者の収入が給与だけなら、給与収入から換算もできます（合計所得金額62万円以下＝給与収入136万円以下が目安）</span></label>
+<select id="spouseMode">
+<option value="income" selected>合計所得金額を入力</option>
+<option value="salary">給与収入から換算</option>
+</select>
+</div>
+<div class="field">
+<label for="spouseAmount">配偶者の合計所得金額（または給与収入）</label>
+<div class="yen-wrap"><input type="number" id="spouseAmount" min="0" step="10000" value="0"><span class="unit">円</span></div>
+</div>
+</div>
+<label class="check"><input type="checkbox" id="spouseElderly"> 配偶者は70歳以上（老人控除対象配偶者）</label>
+</div>
+<div id="specWrap" hidden>
+<div id="specRows"></div>
+</div>
+<div class="grid2">
+<div class="field">
+<label for="depGeneral">扶養親族・一般（16歳以上）<span class="hint">扶養控除等申告書の人数。合計所得金額62万円以下（給与収入だけなら136万円以下）の親族が対象です</span></label>
+<div class="yen-wrap"><input type="number" id="depGeneral" min="0" max="20" value="0"><span class="unit">人</span></div>
+</div>
+<div class="field">
+<label for="depSpecific">扶養親族・特定扶養（19歳以上23歳未満）</label>
+<div class="yen-wrap"><input type="number" id="depSpecific" min="0" max="20" value="0"><span class="unit">人</span></div>
+</div>
+<div class="field">
+<label for="depElderlyCohab">扶養親族・老人（70歳以上・同居老親等）</label>
+<div class="yen-wrap"><input type="number" id="depElderlyCohab" min="0" max="20" value="0"><span class="unit">人</span></div>
+</div>
+<div class="field">
+<label for="depElderlyOther">扶養親族・老人（70歳以上・その他）</label>
+<div class="yen-wrap"><input type="number" id="depElderlyOther" min="0" max="20" value="0"><span class="unit">人</span></div>
+</div>
+<div class="field">
+<label for="disGeneral">障害者・一般<span class="hint">本人・同一生計配偶者・扶養親族のうち障害者に当たる人数です。扶養控除と重ねて受けられます</span></label>
+<div class="yen-wrap"><input type="number" id="disGeneral" min="0" max="20" value="0"><span class="unit">人</span></div>
+</div>
+<div class="field">
+<label for="disSpecial">障害者・特別障害者</label>
+<div class="yen-wrap"><input type="number" id="disSpecial" min="0" max="20" value="0"><span class="unit">人</span></div>
+</div>
+<div class="field">
+<label for="disCohabSpecial">障害者・同居特別障害者</label>
+<div class="yen-wrap"><input type="number" id="disCohabSpecial" min="0" max="20" value="0"><span class="unit">人</span></div>
+</div>
+<div class="field">
+<label for="selfStatus">本人の区分<span class="hint">寡婦・ひとり親は合計所得金額500万円以下が要件です。勤労学生は令和8年分から合計所得金額89万円以下に引き上げられました</span></label>
+<select id="selfStatus">
+<option value="none" selected>なし</option>
+<option value="singleParent">ひとり親</option>
+<option value="widow">寡婦</option>
+<option value="workingStudent">勤労学生</option>
+</select>
+</div>
+</div>
+
+<h3 class="subhead">その他の控除・調整</h3>
+<div class="grid2">
+<div class="field">
+<label for="housing">住宅借入金等特別控除額（住宅ローン控除）<span class="hint">「給与所得者の住宅借入金等特別控除申告書」の住宅借入金等特別控除額を入力してください（2年目以降）。控除額そのものの計算はこのツールでは行いません</span></label>
+<div class="yen-wrap"><input type="number" id="housing" min="0" step="1000" value="0"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="otherIncome">給与以外の所得金額（任意）<span class="hint">基礎控除申告書の「給与所得以外の所得の見積額」。基礎控除・配偶者控除の区分の判定にだけ使います。その所得の税金は確定申告で精算されます</span></label>
+<div class="yen-wrap"><input type="number" id="otherIncome" min="0" step="10000" value="0"><span class="unit">円</span></div>
+</div>
+</div>
+<label class="check"><input type="checkbox" id="adjustment"> 所得金額調整控除に該当する（給与収入850万円超で、23歳未満の扶養親族がいる／本人・同一生計配偶者・扶養親族に特別障害者がいる）</label>
+</section>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><line x1="8.5" y1="7.5" x2="15.5" y2="7.5"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15.5" r="1" fill="currentColor" stroke="none"/></svg></span>還付・徴収額と計算の内訳</span></h2>
+<div class="big-result"><span class="big-label" id="verdictLabel">年末調整で戻る額（還付）</span> <span id="balance">— 円</span></div>
+<div class="table-wrap">
+<table class="result-table">
+<tr><th>項目</th><th>金額</th></tr>
+<tr><td>給与所得控除後の金額</td><td id="rSalaryAfter">–</td></tr>
+<tr id="adjRow" hidden><td>所得金額調整控除額（差し引きます）</td><td id="rAdjustment">–</td></tr>
+<tr><td>社会保険料控除</td><td id="rSocial">–</td></tr>
+<tr id="smallRow" hidden><td>小規模企業共済等掛金控除</td><td id="rSmall">–</td></tr>
+<tr><td>生命保険料控除</td><td id="rLife">–</td></tr>
+<tr id="quakeRow" hidden><td>地震保険料控除</td><td id="rQuake">–</td></tr>
+<tr id="spouseRow" hidden><td id="rSpouseLabel">配偶者控除・配偶者特別控除</td><td id="rSpouse">–</td></tr>
+<tr id="specRow" hidden><td>特定親族特別控除</td><td id="rSpecific">–</td></tr>
+<tr id="depRow" hidden><td>扶養控除・障害者控除など</td><td id="rDepEtc">–</td></tr>
+<tr><td>基礎控除</td><td id="rBasic">–</td></tr>
+<tr><td><strong>所得控除の合計額</strong></td><td id="rDedTotal">–</td></tr>
+<tr><td>課税給与所得金額（1,000円未満切り捨て）</td><td id="rTaxable">–</td></tr>
+<tr><td>算出所得税額（速算表）</td><td id="rTaxCalc">–</td></tr>
+<tr id="housingRow" hidden><td>住宅借入金等特別控除額（差し引きます）</td><td id="rHousing">–</td></tr>
+<tr><td><strong>年調年税額</strong>（復興特別所得税込み）</td><td id="rAnnualTax">–</td></tr>
+<tr><td>源泉徴収税額の年間合計</td><td id="rWithheld">–</td></tr>
+</table>
+</div>
+<p class="note" id="taxExplain"></p>
+<ul class="note" id="detailNotes"></ul>
+</section>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 13.5v-8A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v8a1.5 1.5 0 0 1-1.5 1.5H13l-4.5 4.2v-4.2H5.5A1.5 1.5 0 0 1 4 13.5z"/></svg></span>自分のAIに相談する</span></h2>
+<p>計算の内容をまとめた文をコピーできます。ChatGPTやClaudeなど、お使いのAIに貼ると、そのまま相談できます。貼る前に、個人が特定できる情報が含まれていないか確認してください。</p>
+<button type="button" id="copyPrompt" class="btn-ai">AIに相談する用の文をコピー</button>
+</section>
+
+<details class="card accordion">
+<summary>前提条件・対象外のもの</summary>
+<ul>
+<li>対象は令和8年分（2026年分）の年末調整です。令和7年分以前・令和9年分以後は年度ごとに基礎控除額・金額の表・速算表が異なるため対象外です。</li>
+<li>主たる給与（給与所得者の扶養控除等（異動）申告書を提出した勤務先）について年末調整を受ける方が対象です。給与収入2,000万円超の方、災害減免法の徴収猶予・還付を受けた方、従たる給与（乙欄）は対象外です。</li>
+<li>入力値は見積額・申告内容に基づく試算です。実際の年末調整は、勤務先が確定値（年間の給与・徴収税額の集計、申告書の記載内容）で行います。基礎控除などの判定に使う合計所得金額も見積額ベースです。</li>
+<li>転職した方は、前職分の給与・社会保険料・源泉徴収税額を合算して入力してください。合算が漏れると過不足額が実際とずれます。</li>
+<li>医療費控除・寄附金控除（ふるさと納税を含む）・雑損控除・外国税額控除は、年末調整では適用できず確定申告でのみ適用できるため、入力欄自体を置いていません。</li>
+<li>住宅借入金等特別控除は、2年目以降の方が申告書で計算された控除額を入力する方式です。初年度は確定申告が必要です。控除額が算出所得税額を超えた場合の住民税への繰越しは扱いません。</li>
+<li>生命保険料控除・地震保険料控除の計算で生じる1円未満の端数は、切り上げて計算しています。勤務先の計算と区分ごとに最大1円程度異なる場合があります。</li>
+<li>本ツールは一般的な仕組みに基づく試算であり、個別の税務相談ではありません。実際の還付・徴収額は勤務先の年末調整（申告書の記載内容や会社の集計）により異なる場合があります。個別の事情がある場合は、勤務先の給与担当・税理士・税務署にご確認ください。</li>
+<li>計算はすべてブラウザの中で行い、入力した内容をサーバーへ送信することはありません。</li>
+</ul>
+</details>
+
+<details class="card accordion">
+<summary>出典・計算の根拠</summary>
+<ul>
+<li>国税庁「令和8年分 年末調整のしかた」（手順などの説明）: 年末調整の手順全体・源泉徴収簿の計算の流れ・対象者<br><a href="https://www.nta.go.jp/users/gensen/nencho/index/shikata.htm" target="_blank" rel="noopener">https://www.nta.go.jp/users/gensen/nencho/index/shikata.htm</a></li>
+<li>国税庁「令和8年分 年末調整のしかた」I 昨年と比べて変わった点: 令和8年度改正の4点（基礎控除の引上げ・給与所得控除の最低保障額の引上げ・扶養親族等の所得要件の改正・生命保険料控除の特例）と、11月までの源泉徴収は改正前の税額表で12月に精算する構造<br><a href="https://www.nta.go.jp/publication/pamph/gensen/nencho2026/pdf/102.pdf" target="_blank" rel="noopener">https://www.nta.go.jp/publication/pamph/gensen/nencho2026/pdf/102.pdf</a></li>
+<li>国税庁「令和8年分 年末調整のしかた」47〜54ページ: 年末調整等のための給与所得控除後の給与等の金額の表（所得税法別表第五）<br><a href="https://www.nta.go.jp/publication/pamph/gensen/nencho2026/pdf/114.pdf" target="_blank" rel="noopener">https://www.nta.go.jp/publication/pamph/gensen/nencho2026/pdf/114.pdf</a></li>
+<li>国税庁「令和8年分 年末調整のしかた」55〜56ページ: 算出所得税額の速算表・配偶者控除額及び配偶者特別控除額の一覧表・基礎控除額の表・特定親族特別控除額の表・扶養控除額等の表<br><a href="https://www.nta.go.jp/publication/pamph/gensen/nencho2026/pdf/115.pdf" target="_blank" rel="noopener">https://www.nta.go.jp/publication/pamph/gensen/nencho2026/pdf/115.pdf</a></li>
+<li>国税庁タックスアンサー No.1199「基礎控除」: 基礎控除額（令和8・9年分は合計所得金額489万円以下で104万円）<br><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1199.htm" target="_blank" rel="noopener">https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1199.htm</a></li>
+<li>国税庁タックスアンサー No.1191「配偶者控除」・No.1195「配偶者特別控除」: 配偶者控除・配偶者特別控除の要件と金額<br><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1191.htm" target="_blank" rel="noopener">https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1191.htm</a><br><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1195.htm" target="_blank" rel="noopener">https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1195.htm</a></li>
+<li>国税庁タックスアンサー No.1140「生命保険料控除」・No.1145「地震保険料控除」: 保険料控除の計算式と上限<br><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1140.htm" target="_blank" rel="noopener">https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1140.htm</a><br><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1145.htm" target="_blank" rel="noopener">https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1145.htm</a></li>
+<li>国税庁タックスアンサー No.1130「社会保険料控除」・No.1135「小規模企業共済等掛金控除」: いずれも全額が控除されること<br><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1130.htm" target="_blank" rel="noopener">https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1130.htm</a><br><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1135.htm" target="_blank" rel="noopener">https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1135.htm</a></li>
+<li>国税庁タックスアンサー No.2665「年末調整の対象となる人」: 給与総額2,000万円超・災害減免法の徴収猶予等を受けた人は対象外であること<br><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/gensen/2665.htm" target="_blank" rel="noopener">https://www.nta.go.jp/taxes/shiraberu/taxanswer/gensen/2665.htm</a></li>
+</ul>
+</details>
+</main>
+<footer class="site-footer">
+<p class="disclaimer">このサイトの計算は一般的な税制の仕組みに基づく試算であり、個別の税務相談ではありません。実際の税額は、確定申告の内容や勤務先の給与計算により確定します。個別の事情がある場合は、税理士等の専門家または勤務先の給与担当にご確認ください。</p>
+<nav class="footer-nav">
+<a href="../taishoku-dc/">退職金×iDeCo/DC</a>
+<a href="../kokuho/">国民健康保険料</a>
+<a href="../taishoku-hoken/">退職後の健康保険 比較</a>
+<a href="../juminzei/">住民税</a>
+<a href="../furusato/">ふるさと納税</a>
+<a href="../bonus/">賞与の手取り計算</a>
+<a href="../nencho/">年末調整・還付</a>
+<a href="../privacy/">プライバシーポリシー</a>
+</nav>
+<p class="copy">© 2026 ぜいきんノート（zeikin-note.com）</p>
+</footer>
+<div class="toast" id="toast" role="status"></div>
+<script src="../js/nencho-engine.js"></script>
+<script src="../js/nencho-app.js"></script>
+</body>
+</html>
