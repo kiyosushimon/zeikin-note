@@ -1,0 +1,142 @@
+{
+  "common_rules_applied": {
+    "child_component_under18_exemption": {
+      "note": "子ども分の均等割は、当該年度において18歳に達する日以後の最初の3月31日以前の被保険者について全額軽減（葛飾区公式ページ・荒川区国民健康保険条例第19条の6で直接確認。所得割は軽減対象外）"
+    },
+    "preschool_child_reduction": {
+      "applies_to": [
+        "medical",
+        "support",
+        "child"
+      ],
+      "note": "未就学児（6歳に達する日以後の最初の3月31日以前）の均等割5割減額。介護分は対象外。荒川区国民健康保険条例第19条の4で減額額を直接確認（医療分: 軽減7割世帯7,140円・5割11,900円・2割19,040円・なし23,800円／支援分: 2,640円・4,400円・7,040円・8,800円／子ども分: 270円・450円・720円。子ども分の軽減なし世帯分は18歳未満全額軽減で相殺され条例に規定なし）＝エンジンの「軽減後の均等割の5割」と全項目一致"
+    },
+    "statutory_reduction": {
+      "applies_to": "均等割額（全4区分）",
+      "note": "所得基準による減額（法定軽減）。荒川区国民健康保険条例第19条の2で減額額を直接確認（7割: 医療33,320円・支援12,320円・介護12,460円・子ども1,260円・子ども18歳以上52円／5割: 23,800円・8,800円・8,900円・900円・37円／2割: 9,520円・3,520円・3,560円・360円・15円）。均等割×軽減割合（18歳以上均等割は1円未満切上げ）と全項目一致",
+      "salary_earner_adjustment": "(給与所得者等の数-1)×100,000円（0未満は0）",
+      "tiers": [
+        {
+          "reduction_rate": 0.7,
+          "threshold_formula": "430,000 + 調整額"
+        },
+        {
+          "reduction_rate": 0.5,
+          "threshold_formula": "430,000 + 調整額 + 310,000×被保険者数"
+        },
+        {
+          "reduction_rate": 0.2,
+          "threshold_formula": "430,000 + 調整額 + 570,000×被保険者数"
+        }
+      ]
+    }
+  },
+  "exceptions": [],
+  "municipality_code": "13119",
+  "name": "板橋区",
+  "official_pages": {
+    "notice_source": "東京都保健医療局「令和8年度 特別区国民健康保険料一覧表」（令和8年4月1日現在）。各区の料率は各区の国民健康保険条例で規定",
+    "rate_page": "https://www.hokeniryo.metro.tokyo.lg.jp/documents/d/hokeniryo/tokubetuku202605-pdf",
+    "trial_page": null
+  },
+  "prefecture": "東京都",
+  "provenance": {
+    "retrieval_method": "manual",
+    "retrieved_at": "2026-11-24",
+    "source_published": "2026年度（令和8年度）",
+    "source_type": "PDF一覧表（東京都保健医療局「令和8年度 特別区国民健康保険料一覧表」令和8年4月1日現在。23区全区の料率・限度額を1表に掲載した都公式の一次ソース）",
+    "source_url": "https://www.hokeniryo.metro.tokyo.lg.jp/documents/d/hokeniryo/tokubetuku202605-pdf",
+    "verification": {
+      "method": "葛飾区公式「国民健康保険料の計算方法（令和8年度）」の計算例（世帯主41歳・旧ただし書き所得2,280,000円、妻38歳・子12歳、収入は世帯主のみ）: 医療分314,028円・支援分116,640円・介護分73,204円・子ども分9,902円・合計513,774円がエンジン計算と全て一致。特別区は統一保険料方式で20区が同一料率のため、この照合を20区共通のパターン照合として適用する。あわせて荒川区国民健康保険条例で、法定軽減の減額額（第19条の2）と未就学児の減額額（第19条の4）がエンジンの計算（軽減割合×均等割・1円未満切上げ、未就学児は軽減後の均等割の5割）と全項目一致することを確認",
+      "note": "計算例の所得割の積は全て整数になるケースのため、端数処理（1円未満）の判別はできていない（unconfirmed参照）",
+      "reference_url": "https://www.city.katsushika.lg.jp/kurashi/1000049/1001690/1001711.html",
+      "status": "照合済み",
+      "verified_at": "2026-11-24",
+      "verified_cases": 1
+    }
+  },
+  "publication_profile": {
+    "official_decision": "2026-04-01（東京都一覧表の基準日。各区の令和8年度料率は令和8年3月の条例改正で決定）",
+    "page_update_month": 6
+  },
+  "rate_pattern_id": "tokyo_unified",
+  "rate_record": {
+    "base_deduction": {
+      "amount": 430000,
+      "note": "各区公式ページの計算方法に明記（総所得金額等－基礎控除430,000円。旧ただし書方式）",
+      "tiers": [
+        {
+          "deduction": 430000,
+          "max_total_income": 24000000
+        },
+        {
+          "deduction": 290000,
+          "max_total_income": 24500000
+        },
+        {
+          "deduction": 150000,
+          "max_total_income": 25000000
+        },
+        {
+          "deduction": 0,
+          "max_total_income": null
+        }
+      ]
+    },
+    "components": {
+      "care": {
+        "age_band": [
+          40,
+          64
+        ],
+        "asset_rate": null,
+        "cap": 170000,
+        "income_rate": 0.0243,
+        "per_capita": 17800,
+        "per_capita_adult_addon": null,
+        "per_household": null
+      },
+      "child": {
+        "asset_rate": null,
+        "cap": 30000,
+        "income_rate": 0.0027,
+        "note": "均等割1,800円＋18歳以上73円（合計1,873円）。18歳に達する日以後の最初の3月31日以前の被保険者は均等割全額軽減",
+        "per_capita": 1800,
+        "per_capita_adult_addon": 73,
+        "per_household": null
+      },
+      "medical": {
+        "asset_rate": null,
+        "cap": 670000,
+        "income_rate": 0.0751,
+        "per_capita": 47600,
+        "per_capita_adult_addon": null,
+        "per_household": null
+      },
+      "support": {
+        "asset_rate": null,
+        "cap": 260000,
+        "income_rate": 0.028,
+        "per_capita": 17600,
+        "per_capita_adult_addon": null,
+        "per_household": null
+      }
+    },
+    "fiscal_year": 2026,
+    "levy_aggregation": "household",
+    "levy_type": "料",
+    "method": "2方式",
+    "rate_pattern_id": "tokyo_unified",
+    "rounding": {
+      "confirmed_at": "2026-11-24",
+      "note": "賦課額（区分額）の端数を切り捨てる規定は、荒川区国民健康保険条例の現行条文に存在しない（全文確認。特別区の条例は共通の準則に基づく同型）。条例にある端数規定は、納期ごとの分割額の10円未満端数の第1期合算（第18条の2第2項）と産前産後減額の算定額の1円未満切上げ（第19条の5第2項）のみ。葛飾区の公式計算例は1円単位の額（区分別・合計513,774円）で、10円・100円単位の切捨てでないことは確定。ただし計算例の積は全て整数のため、所得割等の1円未満の端数の実務処理は特定できていない",
+      "status": "not_found_in_ordinance"
+    }
+  },
+  "scope_group": "tokyo23",
+  "unconfirmed": [
+    "賦課額の端数処理: 区分額の端数を切り捨てる規定は条例（荒川区国民健康保険条例を全文確認）に存在しない。公式計算例（葛飾区）は1円単位の額で一致したが、積が全て整数のため所得割の1円未満の処理は特定できていない。次の一手は端数の出る公式計算例・早見表での照合",
+    "区独自の減免（条例の減免規定に基づく個別減免等）の網羅確認は未実施。法定軽減・未就学児減額・子ども分均等割の全額軽減・非自発的失業者の特例軽減は全国共通制度として確認済み",
+    "特定世帯の平等割減額は、23区は平等割がないため対象外（確認済み）"
+  ]
+}
