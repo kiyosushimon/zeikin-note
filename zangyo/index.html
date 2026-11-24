@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>残業代計算・未払いチェック（法定の計算方法で本来の金額を計算）｜ぜいきんノート</title>
+<meta name="description" content="給与明細と見比べながら、法律どおりに計算した本来の残業代を計算します。1時間当たりの賃金は労働基準法施行規則の換算方法で求め、月60時間超（50%）・深夜・法定休日の複合や、固定残業代の不足額チェックにも対応。明細の残業代との差額（未払いチェック）も表示します。無料・登録不要・入力は送信されません。">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3785696031006214" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NYC15XQ95K"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-NYC15XQ95K');
+  </script>
+</head>
+<body>
+<header class="site-header">
+  <a class="logo" href="../"><span class="logo-mark"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><line x1="8.5" y1="7.5" x2="15.5" y2="7.5"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15.5" r="1" fill="currentColor" stroke="none"/></svg></span>ぜいきんノート</a>
+  <nav class="site-nav"><a href="../#tools">ツール一覧</a><a href="../#about">このサイトについて</a>｜<a href="../privacy/">プライバシーポリシー</a></nav>
+  <details class="menu"><summary class="menu-btn" aria-label="メニュー"><span class="burger"></span></summary><nav class="menu-panel"><a href="../taishoku-dc/">退職金 × iDeCo/DC</a><a href="../kokuho/">国民健康保険料</a><a href="../taishoku-hoken/">退職後の健康保険 比較</a><a href="../juminzei/">住民税</a><a href="../furusato/">ふるさと納税</a><a href="../bonus/">賞与の手取り計算</a><a href="../setai/">世帯年収の手取り</a><a href="../kabe/">年収の壁チェッカー</a><a href="../zangyo/">残業代計算・未払いチェック</a><a href="../privacy/">プライバシーポリシー</a></nav></details>
+</header>
+<main class="wrap">
+<nav class="crumbs"><a href="../">トップ</a> ＞ 残業代計算・未払いチェック</nav>
+<h1><span class="h1-icon"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span>残業代計算・未払いチェック</h1>
+<p class="lead">自分の残業代が正しく払われているか、給与明細と見比べながら確かめるツールです。1時間当たりの賃金は労働基準法施行規則の換算方法で求め、算定基礎から除外できる手当は法律の限定列挙どおりに扱います。月60時間超（50%）・深夜・法定休日の重なりや、固定残業代が法定額に足りているかのチェックにも対応します。</p>
+
+<div class="scope-box">
+  <p class="scope-title">このツールで計算できないケース</p>
+  <ul>
+    <li>管理監督者・裁量労働制・事業場外みなし労働時間制に該当する場合（該当するかどうかは勤務の実態による判断のため）</li>
+    <li>変形労働時間制・フレックスタイム制・高度プロフェッショナル制度で働いている場合</li>
+    <li>年俸制・日給制・週給制・出来高払い制（歩合給）の場合（月給制と時給制だけが対象です）</li>
+    <li>代替休暇を取得した場合の金額調整（制度の説明のみで、金額は計算しません）</li>
+    <li>複数月の未払いの合計・付加金・遅延利息（1か月分の明細との照合に限ります）</li>
+  </ul>
+  <p class="small">詳しい前提条件は、ページ下部の「前提条件・対象外のもの」にまとめています。</p>
+</div>
+
+<div id="formError"></div>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 20l1.2-4.2L16.7 4.3a2.15 2.15 0 0 1 3 3L8.2 18.8 4 20z"/><line x1="14.8" y1="6.2" x2="17.8" y2="9.2"/></svg></span>入力（給与の情報）</span></h2>
+<div class="field">
+<label for="payType">給与形態<span class="hint">1時間当たりの賃金の求め方が変わります</span></label>
+<select id="payType">
+<option value="monthly" selected>月給制</option>
+<option value="hourly">時給制</option>
+</select>
+</div>
+<div id="monthlyGroup">
+<div class="grid2">
+<div class="field">
+<label for="baseSalary">基本給（月額）<span class="hint">給与明細の「基本給」の欄の金額です</span></label>
+<div class="yen-wrap"><input type="number" id="baseSalary" min="0" step="1000" value="300000"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="includeAllowances">算入する手当の合計（月額）<span class="hint">役職手当・資格手当・精皆勤手当など、右の「除外できる手当」に当たらない手当の合計。名称が家族手当・通勤手当・住宅手当でも、一律支給のものはここに入れます</span></label>
+<div class="yen-wrap"><input type="number" id="includeAllowances" min="0" step="1000" value="0"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="excludeAllowances">除外できる手当の合計（月額）<span class="hint">法律で除外できる7種（家族手当・通勤手当・別居手当・子女教育手当・住宅手当・臨時の賃金・賞与等）に該当し、条件を満たすものだけ。家族手当は扶養家族の人数に応じて、通勤手当は距離・費用に応じて、住宅手当は住宅費用に応じて支給されるものに限ります</span></label>
+<div class="yen-wrap"><input type="number" id="excludeAllowances" min="0" step="1000" value="0"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="fixedOvertime">固定残業代の額（月額）<span class="hint">雇用契約や就業規則で「固定残業代（みなし残業代）」として明示されている額。なければ0のままで構いません。算定基礎からは除外して計算します</span></label>
+<div class="yen-wrap"><input type="number" id="fixedOvertime" min="0" step="1000" value="0"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="fixedOvertimeHours">固定残業代の設定時間数<span class="hint">「時間外労働○時間分」と明示されている場合だけ入力します（任意）</span></label>
+<div class="yen-wrap"><input type="number" id="fixedOvertimeHours" min="0" step="1" value=""><span class="unit">時間</span></div>
+</div>
+<div class="field">
+<label for="avgHours">1か月平均所定労働時間数<span class="hint">月給を時間額に換算する分母です。就業規則・給与規程に記載がある場合はその数値を、分からない場合は下の補助計算で求められます</span></label>
+<div class="yen-wrap"><input type="number" id="avgHours" min="0" step="0.1" value="160"><span class="unit">時間</span></div>
+</div>
+</div>
+<h3 class="subhead">補助計算： 年間休日から1か月平均所定労働時間数を求める</h3>
+<div class="grid2">
+<div class="field">
+<label for="annualHolidays">年間の所定休日日数<span class="hint">会社の年間休日（週休・祝日・年末年始等の合計）</span></label>
+<div class="yen-wrap"><input type="number" id="annualHolidays" min="0" step="1" value="120"><span class="unit">日</span></div>
+</div>
+<div class="field">
+<label for="hoursPerDay">1日の所定労働時間<span class="hint">休憩時間を除いた時間です</span></label>
+<div class="yen-wrap"><input type="number" id="hoursPerDay" min="0" step="0.5" value="8"><span class="unit">時間</span></div>
+</div>
+</div>
+<button type="button" id="avgCalcBtn" class="btn-ai btn-sub">（365日 − 年間休日）× 1日の時間 ÷ 12 で計算して入力する</button>
+</div>
+<div id="hourlyGroup" style="display:none">
+<div class="field">
+<label for="hourlyWage">時間給の金額<span class="hint">給与明細や雇用契約書に記載の時間給です。この金額がそのまま1時間当たりの賃金になります</span></label>
+<div class="yen-wrap"><input type="number" id="hourlyWage" min="0" step="10" value="1200"><span class="unit">円</span></div>
+</div>
+</div>
+</section>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span>入力（その月の労働時間の内訳）</span></h2>
+<p class="note">給与明細の区分や勤怠記録から、その月の時間を区分ごとに集計して入力してください。時間は小数（例： 7.5）でも入力できます。</p>
+<div class="grid2">
+<div class="field">
+<label for="t1">法定時間外労働の合計時間<span class="hint">1日8時間・週40時間を超えた時間。所定休日に働いて週40時間を超えた分も含みます。法定休日労働の時間は含めません</span></label>
+<div class="yen-wrap"><input type="number" id="t1" min="0" step="0.5" value="20"><span class="unit">時間</span></div>
+</div>
+<div class="field">
+<label for="t2">上のうち深夜（22時〜5時）の時間<span class="hint">法定時間外労働のうち、深夜の時間帯にかかった時間です</span></label>
+<div class="yen-wrap"><input type="number" id="t2" min="0" step="0.5" value="0"><span class="unit">時間</span></div>
+</div>
+<div class="field">
+<label for="t3">上のうち月60時間を超えた時間<span class="hint">月の起算日（給与計算期間の初日）から積み上げて、60時間を超えた分の時間です。割増率が50%になります</span></label>
+<div class="yen-wrap"><input type="number" id="t3" min="0" step="0.5" value="0"><span class="unit">時間</span></div>
+</div>
+<div class="field">
+<label for="t4">60時間超のうち深夜の時間<span class="hint">60時間を超えた時間のうち、深夜の時間帯にかかった時間です（割増率は合計75%）</span></label>
+<div class="yen-wrap"><input type="number" id="t4" min="0" step="0.5" value="0"><span class="unit">時間</span></div>
+</div>
+<div class="field">
+<label for="t5">法定休日労働の合計時間<span class="hint">法定休日（毎週少なくとも1回の休日等）に働いた時間です。法定休日でない休日（週休2日制の土曜日など）の労働は、上の法定時間外労働の側で数えます</span></label>
+<div class="yen-wrap"><input type="number" id="t5" min="0" step="0.5" value="0"><span class="unit">時間</span></div>
+</div>
+<div class="field">
+<label for="t6">法定休日労働のうち深夜の時間<span class="hint">法定休日労働のうち、深夜の時間帯にかかった時間です（割増率は合計60%）</span></label>
+<div class="yen-wrap"><input type="number" id="t6" min="0" step="0.5" value="0"><span class="unit">時間</span></div>
+</div>
+<div class="field">
+<label for="t7">深夜労働のみの時間<span class="hint">法定時間外でも法定休日でもない深夜労働（所定労働時間内の夜勤など）。割増分25%だけが支払われます</span></label>
+<div class="yen-wrap"><input type="number" id="t7" min="0" step="0.5" value="0"><span class="unit">時間</span></div>
+</div>
+<div class="field">
+<label for="t8">法定内残業の時間（任意）<span class="hint">所定労働時間を超えたが法定労働時間は超えていない時間。割増はなく通常の単価（1.00倍）です。月給に含まれているかは労働契約によります</span></label>
+<div class="yen-wrap"><input type="number" id="t8" min="0" step="0.5" value="0"><span class="unit">時間</span></div>
+</div>
+</div>
+<h3 class="subhead">明細との照合（任意）</h3>
+<div class="field">
+<label for="actualPaid">給与明細に載っている残業代の額（その月）<span class="hint">明細の「残業代」「時間外手当」などの合計額です。固定残業代が明細の残業代に含まれている場合は、それも含めた額を入れてください。入力すると本来の金額との差額を表示します</span></label>
+<div class="yen-wrap"><input type="number" id="actualPaid" min="0" step="100" value=""><span class="unit">円</span></div>
+</div>
+</section>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><line x1="8.5" y1="7.5" x2="15.5" y2="7.5"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15.5" r="1" fill="currentColor" stroke="none"/></svg></span>計算結果</span></h2>
+<p class="note">本ツールは労働基準法の一般的な仕組みに基づく試算であり、個別の労務相談ではありません。実際の割増賃金は、就業規則・労働契約の定めや勤務の実態により異なる場合があります。差額があると思われる場合は、勤務先の給与担当、労働基準監督署、総合労働相談コーナー、社会保険労務士・弁護士にご確認ください。</p>
+<div class="big-result"><span class="big-label">本来もらえる残業代（その月）</span> <span id="totalBig">— 円</span></div>
+<div class="table-wrap">
+<table class="result-table">
+<tr><th>項目</th><th>金額</th></tr>
+<tbody id="resultRows"></tbody>
+</table>
+</div>
+<div id="fixedResult"></div>
+<div id="diffResult"></div>
+<ul class="note" id="resultNotes"></ul>
+</section>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 13.5v-8A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v8a1.5 1.5 0 0 1-1.5 1.5H13l-4.5 4.2v-4.2H5.5A1.5 1.5 0 0 1 4 13.5z"/></svg></span>自分のAIに相談する</span></h2>
+<p>計算の内容をまとめた文をコピーできます。ChatGPTやClaudeなど、お使いのAIに貼ると、そのまま相談できます。貼る前に、個人が特定できる情報が含まれていないか確認してください。</p>
+<button type="button" id="copyPrompt" class="btn-ai">AIに相談する用の文をコピー</button>
+</section>
+
+<details class="card accordion">
+<summary>前提条件・対象外のもの</summary>
+<ul>
+<li>対象は月給制または時給制で、通常の労働時間制（1日8時間・週40時間）で働く労働者です。変形労働時間制・フレックスタイム制・裁量労働制・事業場外みなし労働時間制・管理監督者・高度プロフェッショナル制度・年俸制・日給制・週給制・出来高払い制・週44時間の特例措置事業場は対象外です（年俸制でも割増賃金の支払いは必要ですが、算定基礎の組み立てが異なるため本ツールでは扱いません）。なお管理監督者にも深夜割増賃金は必要です。</li>
+<li>割増率は労働基準法の定める最低率（時間外25%・60時間超50%・深夜25%・法定休日35%）で計算します。月60時間超の50%は、中小企業への適用猶予が令和5年4月1日に終了し、すべての事業場に適用されます。就業規則等で法定を上回る率が定められている場合は、実際の本来額は本ツールの結果より大きくなります。</li>
+<li>時間の区分（法定時間外か、深夜か、法定休日か、60時間を超えたか）は、利用者が勤怠記録や給与明細の区分に基づいて集計した入力に基づきます。日別の勤怠からの自動判定はしません。月60時間の算定には法定休日労働の時間は含まれません。</li>
+<li>算定基礎から除外できる手当は、家族手当・通勤手当・別居手当・子女教育手当・住宅手当・臨時に支払われた賃金・1か月を超える期間ごとに支払われる賃金の7種に限られ、名称ではなく実質で判断します。本ツールは、条件を満たすものとして利用者が入力した額を前提に計算します。</li>
+<li>金額の端数処理は、通達（昭和63年3月14日基発第150号）で認められる方式（1時間当たりの賃金額と区分ごとの総額を50銭ルールで丸める）を採用しています。時間数の月合計の30分丸めは適用していません。会社の賃金規程で異なる処理が定められている場合は金額が異なります。</li>
+<li>代替休暇制度を採用している会社では、月60時間超の引上げ分（50%と25%の差）が休暇に代えられている場合があり、その分の金額は本ツールの結果と異なります。</li>
+<li>固定残業代のチェックは、入力された額が雇用契約・就業規則で固定残業代として判別できる形で定められていることを前提とします。その手当が固定残業代に当たるかどうかは、契約書の記載・使用者の説明・勤務状況による個別判断のため、本ツールでは判定しません。</li>
+<li>深夜の時間帯は原則の午後10時〜午前5時で計算します（厚生労働大臣が定める地域・期間では午後11時〜午前6時になる場合があります）。</li>
+<li>計算はすべてブラウザの中で行い、入力した内容をサーバーへ送信することはありません。</li>
+</ul>
+</details>
+
+<details class="card accordion">
+<summary>出典・計算の根拠</summary>
+<ul>
+<li>労働基準法第37条（日本法令外国語訳DB）: 割増賃金の支払義務と率の枠組み（時間外・休日・深夜、60時間超は5割以上）<br><a href="https://www.japaneselawtranslation.go.jp/ja/laws/view/3567" target="_blank" rel="noopener">https://www.japaneselawtranslation.go.jp/ja/laws/view/3567</a></li>
+<li>労働基準法施行規則第19条（日本法令外国語訳DB）: 1時間当たりの賃金の換算方法（月給は1か月平均所定労働時間数で除す）<br><a href="https://www.japaneselawtranslation.go.jp/en/laws/view/343/tb" target="_blank" rel="noopener">https://www.japaneselawtranslation.go.jp/en/laws/view/343/tb</a></li>
+<li>兵庫労働局「割増賃金について」: 割増率の一覧、除外賃金の列挙、計算方法、月60時間超の50%引上げ（中小企業は令和5年4月1日から適用）<br><a href="https://jsite.mhlw.go.jp/hyogo-roudoukyoku/hourei_seido_tetsuzuki/roudoukijun_keiyaku/_79870/warimashi_chingin.html" target="_blank" rel="noopener">https://jsite.mhlw.go.jp/hyogo-roudoukyoku/hourei_seido_tetsuzuki/roudoukijun_keiyaku/_79870/warimashi_chingin.html</a></li>
+<li>厚生労働省「スタートアップ労働条件」事業者Q&amp;A: 割増賃金の計算方法、除外賃金は名称でなく実質で判断すること、端数処理の方法<br><a href="https://www.startup-roudou.mhlw.go.jp/qa/zigyonushi/chingin/q2.html" target="_blank" rel="noopener">https://www.startup-roudou.mhlw.go.jp/qa/zigyonushi/chingin/q2.html</a></li>
+<li>厚生労働省「スタートアップ労働条件」事業者Q&amp;A: 固定残業代の判別可能性と差額支払いの要件（医療法人康心会事件・最判H29.7.7）<br><a href="https://www.startup-roudou.mhlw.go.jp/qa/zigyonushi/chingin/q11.html" target="_blank" rel="noopener">https://www.startup-roudou.mhlw.go.jp/qa/zigyonushi/chingin/q11.html</a></li>
+<li>厚生労働省「確かめよう労働条件『時間外・休日労働と割増賃金』」: 除外手当は7種の限定列挙であること、労働時間は1分単位で切り捨てできないこと<br><a href="https://www.check-roudou.mhlw.go.jp/study/roudousya_jikangai.html" target="_blank" rel="noopener">https://www.check-roudou.mhlw.go.jp/study/roudousya_jikangai.html</a></li>
+<li>山口労働局「労務管理の基本的ルール」: 公式計算例（基本給20万円＋主任手当5,000円、月平均所定労働時間173.3時間、単価1,183円）。本ツールの計算方式は、この公式例と全額一致することを確認しています<br><a href="https://jsite.mhlw.go.jp/yamaguchi-roudoukyoku/content/contents/000985757.pdf" target="_blank" rel="noopener">https://jsite.mhlw.go.jp/yamaguchi-roudoukyoku/content/contents/000985757.pdf</a></li>
+<li>埼玉県「時間外・休日及び深夜の時間外手当（割増賃金）について」: 60時間超が深夜に及んだ場合は75%以上、月60時間の算定に法定休日労働は含まれないこと、法定内残業は通常の単価でよいこと<br><a href="https://www.pref.saitama.lg.jp/a0816/rodo/rodo-sodan-qa-2-1-2.html" target="_blank" rel="noopener">https://www.pref.saitama.lg.jp/a0816/rodo/rodo-sodan-qa-2-1-2.html</a></li>
+</ul>
+</details>
+</main>
+<footer class="site-footer">
+<p class="disclaimer">このサイトの計算は一般的な仕組みに基づく試算であり、個別の労務相談ではありません。実際の割増賃金は、就業規則・労働契約の定めや勤務の実態により異なる場合があります。差額があると思われる場合は、勤務先の給与担当、労働基準監督署、総合労働相談コーナー、社会保険労務士・弁護士にご確認ください。</p>
+<nav class="footer-nav">
+<a href="../taishoku-dc/">退職金×iDeCo/DC</a>
+<a href="../kokuho/">国民健康保険料</a>
+<a href="../taishoku-hoken/">退職後の健康保険 比較</a>
+<a href="../juminzei/">住民税</a>
+<a href="../furusato/">ふるさと納税</a>
+<a href="../bonus/">賞与の手取り計算</a>
+<a href="../setai/">世帯年収の手取り</a>
+<a href="../kabe/">年収の壁チェッカー</a>
+<a href="../zangyo/">残業代計算・未払いチェック</a>
+<a href="../privacy/">プライバシーポリシー</a>
+</nav>
+<p class="copy">© 2026 ぜいきんノート（zeikin-note.com）</p>
+</footer>
+<div class="toast" id="toast" role="status"></div>
+<script src="../js/zangyo-engine.js"></script>
+<script src="../js/zangyo-app.js"></script>
+</body>
+</html>
