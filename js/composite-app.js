@@ -8,6 +8,10 @@
 var E = window.CompositeEngine;
 var DATA = null;
 var TOOL_ID = 'composite';
+/* 年齢区分の分割（40〜64歳 → 40〜59歳／60〜64歳）前の保存値 '40to64' が復元されたときの
+ * 「再選択待ち」を表すセレクトの値（NEW-01）。旧区分は60〜64歳も含んでいたため
+ * 決め打ちで読み替えず、利用者に選び直してもらう。再選択が済むまで金額は出さない */
+var AGE_RESELECT = 'reselect';
 
 function $(id) { return document.getElementById(id);}
 function yen(n) { return Math.round(n).toLocaleString('ja-JP') + '円';}
@@ -175,6 +179,8 @@ $('spouseKokuhoField').style.display = (input.course === 'self' && input.spouse.
 $('residentCollection').disabled = input.course === 'self';
 if (input.course === 'self') $('residentCollection').value = 'ordinary';
 if (!DATA) return;
+/* 旧年齢区分のままでは確定計算しない（NEW-01）。再選択を促し、金額は出さない */
+if ($('ageBand').value === AGE_RESELECT) { renderAgeReselect(); return;}
 /* 自営業コースは自治体の国保データを都度読み込む */
 if (input.course === 'self' && input.cityKey!== 'other' &&!(input.cityKey in kokuhoCache)) {
 var key = input.cityKey;
@@ -243,10 +249,26 @@ lines.push('注意点: ' + cautions.join('。') + '。');
 return lines;
 }
 
+/* ---------- 旧年齢区分の再選択待ち（NEW-01） ---------- */
+function renderAgeReselect() {
+last = null; /* AI相談コピーも、再選択が済むまでは確定値として出さない */
+var msg = '年齢区分が変更されました（「40〜64歳」が「40〜59歳」と「60〜64歳」に分かれました）。' +
+'保存されていた年齢区分のままでは、国民年金保険料などを正しく計算できません。' +
+'本人の年齢区分を選び直してください。';
+$('formError').innerHTML = '<div class="error">' + msg + '</div>';
+$('totalBig').textContent = '— 円';
+$('resultRows').innerHTML = '';
+$('selfIncomeTaxNote').textContent = '';
+$('assessBox').innerHTML = '<p>' + msg + '</p>';
+$('ganttArea').innerHTML = '';
+$('resultNotes').innerHTML = '';
+}
+
 /* ---------- 表示 ---------- */
 function kindBadge(kind) { return ' <span class="badge">' + kind + '</span>';}
 
 function render(input, r) {
+if (r.errors.indexOf('age-reselect-required') >= 0) { renderAgeReselect(); return;}
 if (r.errors.indexOf('kokuho-unavailable') >= 0) {
 $('formError').innerHTML = '<div class="error">自営業コースは、国民健康保険料のデータがある自治体（対応83自治体）でのみ計算できます。お住まいの自治体が「その他」の場合は、会社員コースか、<a href="../kokuho/">国民健康保険料シミュレーター</a>の対応状況をご確認ください。</div>';
 $('totalBig').textContent = '— 円';
@@ -568,9 +590,13 @@ var FIELD_IDS = ['course', 'cityKey', 'prefecture', 'ageBand', 'spouseHas', 'spo
 function applyState(state) {
 FIELD_IDS.forEach(function (id) {
 if (state[id]!== undefined && $(id)) {
-/* 年齢区分の分割（40〜64歳 → 40〜59歳／60〜64歳）前に保存された '40to64' は '40to59' に読み替える */
 var v = state[id];
-if ((id === 'ageBand' || id === 'spouseAgeBand') && v === '40to64') v = '40to59';
+/* 本人の年齢区分: 分割前の保存値 '40to64' は40〜59歳と60〜64歳の両方を含んでいたため
+ * 決め打ちせず「再選択待ち」にする（NEW-01）。再選択待ちの値そのものも同じ扱い */
+if (id === 'ageBand' && (v === '40to64' || v === AGE_RESELECT)) v = AGE_RESELECT;
+/* 配偶者の年齢区分: 区分は国保の代表年齢にしか使われず、40〜59歳と60〜64歳で
+ * 金額が変わらないため、従来どおり '40to59' に読み替える */
+if (id === 'spouseAgeBand' && v === '40to64') v = '40to59';
 $(id).value = v;
 }
 });
@@ -585,7 +611,9 @@ var s = {};
 if (p.workStyle) s.course = p.workStyle;
 if (p.kokuhoCityKey) s.cityKey = p.kokuhoCityKey;
 if (p.prefecture) s.prefecture = p.prefecture;
-if (p.ageBand) s.ageBand = p.ageBand === '40to64'? '40to59': p.ageBand;
+/* 本人の年齢区分はそのまま渡す（旧値 '40to64' の扱いは applyState が担う）。
+ * 配偶者は40〜59歳と60〜64歳で金額が変わらないため、ここで '40to59' に読み替える */
+if (p.ageBand) s.ageBand = p.ageBand;
 if (p.spouseAgeBand) s.spouseAgeBand = p.spouseAgeBand === '40to64'? '40to59': p.spouseAgeBand;
 if (p.spouse) {
 s.spouseHas = p.spouse.has? 'yes': 'no';
@@ -614,11 +642,10 @@ ZnProfile.saveTool(TOOL_ID, currentState());
 /* 共通プロファイルの年齢区分は他ツール（世帯・実質時給・副業）と共用の3区分のまま。
  * 複合版の分割区分（40to59／60to64）は '40to64' に戻して保存する（複合版固有の値はツール保存側に残る） */
 function profileAgeBand(v) { return (v === '40to59' || v === '60to64')? '40to64': v;}
-ZnProfile.saveProfile({
+var patch = {
 workStyle: $('course').value,
 kokuhoCityKey: $('cityKey').value,
 prefecture: $('prefecture').value,
-ageBand: profileAgeBand($('ageBand').value),
 spouseAgeBand: profileAgeBand($('spouseAgeBand').value),
 spouse: {
 has: $('spouseHas').value === 'yes',
@@ -637,7 +664,11 @@ under16: Math.floor(num('depUnder16')), age16to18: Math.floor(num('dep1618')),
 age19to22: Math.floor(num('dep1922')), age23plus: Math.floor(num('dep23plus'))
 },
 residentCollection: $('residentCollection').value
-});
+};
+/* 再選択待ちの間は、共通プロファイルの年齢区分を上書きしない（他ツールの正規の
+ * 区分 '40to64' を壊さないため。ツール固有の保存には再選択待ちの値を残す） */
+if ($('ageBand').value !== AGE_RESELECT) patch.ageBand = profileAgeBand($('ageBand').value);
+ZnProfile.saveProfile(patch);
 }
 
 function init() {
