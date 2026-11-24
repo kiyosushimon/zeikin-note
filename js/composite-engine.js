@@ -66,18 +66,33 @@ function findJuminzeiCity(citiesJson, name) {
   return null;
 }
 
+/* 年齢区分の正規化。2026-11-24の分割前の区分 '40to64'（保存済み入力などに残る）は
+ * '40to59' として扱う（国民年金が計上される側に倒す） */
+function normalizeAgeBand(ageBand) {
+  return ageBand === '40to64' ? '40to59' : ageBand;
+}
 /* 年齢区分 → 国保計算用の代表年齢（仕様 §1.4: 子供は 16歳未満=10歳 /
- * 16〜18歳=17歳 / 19歳以上=20歳。本人・配偶者は区分の代表値） */
+ * 16〜18歳=17歳 / 19歳以上=20歳。本人・配偶者は区分の代表値）。
+ * 国保の介護分の対象は40〜64歳のため、'40to59' は50歳・'60to64' は62歳を代表値にする */
 function repAge(ageBand) {
-  if (ageBand === '40to64') return 50;
-  if (ageBand === '65plus') return 70;
+  var band = normalizeAgeBand(ageBand);
+  if (band === '40to59') return 50;
+  if (band === '60to64') return 62;
+  if (band === '65plus') return 70;
   return 35;
 }
-/* 年齢区分 → ShahoEngine の区分（介護保険料は 40to64 のみ発生） */
+/* 年齢区分 → ShahoEngine の区分（介護保険料は 40〜64歳のみ発生。
+ * 60〜64歳も健康保険側の介護保険料の対象なので '40to64' に写す） */
 function shahoAgeBand(ageBand) {
-  if (ageBand === '40to64') return '40to64';
-  if (ageBand === '65plus') return '65to69';
+  var band = normalizeAgeBand(ageBand);
+  if (band === '40to59' || band === '60to64') return '40to64';
+  if (band === '65plus') return '65to69';
   return 'under40';
+}
+/* 国民年金の強制加入は20歳以上60歳未満。年齢区分が60〜64歳・65歳以上は計上しない */
+function pensionAppliesFor(ageBand) {
+  var band = normalizeAgeBand(ageBand);
+  return band !== '60to64' && band !== '65plus';
 }
 
 /* 扶養の写像（仕様 §3-2） */
@@ -355,10 +370,10 @@ function computeComposite(data, input) {
     }
     /* (1) 国保: 今年の所得ベース */
     r.kokuho = kokuhoCalc(data, input, input.bizThisYear);
-    /* (2) 国民年金: 強制加入は20歳以上60歳未満。年齢区分が65歳以上の場合は
+    /* (2) 国民年金: 強制加入は20歳以上60歳未満。年齢区分が60〜64歳・65歳以上の場合は
      * 加算しない（任意加入は対象外として注記に倒す）。
      * 社会保険料控除の近似にも含めないため、住民税・所得税も連動して変わる */
-    var pensionApplies = input.ageBand !== '65plus';
+    var pensionApplies = pensionAppliesFor(input.ageBand);
     var pensionAnnual = pensionApplies ? PENSION_ANNUAL_NEXT : 0;
     r.pensionApplies = pensionApplies;
     r.pensionAnnual = pensionAnnual;
@@ -417,7 +432,9 @@ var api = {
   PENSION_R8_MONTHLY: PENSION_R8_MONTHLY,
   PENSION_R9_MONTHLY: PENSION_R9_MONTHLY,
   PENSION_ANNUAL_NEXT: PENSION_ANNUAL_NEXT,
-  mapDependents: mapDependents
+  mapDependents: mapDependents,
+  pensionAppliesFor: pensionAppliesFor,
+  normalizeAgeBand: normalizeAgeBand
 };
 if (typeof module !== 'undefined' && module.exports) module.exports = api;
 global.CompositeEngine = api;

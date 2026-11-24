@@ -122,7 +122,7 @@ if (key.indexOf('tokyo-') === 0) return '東京都';
 if (key.indexOf('osaka-') === 0) return '大阪府';
 return null;
 }
-var AGE_LABEL = { under40: '40歳未満', '40to64': '40〜64歳', '65plus': '65歳以上'};
+var AGE_LABEL = { under40: '40歳未満', '40to59': '40〜59歳', '60to64': '60〜64歳', '65plus': '65歳以上', '40to64': '40〜64歳'};
 var INDUSTRY_LABEL = { general: '一般の事業', nourin: '農林水産・清酒製造の事業', kensetsu: '建設の事業'};
 
 var last = null;
@@ -279,7 +279,7 @@ $('resultRows').innerHTML = rows.map(function (row, i) {
 return '<tr' + (i === rows.length - 5? ' class="total-row"': '') + '><td>' + row[0] + '</td><td>' + row[1] + '</td></tr>';
 }).join('');
 $('selfIncomeTaxNote').textContent = input.course === 'self'
-? '※ 自営業コースの所得税は、配偶者控除・扶養控除を反映していない概算です（住民税には反映しています）。配偶者や扶養家族がいる場合、実際の所得税はこの金額より低くなります。'
+? '※ 自営業コースの所得税は、配偶者控除・扶養控除を反映していない概算です（住民税には反映しています）。配偶者や扶養家族の状況によっては、実際の所得税がこの試算より低くなる場合があります。'
 : '';
 $('totalBig').textContent = yen(r.totalNext);
 
@@ -323,7 +323,7 @@ notes.push('社会保険料は、月給の目安 ' + yen(r.socialNext.monthlyGro
 } else {
 notes.push('国民健康保険料の納期の回数と開始月は自治体によって異なります（年8回・10回・11回など）。ここでは年10回・6月開始の標準的なパターンで表示しています。実際の納期はお住まいの自治体の納入通知書で確認してください。');
 notes.push('自営業コースの社会保険料控除は、国保料＋国民年金保険料（来年1年分）の近似値 ' + yen(r.socialDeductionApprox) + ' を使っています。手取りは所得ベースの表示です（所得は確定申告書の「所得金額の合計」で、青色申告特別控除を受ける場合は控除後の金額を入力してください）。');
-if (!r.pensionApplies) notes.push('本人の年齢区分が65歳以上のため、国民年金保険料は計上していません（国民年金の強制加入は20歳以上60歳未満です。任意加入の保険料は対象外とし、社会保険料控除の近似にも含めていません）。');
+if (!r.pensionApplies) notes.push('本人の年齢区分が60歳以上のため、国民年金保険料は計上していません（国民年金の強制加入は20歳以上60歳未満です。任意加入の保険料は対象外とし、社会保険料控除の近似にも含めていません）。');
 }
 notes.push('この結果は印刷（ブラウザの印刷機能でPDF保存）できます。印刷時は入力欄を除き、結果とガントだけが出力されます。');
 $('resultNotes').innerHTML = notes.map(function (n) { return '<li>' + n + '</li>';}).join('');
@@ -514,7 +514,7 @@ if (r.pensionApplies) {
 lines.push('・令和9年1〜3月: ' + yen(r.pension.monthlyR8) + '/月（令和8年度額）× 3か月 ＋ 4〜12月: ' +
 yen(r.pension.monthlyR9) + '/月（令和9年度額）× 9か月 ＝ ' + yen(r.pension.annualNext) + '（1人分）');
 } else {
-lines.push('・本人の年齢区分が65歳以上のため計上していません（国民年金の強制加入は20歳以上60歳未満。任意加入は対象外）＝ 0円');
+lines.push('・本人の年齢区分が60歳以上のため計上していません（国民年金の強制加入は20歳以上60歳未満。任意加入は対象外）＝ 0円');
 }
 lines.push('');
 var st = r.incomeTaxSelf;
@@ -567,7 +567,12 @@ var FIELD_IDS = ['course', 'cityKey', 'prefecture', 'ageBand', 'spouseHas', 'spo
 'bizThisYear', 'bizNextYear', 'spouseInKokuho'];
 function applyState(state) {
 FIELD_IDS.forEach(function (id) {
-if (state[id]!== undefined && $(id)) $(id).value = state[id];
+if (state[id]!== undefined && $(id)) {
+/* 年齢区分の分割（40〜64歳 → 40〜59歳／60〜64歳）前に保存された '40to64' は '40to59' に読み替える */
+var v = state[id];
+if ((id === 'ageBand' || id === 'spouseAgeBand') && v === '40to64') v = '40to59';
+$(id).value = v;
+}
 });
 }
 function currentState() {
@@ -580,8 +585,8 @@ var s = {};
 if (p.workStyle) s.course = p.workStyle;
 if (p.kokuhoCityKey) s.cityKey = p.kokuhoCityKey;
 if (p.prefecture) s.prefecture = p.prefecture;
-if (p.ageBand) s.ageBand = p.ageBand;
-if (p.spouseAgeBand) s.spouseAgeBand = p.spouseAgeBand;
+if (p.ageBand) s.ageBand = p.ageBand === '40to64'? '40to59': p.ageBand;
+if (p.spouseAgeBand) s.spouseAgeBand = p.spouseAgeBand === '40to64'? '40to59': p.spouseAgeBand;
 if (p.spouse) {
 s.spouseHas = p.spouse.has? 'yes': 'no';
 if (p.spouse.income!== undefined) s.spouseIncome = p.spouse.income;
@@ -606,12 +611,15 @@ return s;
 function persist() {
 if (!window.ZnProfile) return;
 ZnProfile.saveTool(TOOL_ID, currentState());
+/* 共通プロファイルの年齢区分は他ツール（世帯・実質時給・副業）と共用の3区分のまま。
+ * 複合版の分割区分（40to59／60to64）は '40to64' に戻して保存する（複合版固有の値はツール保存側に残る） */
+function profileAgeBand(v) { return (v === '40to59' || v === '60to64')? '40to64': v;}
 ZnProfile.saveProfile({
 workStyle: $('course').value,
 kokuhoCityKey: $('cityKey').value,
 prefecture: $('prefecture').value,
-ageBand: $('ageBand').value,
-spouseAgeBand: $('spouseAgeBand').value,
+ageBand: profileAgeBand($('ageBand').value),
+spouseAgeBand: profileAgeBand($('spouseAgeBand').value),
 spouse: {
 has: $('spouseHas').value === 'yes',
 income: num('spouseIncome'),
