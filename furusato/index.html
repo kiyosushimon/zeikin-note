@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ふるさと納税 上限シミュレーター（住宅ローン・医療費控除の併用対応）｜ぜいきんノート</title>
-<meta name="description" content="ふるさと納税で自己負担2,000円に収まる寄附上限の目安を計算します。住宅ローン控除・医療費控除との併用にも対応。簡易計算は総務省の目安表と照合済み（年収300万〜700万円）。無料・登録不要・入力は送信されません。">
+<meta name="description" content="ふるさと納税で自己負担2,000円に収まる寄附上限の目安を計算します。住宅ローン控除・医療費控除との併用にも対応。令和8年分（2026年分）の税制改正を反映。無料・登録不要・入力は送信されません。">
 <link rel="stylesheet" href="../css/style.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,7 +28,7 @@
 <main class="wrap">
 <nav class="crumbs"><a href="../">トップ</a> ＞ ふるさと納税 上限シミュレーター</nav>
 <h1><span class="h1-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.3-9.2C1.4 8.4 3.6 5 6.9 5c2 0 3.7 1.1 5.1 3 1.4-1.9 3.1-3 5.1-3 3.3 0 5.5 3.4 4.2 6.8C19.5 16.4 12 21 12 21z"/></svg></span>ふるさと納税 上限シミュレーター</h1>
-<p class="lead">自己負担2,000円で収まる寄附額の上限（目安）を計算します。住宅ローン控除・医療費控除との併用にも対応。簡易計算は総務省の目安表と同じ前提で計算し、目安表と照合済みです（給与収入300万〜700万円の範囲）。</p>
+<p class="lead">自己負担2,000円で収まる寄附額の上限（目安）を計算します。住宅ローン控除・医療費控除との併用にも対応。簡易計算は令和8年分（2026年分）の税制改正（所得税の基礎控除の引上げなど）を反映しています。総務省の目安表は改正前の前提で作られているため、年収帯によっては目安表より低い上限になる場合があります。</p>
 
 <div class="scope-box">
   <p class="scope-title">このツールで計算できないケース</p>
@@ -60,7 +60,7 @@
 <div class="field">
 <label for="socialMode">社会保険料</label>
 <select id="socialMode">
-<option value="estimate" selected>年収の15％と仮定（目安表と同じ前提）</option>
+<option value="estimate" selected>年収の15％と仮定</option>
 <option value="actual">実額を入力する</option>
 </select>
 </div>
@@ -144,7 +144,7 @@
 <div class="yen-wrap"><input type="number" id="dLevy" min="0" step="1000" value="0"><span class="unit">円</span></div>
 </div>
 <div class="field">
-<label for="dRate">所得税の限界税率<span class="hint">住民税の課税総所得金額から人的控除差調整額を引いた金額で判定した税率</span></label>
+<label for="dRate">所得税の限界税率<span class="hint">住民税の課税総所得金額から人的控除差調整額を引いた金額で判定した税率。令和8年分の寄附では、さらに（所得税の基礎控除額 − 48万円）も差し引いて判定します</span></label>
 <select id="dRate">
 <option value="0.05" selected>5％（195万円以下）</option>
 <option value="0.10">10％（195万円超〜330万円）</option>
@@ -173,7 +173,7 @@
 <summary>前提条件・対象外のもの</summary>
 <ul>
 <li>上限額は、翌年度の住民税所得割額に基づいて決まるため、寄附の時点では確定していません。この計算は目安です。</li>
-<li>簡易計算の前提は総務省の目安表と同じです（給与所得のみ、社会保険料は収入の15％と仮定、変更可）。目安表と照合して一致を確認した範囲は給与収入300万〜700万円で、750万円以上では目安表と一致しない場合があるため、その旨を表示します。</li>
+<li>簡易計算は令和8年分（2026年分）の税制改正を反映しています（所得税の基礎控除は合計所得金額に応じて最大104万円、給与所得控除の最低保障額は74万円。給与所得のみ、社会保険料は収入の15％と仮定、変更可）。総務省の目安表は改正前の前提（基礎控除48万円）で作られており、令和8年分の寄附については本ツールの計算と異なる場合があります（例：年収500万円・独身では目安表61,000円に対し、本ツールは58,000円）。</li>
 <li>住民税の税率は標準税率（所得割10％）を前提としています。標準と異なる税率の自治体では結果が異なる場合があります。</li>
 <li>住宅ローン控除は、上限額そのものには影響しません（上限は住宅ローン控除を引く前の所得割額で計算します）。ただし、住民税から控除しきれなくなる場合があり、その場合は警告を表示します。</li>
 <li>退職所得は現年分離課税のため、上限額の計算には影響しません。</li>
@@ -185,7 +185,8 @@
 <details class="card accordion">
 <summary>出典・計算の根拠</summary>
 <ul>
-<li>総務省ふるさと納税ポータルサイト「税金の控除について」: 控除の仕組み・全額控除される寄附金額の目安（本ツールの簡易計算と照合済み）<br><a href="https://www.soumu.go.jp/main_sosiki/jichi_zeisei/czaisei/czaisei_seido/furusato/mechanism/deduction.html" target="_blank" rel="noopener">https://www.soumu.go.jp/main_sosiki/jichi_zeisei/czaisei/czaisei_seido/furusato/mechanism/deduction.html</a></li>
+<li>総務省ふるさと納税ポータルサイト「税金の控除について」: 控除の仕組み・全額控除される寄附金額の目安（目安表は令和8年分の税制改正前の前提で作られています）<br><a href="https://www.soumu.go.jp/main_sosiki/jichi_zeisei/czaisei/czaisei_seido/furusato/mechanism/deduction.html" target="_blank" rel="noopener">https://www.soumu.go.jp/main_sosiki/jichi_zeisei/czaisei/czaisei_seido/furusato/mechanism/deduction.html</a></li>
+<li>国税庁タックスアンサー No.1199「基礎控除」: 令和8年分の所得税の基礎控除額（合計所得金額に応じて最大104万円）<br><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1199.htm" target="_blank" rel="noopener">https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1199.htm</a></li>
 <li>国税庁タックスアンサー No.1155「ふるさと納税（寄附金控除）」: 所得税の寄附金控除・総所得金額等の40％上限・ワンストップ特例<br><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1155.htm" target="_blank" rel="noopener">https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1155.htm</a></li>
 <li>国税庁タックスアンサー No.1120「医療費を支払ったとき（医療費控除）」: 医療費控除額の計算<br><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1120.htm" target="_blank" rel="noopener">https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1120.htm</a></li>
 <li>練馬区公式「寄附金税額控除～ふるさと納税の仕組みなど～」: 上限額の算出式、住宅ローン控除が上限に影響しないこと、税額控除の適用順序</li>
