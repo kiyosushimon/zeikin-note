@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>世帯年収の手取りシミュレーター（夫婦の年収配分で手取りがどう変わるか）｜ぜいきんノート</title>
+<meta name="description" content="夫婦2人の年収を入力すると、世帯の手取り額を計算します。同じ世帯年収を1人で稼いだ場合との差と、配分プリセット（10:0／7:3／5:5）の比較つき。所得税は令和8年分の年税額、社会保険料は協会けんぽの等級表、住民税は標準税率の年額で計算。無料・登録不要・入力は送信されません。">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3785696031006214" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NYC15XQ95K"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-NYC15XQ95K');
+  </script>
+</head>
+<body>
+<header class="site-header">
+  <a class="logo" href="../"><span class="logo-mark"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><line x1="8.5" y1="7.5" x2="15.5" y2="7.5"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15.5" r="1" fill="currentColor" stroke="none"/></svg></span>ぜいきんノート</a>
+  <nav class="site-nav"><a href="../#tools">ツール一覧</a><a href="../#about">このサイトについて</a>｜<a href="../privacy/">プライバシーポリシー</a></nav>
+  <details class="menu"><summary class="menu-btn" aria-label="メニュー"><span class="burger"></span></summary><nav class="menu-panel"><a href="../taishoku-dc/">退職金 × iDeCo/DC</a><a href="../kokuho/">国民健康保険料</a><a href="../taishoku-hoken/">退職後の健康保険 比較</a><a href="../juminzei/">住民税</a><a href="../furusato/">ふるさと納税</a><a href="../bonus/">賞与の手取り計算</a><a href="../setai/">世帯年収の手取り</a><a href="../privacy/">プライバシーポリシー</a></nav></details>
+</header>
+<main class="wrap">
+<nav class="crumbs"><a href="../">トップ</a> ＞ 世帯年収の手取りシミュレーター</nav>
+<h1><span class="h1-icon"><svg class="icon" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 14.6c2.9-.3 4.6 1.5 5 4.4"/></svg></span>世帯年収の手取りシミュレーター</h1>
+<p class="lead">夫婦2人の年収を入力すると、世帯の手取り額を計算します。税金は1人ずつかかるため、同じ世帯年収でも配分しだいで手取りが変わります。「1人で全額稼いだ場合」との差と、配分の比較（10:0／7:3／5:5）もあわせて表示します。</p>
+
+<div class="scope-box">
+  <p class="scope-title">このツールで計算できないケース</p>
+  <ul>
+    <li>自営業・年金・副業など、給与以外の所得がある世帯（給与所得のみが対象です）</li>
+    <li>生命保険料控除・iDeCo（小規模企業共済等掛金控除）・住宅ローン控除などを使う場合（控除は社会保険料・配偶者・扶養・基礎の4系統のみです）</li>
+    <li>健康保険組合・共済組合に加入している方（このツールは協会けんぽ前提です）</li>
+    <li>配偶者が別の都道府県で勤務している場合（健康保険料率は世帯で1つの都道府県を使います）</li>
+    <li>70歳以上の方の厚生年金保険料、75歳以上の方の健康保険料</li>
+    <li>令和9年分以後（2027年分以降）の所得税（税制改正で表が変わります）</li>
+  </ul>
+  <p class="small">詳しい前提条件は、ページ下部の「前提条件・対象外のもの」にまとめています。</p>
+</div>
+
+<div id="formError"></div>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 20l1.2-4.2L16.7 4.3a2.15 2.15 0 0 1 3 3L8.2 18.8 4 20z"/><line x1="14.8" y1="6.2" x2="17.8" y2="9.2"/></svg></span>入力</span></h2>
+<h3 class="subhead">本人</h3>
+<div class="grid2">
+<div class="field">
+<label for="selfIncome">本人の年収（給与収入・総支給額）<span class="hint">賞与も含めた1年分の総支給額。源泉徴収票の「支払金額」です</span></label>
+<div class="yen-wrap"><input type="number" id="selfIncome" min="0" step="100000" value="7000000"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="selfAge">本人の年齢区分</label>
+<select id="selfAge">
+<option value="under40" selected>40歳未満</option>
+<option value="40to64">40〜64歳（介護保険料がかかります）</option>
+<option value="65to69">65〜69歳</option>
+</select>
+</div>
+<div class="field">
+<label for="selfBonusPer">本人の賞与（1回あたり）<span class="hint">社会保険料の年額化に使います。年収には賞与を含めた総額を入力してください</span></label>
+<div class="yen-wrap"><input type="number" id="selfBonusPer" min="0" step="10000" value="0"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="selfBonusCount">本人の賞与の回数（年）</label>
+<select id="selfBonusCount">
+<option value="0" selected>0回（賞与なし）</option>
+<option value="1">1回</option>
+<option value="2">2回</option>
+<option value="3">3回</option>
+</select>
+</div>
+</div>
+<h3 class="subhead">配偶者</h3>
+<div class="grid2">
+<div class="field">
+<label for="spouseIncome">配偶者の年収（給与収入・総支給額）<span class="hint">働いていない場合は0円。配偶者控除と被扶養者の判定にも使います</span></label>
+<div class="yen-wrap"><input type="number" id="spouseIncome" min="0" step="100000" value="3000000"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="spouseAge">配偶者の年齢区分</label>
+<select id="spouseAge">
+<option value="under40" selected>40歳未満</option>
+<option value="40to64">40〜64歳（介護保険料がかかります）</option>
+<option value="65to69">65〜69歳</option>
+</select>
+</div>
+<div class="field">
+<label for="spouseBonusPer">配偶者の賞与（1回あたり）</label>
+<div class="yen-wrap"><input type="number" id="spouseBonusPer" min="0" step="10000" value="0"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="spouseBonusCount">配偶者の賞与の回数（年）</label>
+<select id="spouseBonusCount">
+<option value="0" selected>0回（賞与なし）</option>
+<option value="1">1回</option>
+<option value="2">2回</option>
+<option value="3">3回</option>
+</select>
+</div>
+<div class="field">
+<label for="spouseSocial">配偶者の社会保険の扱い<span class="hint">自動は「年収130万円未満なら被扶養者（社会保険料0円）」の簡易判定です。加入義務の判定（106万円の壁など）はしません</span></label>
+<select id="spouseSocial">
+<option value="auto" selected>自動（130万円未満は被扶養者）</option>
+<option value="join">加入（勤務先の社会保険に入る）</option>
+<option value="dependent">扶養（被扶養者として計算）</option>
+</select>
+</div>
+</div>
+<h3 class="subhead">世帯の共通条件</h3>
+<div class="grid2">
+<div class="field">
+<label for="prefecture">勤務先の都道府県<span class="hint">協会けんぽの料率は事業所の所在地で決まります。夫婦とも同じ都道府県の料率で計算します</span></label>
+<select id="prefecture"></select>
+</div>
+<div class="field">
+<label for="industry">雇用保険の事業の種類</label>
+<select id="industry">
+<option value="general" selected>一般の事業</option>
+<option value="nourin">農林水産・清酒製造の事業</option>
+<option value="kensetsu">建設の事業</option>
+</select>
+</div>
+</div>
+<h3 class="subhead">子供（扶養）</h3>
+<div class="grid2">
+<div class="field">
+<label for="childUnder16">16歳未満の人数<span class="hint">所得税の扶養控除は0円ですが、所得金額調整控除と住民税の非課税判定の人数には入ります</span></label>
+<div class="yen-wrap"><input type="number" id="childUnder16" min="0" max="10" value="0"><span class="unit">人</span></div>
+</div>
+<div class="field">
+<label for="childGeneral">16〜18歳・23歳以上の人数<span class="hint">一般扶養親族。所得税38万円・住民税33万円の控除</span></label>
+<div class="yen-wrap"><input type="number" id="childGeneral" min="0" max="10" value="0"><span class="unit">人</span></div>
+</div>
+<div class="field">
+<label for="childSpecific">19〜22歳の人数<span class="hint">特定扶養親族。所得税63万円・住民税45万円の控除</span></label>
+<div class="yen-wrap"><input type="number" id="childSpecific" min="0" max="10" value="0"><span class="unit">人</span></div>
+</div>
+<div class="field">
+<label for="childParent">子供の扶養を付ける親<span class="hint">子供の所得はない（扶養控除の所得要件を満たす）前提で計算します</span></label>
+<select id="childParent">
+<option value="self" selected>本人</option>
+<option value="spouse">配偶者</option>
+</select>
+</div>
+</div>
+</section>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><line x1="8.5" y1="7.5" x2="15.5" y2="7.5"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15.5" r="1" fill="currentColor" stroke="none"/></svg></span>世帯の手取りと内訳</span></h2>
+<div class="big-result"><span class="big-label">世帯手取り（年額）</span> <span id="netHousehold">— 円</span></div>
+<div class="table-wrap">
+<table class="result-table">
+<tr><th>項目</th><th>金額（年額）</th></tr>
+<tr><td>世帯年収</td><td id="dHouseholdIncome">–</td></tr>
+<tr><td>社会保険料（本人負担の合計）</td><td id="dHouseholdSocial">–</td></tr>
+<tr><td>所得税（2人の合計）</td><td id="dHouseholdIncomeTax">–</td></tr>
+<tr><td>住民税（2人の合計・目安）</td><td id="dHouseholdResidentTax">–</td></tr>
+</table>
+</div>
+<h3 class="subhead">同じ世帯年収を1人で稼いだ場合との比較</h3>
+<div class="table-wrap">
+<table class="result-table">
+<tr><th>項目</th><th>金額（年額）</th></tr>
+<tr><td>1人で全額稼いだ場合の手取り</td><td id="singleNet">–</td></tr>
+<tr class="total-row"><td>手取りの差（いまの配分 − 1人で稼いだ場合）</td><td id="diffNet">–</td></tr>
+<tr><td>所得税の負担の軽減（＋は軽くなった分）</td><td id="diffIncomeTax">–</td></tr>
+<tr><td>住民税の負担の軽減（＋は軽くなった分）</td><td id="diffResidentTax">–</td></tr>
+<tr><td>社会保険料の負担の軽減（＋は軽くなった分）</td><td id="diffSocial">–</td></tr>
+</table>
+</div>
+<p class="note" id="diffExplain"></p>
+<ul class="note" id="detailNotes"></ul>
+</section>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg></span>1人ごとの内訳</span></h2>
+<h3 class="subhead">本人の内訳</h3>
+<div class="table-wrap">
+<table class="result-table">
+<tr><th>項目</th><th>金額</th></tr>
+<tbody id="selfRows"></tbody>
+</table>
+</div>
+<h3 class="subhead" id="spouseTitle">配偶者の内訳</h3>
+<div class="table-wrap">
+<table class="result-table">
+<tr><th>項目</th><th>金額</th></tr>
+<tbody id="spouseRows"></tbody>
+</table>
+</div>
+</section>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 19V5M4 15c3-2 6 2 9 0s5-1 7 0v-9c-2-1-4-2-7 0s-6-2-9 0"/></svg></span>配分の比較（世帯年収はそのまま、配分だけ変えた場合）</span></h2>
+<div class="table-wrap">
+<table class="result-table">
+<tr><th>配分（本人 ＋ 配偶者）</th><th>所得税</th><th>住民税</th><th>社会保険料</th><th>世帯手取り</th></tr>
+<tbody id="presetRows"></tbody>
+</table>
+</div>
+<p class="note">配分の比較は、賞与なし・子供の扶養は本人・配偶者の社会保険は自動判定という前提で、配分だけを変えた試算です。入力した賞与や扶養の付け方とは前提が異なる場合があります。</p>
+</section>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 13.5v-8A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v8a1.5 1.5 0 0 1-1.5 1.5H13l-4.5 4.2v-4.2H5.5A1.5 1.5 0 0 1 4 13.5z"/></svg></span>自分のAIに相談する</span></h2>
+<p>計算の内容をまとめた文をコピーできます。ChatGPTやClaudeなど、お使いのAIに貼ると、そのまま相談できます。貼る前に、個人が特定できる情報が含まれていないか確認してください。</p>
+<button type="button" id="copyPrompt" class="btn-ai">AIに相談する用の文をコピー</button>
+</section>
+
+<details class="card accordion">
+<summary>前提条件・対象外のもの</summary>
+<ul>
+<li>対象は給与所得のみの夫婦2人です。本人は会社員として協会けんぽ・厚生年金・雇用保険に加入している前提で計算し、配偶者は入力した扱い（自動／加入／扶養）で計算します。</li>
+<li>所得税は令和8年分（2026年分）の年税額で、年末調整で確定する金額です。月々の源泉徴収額の合計そのものではありません。</li>
+<li>住民税は令和8年度の公開ルール（標準税率: 所得割10%・均等割4,000円・森林環境税1,000円）を、入力した年の所得にそのまま適用した年額の目安です。実際の住民税は翌年度に課税され、その料率・控除は未公表です。お住まいの市が<a href="../juminzei/">住民税シミュレーター</a>の対応6市にある場合は、そちらで精密に計算できます。</li>
+<li>社会保険料の標準報酬月額は、年収から導出した月給（目安）を等級表に当てはめたものです。実際の標準報酬月額（定時決定などで決まった額）とずれると、保険料もずれます。</li>
+<li>控除は社会保険料・配偶者・扶養・基礎の4系統のみです。生命保険料控除・iDeCo・住宅ローン控除などを使う世帯では、実際の税額はこのツールの結果より下がります。</li>
+<li>配偶者控除・配偶者特別控除は、原則として本人（年収0円の場合は配偶者）が申告する形で自動判定しています。子供の扶養は、選んだ親にだけ付けています。</li>
+<li>被扶養者の自動判定は年収130万円の線だけを使う簡易判定です。「扶養者の収入の半分未満」の条件は判定に入れていません。</li>
+<li>本ツールは一般的な仕組みに基づく試算であり、個別の税務・労務相談ではありません。実際の税額・保険料は勤務先の給与計算やお住まいの自治体の課税により異なる場合があります。個別の事情がある場合は、勤務先の給与担当・税理士・税務署・自治体窓口にご確認ください。</li>
+<li>計算はすべてブラウザの中で行い、入力した内容をサーバーへ送信することはありません。</li>
+</ul>
+</details>
+
+<details class="card accordion">
+<summary>出典・計算の根拠</summary>
+<ul>
+<li>国税庁タックスアンサー No.1199「基礎控除」: 所得税の基礎控除額（令和8・9年分）<br><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1199.htm" target="_blank" rel="noopener">https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1199.htm</a></li>
+<li>国税庁タックスアンサー No.1191「配偶者控除」・No.1195「配偶者特別控除」: 配偶者（特別）控除の要件と金額<br><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1191.htm" target="_blank" rel="noopener">https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1191.htm</a><br><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1195.htm" target="_blank" rel="noopener">https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1195.htm</a></li>
+<li>国税庁「令和8年分 年末調整のしかた」: 給与所得控除後の給与等の金額の表（所得税法別表第五）・算出所得税額の速算表・年調年税額の算式<br><a href="https://www.nta.go.jp/publication/pamph/gensen/nencho2026/pdf/114.pdf" target="_blank" rel="noopener">https://www.nta.go.jp/publication/pamph/gensen/nencho2026/pdf/114.pdf</a></li>
+<li>総務省「個人住民税」: 住民税の標準税率（所得割10%・均等割4,000円）と森林環境税1,000円の併せ徴収<br><a href="https://www.soumu.go.jp/main_sosiki/jichi_zeisei/czaisei/czaisei_seido/150790_06.html" target="_blank" rel="noopener">https://www.soumu.go.jp/main_sosiki/jichi_zeisei/czaisei/czaisei_seido/150790_06.html</a></li>
+<li>福岡市「給与所得の計算表（令和8年度（令和7年分）から）」: 住民税の給与所得換算（給与所得控除の最低保障額65万円）<br><a href="https://www.city.fukuoka.lg.jp/zaisei/zeisei/life/kojinshiminkenminzei/001.html" target="_blank" rel="noopener">https://www.city.fukuoka.lg.jp/zaisei/zeisei/life/kojinshiminkenminzei/001.html</a></li>
+<li>協会けんぽ「令和8年度の都道府県単位保険料率」・「令和8年度保険料額表（東京支部）」: 都道府県別の健康保険料率、介護保険料率1.62％、子ども・子育て支援金率0.23％、等級表と折半の端数処理<br><a href="https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/rate_prefectures/r08/index.html" target="_blank" rel="noopener">https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/rate_prefectures/r08/index.html</a></li>
+<li>日本年金機構「従業員が家族を被扶養者にするとき」: 被扶養者の収入要件（年間収入130万円未満・見込み収入）<br><a href="https://www.nenkin.go.jp/service/kounen/tekiyo/hihokensha1/20141202.html" target="_blank" rel="noopener">https://www.nenkin.go.jp/service/kounen/tekiyo/hihokensha1/20141202.html</a></li>
+<li>厚生労働省「令和8（2026）年度 雇用保険料率のご案内」: 雇用保険の労働者負担率（一般の事業 5/1,000 ほか）<br><a href="https://jsite.mhlw.go.jp/gunma-roudoukyoku/content/contents/002597764.pdf" target="_blank" rel="noopener">https://jsite.mhlw.go.jp/gunma-roudoukyoku/content/contents/002597764.pdf</a></li>
+</ul>
+</details>
+</main>
+<footer class="site-footer">
+<p class="disclaimer">このサイトの計算は一般的な税制の仕組みに基づく試算であり、個別の税務相談ではありません。実際の税額は、確定申告の内容や勤務先の給与計算、お住まいの自治体の課税により確定します。個別の事情がある場合は、税理士等の専門家または勤務先の給与担当にご確認ください。</p>
+<nav class="footer-nav">
+<a href="../taishoku-dc/">退職金×iDeCo/DC</a>
+<a href="../kokuho/">国民健康保険料</a>
+<a href="../taishoku-hoken/">退職後の健康保険 比較</a>
+<a href="../juminzei/">住民税</a>
+<a href="../furusato/">ふるさと納税</a>
+<a href="../bonus/">賞与の手取り計算</a>
+<a href="../setai/">世帯年収の手取り</a>
+<a href="../privacy/">プライバシーポリシー</a>
+</nav>
+<p class="copy">© 2026 ぜいきんノート（zeikin-note.com）</p>
+</footer>
+<div class="toast" id="toast" role="status"></div>
+<script src="../js/nencho-engine.js"></script>
+<script src="../js/shaho-engine.js"></script>
+<script src="../js/setai-engine.js"></script>
+<script src="../js/setai-app.js"></script>
+</body>
+</html>
