@@ -33,12 +33,12 @@
   },
   "exceptions": [
     {
-      "type": "single_member_household",
       "conditions": {
         "note": "特定世帯は平等割が半額、特定継続世帯は4分の3（大阪府統一。大阪市の告示額と同額: 医療分 33,908円／16,954円／25,431円、支援分 10,845円／5,423円／8,134円）"
       },
+      "engine_note": "現行エンジンは倍率（0.5／0.75）で計算するため、支援分の特定世帯・特定継続世帯では告示額と最大1円ずれる場合がある",
       "source_note": "大阪市告示第469号および堺市国民健康保険条例の特定世帯規定",
-      "engine_note": "現行エンジンは倍率（0.5／0.75）で計算するため、支援分の特定世帯・特定継続世帯では告示額と最大1円ずれる場合がある"
+      "type": "single_member_household"
     }
   ],
   "municipality_code": "27140",
@@ -50,13 +50,23 @@
   },
   "prefecture": "大阪府",
   "provenance": {
+    "rate_recheck": {
+      "checked_at": "2026-11-24",
+      "note": "大阪府公式「令和8年度 市町村標準保険料率及び都道府県標準保険料率 算定結果」で、府統一料率の全項目（医療9.50%・34,990円・33,908円／支援3.06%・11,191円・10,845円／介護2.60%・18,682円／子ども0.28%・均等割合計1,841円）と別紙の子ども分均等割内訳（43市町村分）が既存JSONと一致することを確認。賦課限度額（医療660,000円・支援260,000円・介護170,000円・子ども30,000円）は吹田市公式の府算定結果概要でも相互確認",
+      "source_url": "https://www.pref.osaka.lg.jp/documents/125887/r8ryouritsu.pdf"
+    },
     "retrieval_method": "manual",
     "retrieved_at": "2026-11-23",
     "source_published": "2026-04-01（堺市ページ更新日）",
     "source_type": "HTML表（堺市公式）＋大阪府の算定結果PDFで相互確認",
     "source_url": "https://www.city.sakai.lg.jp/kurashi/honen/kokuho/hokenryo/shikumi.html",
     "verification": {
-      "status": "照合前"
+      "method": "公式モデルケース2件（区分別）＋所得階層別・世帯人数別保険料比較表60件（枚方市国民健康保険運営協議会資料 令和7年度第2回、令和8年2月6日）。大阪府は府内完全統一料率のため、枚方市の公式計算は府内全市町村の照合に使える",
+      "note": "統一パターンとして大阪市と同一の照合を実施（子ども分内訳のみ堺市の額 均等割1,742円＋18歳以上99円）。70チェック中61件完全一致。残り9件は (A) 子ども分均等割の法定軽減の計算方法の差5件（公式は均等割合計1,841円に軽減率を適用し1円未満切上げ、エンジンは均等割・18歳以上均等割を個別に切上げ。差は最大2円で7割軽減時のみ発生）と (B) 比較表の3人世帯4セル（所得120万/160万/180万/200万円）の市の表側の不整合（令和7年度列でも同じ行に同型の差があり、どの一貫した計算前提でも再現できない）。詳細は tools/verify_osaka.js と収集ログの大阪府の節",
+      "reference_url": "https://www.city.hirakata.osaka.jp/cmsfiles/contents/0000005/5164/R07-02siryou.pdf",
+      "status": "照合済み",
+      "verified_at": "2026-11-24",
+      "verified_cases": 70
     }
   },
   "publication_profile": {
@@ -117,8 +127,8 @@
         "per_capita_adult_addon": null,
         "per_household": 33908,
         "per_household_fixed": {
-          "tokutei": 16954,
-          "keizoku": 25431
+          "keizoku": 25431,
+          "tokutei": 16954
         }
       },
       "support": {
@@ -129,8 +139,8 @@
         "per_capita_adult_addon": null,
         "per_household": 10845,
         "per_household_fixed": {
-          "tokutei": 5423,
-          "keizoku": 8134
+          "keizoku": 8134,
+          "tokutei": 5423
         }
       }
     },
@@ -139,13 +149,13 @@
     "method": "3方式",
     "rate_pattern_id": "osaka_unified",
     "rounding": {
-      "per_component": "floor_1yen",
+      "confirmed_at": "2026-11-23",
       "note": "区分ごとに1円未満切捨て（区分単位の10円・100円切捨てなし）。堺市国民健康保険条例第9条の2第2項『基礎賦課額に1円未満の端数があるときは、これを切り捨てるものとする』で確認（他区分も同構造の並行規定）。大阪市と同じ大阪府統一料率・同一の条例構造",
-      "confirmed_at": "2026-11-23"
+      "per_component": "floor_1yen"
     }
   },
   "scope_group": "osaka_unified",
   "unconfirmed": [
-    "公式の計算例・早見表での照合は未実施（照合前）。公式の静的な計算例は2026-11-23時点で確認できず"
+    "子ども分均等割の法定軽減: 公式は均等割合計（均等割＋18歳以上均等割）に軽減率を適用するが、エンジンは内訳ごとに切上げるため、7割軽減時に最大2円の差が出る（2026-11-24の照合で確認済み。エンジン側の対応方針は未定）"
   ]
 }
