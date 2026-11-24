@@ -199,6 +199,9 @@ var ids = ['selfIncome', 'selfAge', 'selfBonusPer', 'selfBonusCount',
 'prefecture', 'industry', 'childUnder16', 'childGeneral', 'childSpecific', 'childParent'];
 ids.forEach(function (id) { $(id).addEventListener('input', compute); $(id).addEventListener('change', compute);});
 /* 共通プロファイル連携（js/profile.js）: 初期値の読み書きだけを行い、計算には触らない */
+/* 消去時に戻す初期値（保存値の復元前）を控える */
+var defaultState = {};
+ids.forEach(function (id) { if ($(id)) defaultState[id] = $(id).value; });
 if (window.ZnProfile) {
 var savedTool = ZnProfile.loadTool('setai');
 if (savedTool) {
@@ -246,7 +249,13 @@ age23plus: depsPrev.age23plus || 0
 };
 ids.forEach(function (id) { $(id).addEventListener('input', persistSetai); $(id).addEventListener('change', persistSetai);});
 if ($('clearSaved')) $('clearSaved').addEventListener('click', function () {
-if (window.confirm('保存した入力（共通プロファイルと全ツールの前回入力）をすべて消します。よろしいですか？')) { ZnProfile.clearAll(); location.reload();}
+if (window.confirm('保存した入力（共通プロファイルと全ツールの前回入力）をすべて消します。よろしいですか？')) {
+ZnProfile.clearAll();
+/* リロードに頼らず、その場で初期値へ戻して再計算する（リロード時のフォーム値復元で入力値が復活するのを防ぐ） */
+ids.forEach(function (id) { if (defaultState[id] !== undefined && $(id)) $(id).value = defaultState[id]; });
+compute();
+toast('保存した入力を消しました');
+}
 });
 }
 $('copyPrompt').addEventListener('click', copyPrompt);
@@ -255,5 +264,6 @@ compute();
 $('formError').innerHTML = '<div class="error">計算データ（data/nencho・data/juminzei・data/kenpo・data/shaho）を読み込めませんでした。</div>';
 });
 }
-document.addEventListener('DOMContentLoaded', init);
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+else init();
 })();

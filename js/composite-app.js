@@ -647,6 +647,8 @@ o.value = name; o.textContent = name;
 if (name === '東京都') o.selected = true;
 sel.appendChild(o);
 });
+/* 消去時に戻す初期値（動的セレクト構築後・保存値の復元前）を控える */
+var defaultState = currentState();
 /* 保存した入力の復元: ツール固有の前回入力があれば優先、なければ共通プロファイル */
 if (window.ZnProfile) {
 var ts = ZnProfile.loadTool(TOOL_ID);
@@ -673,7 +675,11 @@ if ($('clearSaved')) {
 $('clearSaved').addEventListener('click', function () {
 if (window.ZnProfile && window.confirm('保存した入力（共通プロファイルと全ツールの前回入力）をすべて消します。よろしいですか？')) {
 ZnProfile.clearAll();
-location.reload();
+/* リロードに頼らず、その場で初期値へ戻して再計算する。
+ * リロードだけだと、ブラウザのフォーム値復元で入力した値が復活し、表示が残ることがある */
+applyState(defaultState);
+compute();
+toast('保存した入力を消しました');
 }
 });
 }
@@ -682,5 +688,11 @@ compute();
 $('formError').innerHTML = '<div class="error">計算データ（data/nencho・data/juminzei・data/kenpo・data/shaho）を読み込めませんでした。</div>';
 });
 }
+/* DOMContentLoaded 発火後にスクリプトが読まれた場合でも初期計算が必ず走るよう、
+ * readyState を見て即時実行と切り替える */
+if (document.readyState === 'loading') {
 document.addEventListener('DOMContentLoaded', init);
+} else {
+init();
+}
 })();
