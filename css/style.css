@@ -515,3 +515,62 @@ body > footer { max-width: 880px; margin-left: auto; margin-right: auto; padding
   .title-badge { width: 48px; height: 48px; }
   .title-row { margin-top: 8px; }
 }
+
+/* ヘッダーのタグライン（全ページ共通） */
+.logo-name { display: flex; flex-direction: column; line-height: 1.2; }
+.logo-tagline {
+  font-size: 0.68rem; font-weight: 700; color: var(--muted);
+  letter-spacing: 0.04em; white-space: nowrap;
+}
+@media (max-width: 640px) {
+  .logo { font-size: 1.28rem; gap: 7px; }
+  .logo-mark { width: 40px; height: 40px; }
+  .logo-tagline { font-size: 0.58rem; letter-spacing: 0.02em; }
+}
+
+/* 総合の見解ボックス（複合版） */
+.assess-box {
+  background: var(--card); border: 3px solid var(--ink); border-radius: 12px;
+  box-shadow: 4px 4px 0 rgba(38, 34, 26, 0.9);
+  padding: 12px 16px; margin: 10px 0 18px;
+}
+.assess-box p { margin: 8px 0; }
+.assess-box p:first-child { margin-top: 0; }
+.assess-box p:last-child { margin-bottom: 0; }
+
+/* ガントチャート（複合版） */
+.gantt-wrap { overflow-x: auto; }
+.gantt-table { border-collapse: collapse; width: 100%; }
+.gantt-table th, .gantt-table td {
+  border: 2px solid var(--ink); padding: 4px 5px;
+  font-size: 0.74rem; text-align: right; white-space: nowrap;
+}
+.gantt-table th { background: var(--best-bg); text-align: center; font-weight: 800; }
+.gantt-table td.g-label, .gantt-table th.g-label { text-align: left; font-weight: 800; }
+.gantt-table td.g-on { background: var(--best-bg); font-weight: 800; }
+.gantt-table td.g-off { background: var(--card); }
+.gantt-table td.g-annual { font-weight: 800; background: var(--warn-bg); }
+.gantt-table tr.g-total td { background: var(--warn-bg); font-weight: 800; }
+
+/* 印刷（複合版: 入力を除き、結果＋内訳＋ガントを A4 横向きに収める。
+ * 名前付きページで複合版の body にだけ効かせ、他ページの印刷には影響させない） */
+@page compositeA4 { size: A4 landscape; margin: 10mm; }
+body.composite-print { page: compositeA4; }
+@media print {
+  body.composite-print .site-header,
+  body.composite-print .crumbs,
+  body.composite-print .print-hide,
+  body.composite-print .site-footer,
+  body.composite-print #toast { display: none !important; }
+  body.composite-print { background: #fff; }
+  body.composite-print .wrap { max-width: none; padding: 0; }
+  body.composite-print .card { box-shadow: none; break-inside: avoid; }
+  body.composite-print .assess-box { box-shadow: none; }
+  body.composite-print .gantt-table th,
+  body.composite-print .gantt-table td { font-size: 8pt; padding: 2px 3px; }
+  body.composite-print .gantt-table td.g-on {
+    background: #e6e6e6 !important;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  body.composite-print h1 { font-size: 1.3rem; }
+}
