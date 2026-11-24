@@ -135,6 +135,17 @@ lines.push('・当てはめた区分: ' + zoneText(r));
 lines.push('・源泉徴収税額（税額表）: ' + yen(r.tax));
 if (r.diff) lines.push('・給与明細の源泉徴収税額: ' + yen(r.diff.statementTax) + '（税額表との差額 ' + yen(r.diff.diff) + '）');
 lines.push('');
+lines.push('【計算過程】');
+if (i.mode === 'gross') lines.push('・控除後の金額: 総支給額 ' + yen(i.gross) + ' − 非課税の通勤手当 ' + yen(i.commute) + ' − 社会保険料等 ' + yen(i.insurance) + ' ＝ ' + yen(Math.max(0, r.afterAmount)));
+if (r.zone === 'table') {
+lines.push('・月額表の当てはめ: 控除後の金額が入る行（' + r.row.min.toLocaleString('ja-JP') + '円以上' + r.row.max.toLocaleString('ja-JP') + '円未満）・' + COLUMN_LABEL[i.column] + (i.column === 'kou' ? '・扶養親族等の数 ' + i.dependents + '人' : '') + ' の税額 ＝ ' + yen(r.tax));
+if (r.over7Deduction > 0) lines.push('・扶養親族等の数が7人を超える分: 7人の場合の税額 ' + yen(r.taxAt7) + ' − 1人につき1,610円の控除 ' + yen(r.over7Deduction) + ' ＝ ' + yen(r.tax));
+} else if (r.zone === 'over') {
+lines.push('・算式による計算: 基準税額 ' + yen(r.segment.baseTax) + ' ＋（控除後の金額 − ' + yen(r.segment.from) + '）× ' + (Math.round(r.segment.rate * 100000) / 1000) + '% ＝ ' + yen(r.tax) + '（1円未満切り捨て）');
+} else {
+lines.push(i.column === 'kou' ? '・控除後の金額が105,000円未満のため、甲欄の税額は0円' : '・控除後の金額が105,000円未満のため、乙欄は 控除後の金額 × 3.063% ＝ ' + yen(r.tax) + '（1円未満切り捨て）');
+}
+lines.push('');
 lines.push('前提: 国税庁の源泉徴収税額表（月額表・令和8年分）だけで計算しており、電算機計算の特例（給与計算ソフトの算式方式）による計算は対象外。そのため、会社が特例で計算している場合は明細と数十円程度ずれることがある。扶養親族等の数は扶養控除等申告書に記載された内容に基づく数（障害者等の加算込み）。' + (i.payMonth === 12 ? '12月支払分は、令和8年12月1日以後に支払う給与から適用される改正後の所得要件（扶養親族は所得62万円以下）で数える前提。' : '11月30日以前に支払う給与は、改正前の所得要件（扶養親族は所得58万円以下）で数える前提。'));
 lines.push('根拠: 国税庁「給与所得の源泉徴収税額の求め方」（令和8年分 源泉徴収税額表）https://www.nta.go.jp/publication/pamph/gensen/zeigakuhyo2026/data/19-22.pdf ／国税庁「令和8年度税制改正（所得税の基礎控除の引上げ等関係）Q&A」https://www.nta.go.jp/users/gensen/2026kiso/pdf/0026005-024.pdf');
 lines.push('');
