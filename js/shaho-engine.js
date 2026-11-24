@@ -132,33 +132,58 @@ function compute(data, input) {
     items: monthlyItems, totals: totals(monthlyItems)
   };
 
-  /* 賞与分（§3 手順8〜11） */
+  /* 賞与分（§3 手順8〜11）
+   * 健康保険の標準賞与額の上限573万円は年度（4月〜翌年3月）の累計で判定するため、
+   * 賞与は回ごとに処理し、累計を更新しながら各回の対象額を決める（LOG-01修正）。
+   * 厚生年金の上限150万円は従来どおり1回あたり。
+   * bonus は従来どおり「1回目」の内訳を返し、各回の内訳は bonusRounds に返す。 */
   var stdBonusGross = floor1000(bonusGross);
-  var stdBonusHealth = Math.max(0, Math.min(stdBonusGross, params.bonus_caps.health_annual - cumulative));
   var stdBonusPension = Math.min(stdBonusGross, params.bonus_caps.pension_per_month);
-  var bonusItems = insuredItems(pref, params, stdBonusHealth, stdBonusPension, withCare);
-  addEmployment(bonusItems, employmentItem(params, input.industry, input.employmentInsured, bonusGross));
+  var allRounds = [];
+  var cumHealth = cumulative;
+  var roundsToBuild = Math.max(bonusCount, 1);
+  for (var ri = 0; ri < roundsToBuild; ri++) {
+    var roundStdHealth = Math.max(0, Math.min(stdBonusGross, params.bonus_caps.health_annual - cumHealth));
+    cumHealth += roundStdHealth;
+    var roundItems = insuredItems(pref, params, roundStdHealth, stdBonusPension, withCare);
+    addEmployment(roundItems, employmentItem(params, input.industry, input.employmentInsured, bonusGross));
+    allRounds.push({
+      standardHealth: roundStdHealth, standardPension: stdBonusPension,
+      healthCapped: stdBonusGross > roundStdHealth, pensionCapped: stdBonusGross > stdBonusPension,
+      items: roundItems, totals: totals(roundItems)
+    });
+  }
+  var bonusRounds = allRounds.slice(0, bonusCount);
+  var bonusHealthCapped = false, bonusPensionCapped = false;
+  (bonusCount > 0 ? bonusRounds : allRounds).forEach(function (rd) {
+    if (rd.healthCapped) bonusHealthCapped = true;
+    if (rd.pensionCapped) bonusPensionCapped = true;
+  });
   var bonus = {
-    standardHealth: stdBonusHealth, standardPension: stdBonusPension,
-    healthCapped: stdBonusGross > stdBonusHealth, pensionCapped: stdBonusGross > stdBonusPension,
-    items: bonusItems, totals: totals(bonusItems)
+    standardHealth: allRounds[0].standardHealth, standardPension: stdBonusPension,
+    healthCapped: bonusHealthCapped, pensionCapped: bonusPensionCapped,
+    items: allRounds[0].items, totals: allRounds[0].totals
   };
 
-  /* 年額（§3 手順12・§1.9） */
+  /* 年額（§3 手順12・§1.9）: 賞与分は各回の実額の合計 */
   var keys = ['health', 'care', 'child', 'pension', 'employment'];
   var annualItems = {}, annualTotals = { total: 0, insured: 0, employer: 0 };
   keys.forEach(function (k) {
+    var bTotal = 0, bInsured = 0, bEmployer = 0;
+    bonusRounds.forEach(function (rd) {
+      bTotal += rd.items[k].total; bInsured += rd.items[k].insured; bEmployer += rd.items[k].employer;
+    });
     var a = {
-      total: monthlyItems[k].total * 12 + bonusItems[k].total * bonusCount,
-      insured: monthlyItems[k].insured * 12 + bonusItems[k].insured * bonusCount,
-      employer: monthlyItems[k].employer * 12 + bonusItems[k].employer * bonusCount
+      total: monthlyItems[k].total * 12 + bTotal,
+      insured: monthlyItems[k].insured * 12 + bInsured,
+      employer: monthlyItems[k].employer * 12 + bEmployer
     };
     annualItems[k] = a;
     annualTotals.total += a.total; annualTotals.insured += a.insured; annualTotals.employer += a.employer;
   });
 
   return {
-    monthly: monthly, bonus: bonus,
+    monthly: monthly, bonus: bonus, bonusRounds: bonusRounds,
     annual: { items: annualItems, totals: annualTotals },
     bonusCount: bonusCount
   };

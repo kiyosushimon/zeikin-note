@@ -100,13 +100,14 @@ function computeSimple(input) {
   var rateIT = taxableIT > 0 ? bracketOf(taxableIT).rate : 0;
 
   var taxableRT = floor1000(Math.max(0, salaryInc - social - dedRT));
-  // 調整控除
+  // 調整控除（地方税法第314条の6）: 合計所得金額（本モデルでは給与所得）2,500万円超は対象外。
+  // 課税所得200万円超では「人的控除差の合計 −（課税所得 − 200万円）」が5万円を下回る
+  // （マイナスになる場合を含む）ときは5万円として5%を掛けるため、控除額の下限は2,500円になる。
+  // 算出額がマイナスのときに0円にしていた旧処理は誤り（LOG-02修正。juminzei/setaiエンジンと同じ形）。
   var adj;
-  if (taxableRT <= 2000000) adj = Math.min(diffTotal, taxableRT) * 0.05;
-  else {
-    adj = (diffTotal - (taxableRT - 2000000)) * 0.05;
-    adj = adj > 0 ? Math.max(adj, 2500) : 0;
-  }
+  if (salaryInc > 25000000) adj = 0;
+  else if (taxableRT <= 2000000) adj = Math.min(diffTotal, taxableRT) * 0.05;
+  else adj = Math.max(diffTotal - (taxableRT - 2000000), 50000) * 0.05;
   adj = Math.floor(adj);
   var levyRT = Math.max(0, Math.floor(taxableRT * 0.10) - adj);
 
