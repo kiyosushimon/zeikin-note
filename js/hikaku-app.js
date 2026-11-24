@@ -197,6 +197,8 @@ $('deadlineNote').textContent = '任意継続の申出期限の目安: ' + d.get
 
 function buildPrompt() {
 var r = state.result; if (!r) return '';
+var pref = kenpo ? kenpo.prefectures[r.prefName] : null;
+function rateText(x) { return (Math.round(x * 10000) / 100) + '%'; }
 return [
 '退職後の健康保険について相談です。国民健康保険と任意継続（協会けんぽ）の保険料を試算しました。',
 '',
@@ -208,6 +210,16 @@ return [
 '【試算結果（年額）】',
 '・国民健康保険: 1年目 ' + fmt(r.k1) + '円／2年目 ' + fmt(r.k2) + '円／2年合計 ' + fmt(r.kT) + '円',
 '・任意継続: 1年目 ' + fmt(r.nY1) + '円／2年目 ' + fmt(r.nY2) + '円／2年合計 ' + fmt(r.nT) + '円',
+'',
+'【計算過程】',
+'・任意継続の月額（1年目）: 標準報酬月額 ' + fmt(r.n1.base) + '円' + (r.n1.cappedApplied ? '（上限32万円を適用）' : '') + ' に料率を掛け、区分ごとに円未満を切り捨てて合算。健康保険 ' + fmt(r.n1.health) + '円＋子ども・子育て支援金 ' + fmt(r.n1.child) + '円' + (r.n1.care ? '＋介護保険 ' + fmt(r.n1.care) + '円' : '') + ' ＝ ' + fmt(r.n1.total) + '円（全額自己負担）',
+(pref ? '・任意継続の料率（' + r.prefName + '・協会けんぽ令和8年度）: 健康保険 ' + rateText(pref.health_rate) + '／子ども・子育て支援金 ' + rateText(pref.child_rate) + '／介護保険 ' + rateText(pref.care_rate) : ''),
+'・任意継続の年額: 月額 × 12（1年目 ' + fmt(r.nY1) + '円／2年目 ' + fmt(r.nY2) + '円。2年目は年齢が1歳上がった条件で介護保険の有無を判定）',
+'・国民健康保険の年額: 前年の所得をもとに ' + r.cityLabel + ' の料率（医療分・後期高齢者支援金分・介護分・子ども・子育て支援金分の所得割＋均等割＋平等割、区分ごとに端数処理）で計算（1年目 ' + fmt(r.k1) + '円／2年目 ' + fmt(r.k2) + '円）。区分ごとの内訳はこの比較の結果データに含まれないため、式の一般形で示します。計算方式は国民健康保険料シミュレーターと同じです',
+'',
+'【根拠】',
+'・国民健康保険料: ' + r.cityLabel + 'の公式料率（国民健康保険料シミュレーターの結果画面に一次ソースを明記）',
+'・任意継続: 協会けんぽ「令和8年度の都道府県単位保険料率」 https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/rate_prefectures/r08/index.html （標準報酬月額の上限32万円・保険料は全額自己負担）',
 '',
 '【前提】',
 '・国保は前年所得で計算。2年目は現在の料率による仮計算',
