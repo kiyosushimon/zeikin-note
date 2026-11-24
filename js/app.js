@@ -24,22 +24,11 @@
 
   /* カウントアップ: 結果の金額が0から増えていく（辞書624「カウントアップ」） */
   function animateCounts(root) {
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    /* 金額は即時表示する（カウントアップ演出は廃止。data-valueの最終値をそのまま出す） */
     var nodes = root.querySelectorAll('.count-up');
     for (var i = 0; i < nodes.length; i++) {
-      (function (node) {
-        var target = parseInt(node.getAttribute('data-value'), 10);
-        if (!isFinite(target) || target <= 0) return;
-        var start = null;
-        function step(ts) {
-          if (start === null) start = ts;
-          var p = Math.min((ts - start) / 700, 1);
-          var eased = 1 - Math.pow(1 - p, 3);
-          node.textContent = yen(Math.round(target * eased));
-          if (p < 1) window.requestAnimationFrame(step);
-        }
-        window.requestAnimationFrame(step);
-      })(nodes[i]);
+      var target = parseInt(nodes[i].getAttribute('data-value'), 10);
+      if (isFinite(target)) nodes[i].textContent = yen(target);
     }
   }
   function esc(s) {

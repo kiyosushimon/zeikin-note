@@ -18,17 +18,9 @@ var t = $('toast'); t.textContent = msg; t.classList.add('show');
 setTimeout(function () { t.classList.remove('show');}, 2600);
 }
 function animateValue(el, target) {
+/* 金額は計算完了時に即時表示する（カウントアップ演出は内訳との一時的な不一致を招くため廃止） */
 if (!el) return;
-if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { el.textContent = fmt(target) + '円'; return;}
-var start = null;
-function step(ts) {
-if (start === null) start = ts;
-var p = Math.min((ts - start) / 700, 1);
-var eased = 1 - Math.pow(1 - p, 3);
-el.textContent = fmt(Math.round(target * eased)) + '円';
-if (p < 1) window.requestAnimationFrame(step);
-}
-window.requestAnimationFrame(step);
+el.textContent = fmt(target) + '円';
 }
 function toIncome(kind, amount, age) {
 if (kind === 'salary') return KokuhoEngine.salaryIncome(amount);

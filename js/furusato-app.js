@@ -34,6 +34,7 @@ $('rate').textContent = (r.rateForTokurei * 100).toFixed(0) + '％';
 $('formula').textContent = '上限 ＝ 所得割額 ' + yen(r.residentLevy) + ' × 20％ ÷（90％ − ' + (r.rateForTokurei * 100).toFixed(0) + '％ × 1.021）＋ 2,000円';
 
 var notes = [];
+if (r.residentLevy <= 0) notes.push('住民税の所得割額が0円のため、ふるさと納税の控除による軽減は見込めません（寄附額がそのまま自己負担になります）。');
 if (input.socialInsurance == null) notes.push('社会保険料は給与収入の15％と仮定しています（総務省の目安表と同じ前提）。');
 if (r.aboveVerified) notes.push('この収入帯では、総務省の目安表の値が本ツールの簡易計算と一致しないことが照合で分かっています（目安表の方が高い側に出ます）。目安表の値も併せてご確認ください。');
 else if (!r.verifiedRange) notes.push('総務省の目安表と照合済みの範囲は給与収入300万〜700万円です。この範囲外では目安としてご利用ください。');
