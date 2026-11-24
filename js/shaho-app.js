@@ -110,8 +110,16 @@ lines.push('');
 lines.push('' + itemLine('合計', r.annual.totals) + '（労使合計 ' + yen(r.annual.totals.total) + '）');
 ITEMS.forEach(function (it) { lines.push('・' + itemLine(it[1], r.annual.items[it[0]]));});
 lines.push('');
+lines.push('【計算過程】');
+var pref = DATA.kenpo.prefectures[i.prefecture];
+function rp(x) { return (Math.round(x * 10000) / 100) + '%'; }
+lines.push('・料率（' + i.prefecture + '・協会けんぽ、労使合計）: 健康保険 ' + rp(pref.health_rate) + (i.ageBand === '40to64' ? '／介護保険 ' + rp(pref.care_rate) : '') + '／子ども・子育て支援金 ' + rp(pref.child_rate) + '／厚生年金 ' + rp(DATA.params.pension_rate) + '／雇用保険 本人 ' + rp(DATA.params.employment_rates[i.industry].worker_rate) + '・会社 ' + rp(DATA.params.employment_rates[i.industry].employer_rate));
+lines.push('・月額の式（本人負担）: 健康保険は標準報酬月額 ' + yen(r.monthly.standardHealth) + ' × ' + rp(pref.health_rate) + ' の折半 ＝ ' + yen(r.monthly.items.health.insured) + '／厚生年金は標準報酬月額 ' + yen(r.monthly.standardPension) + ' × ' + rp(DATA.params.pension_rate) + ' の折半 ＝ ' + yen(r.monthly.items.pension.insured) + '／雇用保険は総支給額 ' + yen(i.gross) + ' × 本人料率 ＝ ' + yen(r.monthly.items.employment.insured) + '。各項目とも端数は50銭ルール（50銭以下切り捨て・50銭超切り上げ）');
+if (i.bonusGross > 0 && i.bonusCount > 0) lines.push('・賞与の式（1回分・本人負担）: 標準賞与額（健保 ' + yen(r.bonus.standardHealth) + '／厚年 ' + yen(r.bonus.standardPension) + '。総支給額の1,000円未満切り捨て、健保は年度累計573万円・厚年は1回150万円が上限）に月額と同じ料率を適用。健康保険 ＝ ' + yen(r.bonus.items.health.insured) + '／厚生年金 ＝ ' + yen(r.bonus.items.pension.insured));
+lines.push('・年額の組み立て: 月額 × 12 ＋ 賞与分 × ' + i.bonusCount + '回');
+lines.push('');
 lines.push('前提: 令和8年度の料率。健康保険は協会けんぽ加入者前提。月給分は標準報酬月額、賞与分は標準賞与額に料率を掛けて計算し、本人負担は項目ごとに端数処理（50銭以下切り捨て・50銭超切り上げ）。会社負担は総額（1円未満切り捨て）から本人負担を引いた表示上の内訳。年額は同じ月給が12か月続く前提。');
-lines.push('根拠: 協会けんぽ「令和8年度の都道府県単位保険料率」「令和8年度保険料額表」、日本年金機構「厚生年金保険の保険料」（料率18.3％・等級表・標準賞与額の上限）、厚生労働省「令和8（2026）年度 雇用保険料率のご案内」');
+lines.push('根拠: 協会けんぽ「令和8年度の都道府県単位保険料率」 https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/rate_prefectures/r08/index.html・「令和8年度保険料額表」（都道府県支部ごとに公表）、日本年金機構「厚生年金保険の保険料」（料率18.3％・等級表・標準賞与額の上限） https://www.nenkin.go.jp/service/kounen/hokenryo/hoshu/20150515-01.html、厚生労働省「令和8（2026）年度 雇用保険料率のご案内」 https://jsite.mhlw.go.jp/gunma-roudoukyoku/content/contents/002597764.pdf');
 lines.push('');
 lines.push('聞きたいこと: ①この試算の前提で見落としはないか ②実際の給与明細と金額が違った場合に考えられる理由 ③会社負担分も含めた社会保険料の全体像として注意すべき点');
 lines.push('');
