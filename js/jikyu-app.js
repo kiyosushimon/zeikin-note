@@ -160,6 +160,14 @@ if (r.reference) {
 lines.push('・参考（通勤・持ち帰り込み）: 額面 ' + rate1(r.reference.grossRate) + (r.reference.netRate !== null ? '／手取り ' + rate1(r.reference.netRate) : ''));
 }
 lines.push('');
+lines.push('【計算過程】');
+lines.push('・年間総労働時間: （1か月平均所定労働時間 ' + hoursFmt(i.avgHours) + ' ＋ 月平均残業 ' + hoursFmt(i.overtimeHours) + ' ＋ 月平均休日労働 ' + hoursFmt(i.holidayHours) + '）× 12 ＝ ' + hoursFmt(r.totalHours));
+if (i.mode === 'b') lines.push('・年収の組み立て: （基本給 ' + yen(i.baseSalary) + ' ＋ 算入する手当 ' + yen(i.includeAllowances) + ' ＋ 除外できる手当 ' + yen(i.excludeAllowances) + ' ＋ 固定残業代 ' + yen(i.fixedOvertime) + '）× 12 ＋ 変動残業代等 ' + yen(i.variableOvertimeAnnual) + ' ＋ 賞与 ' + yen(i.bonusPer) + ' × 年' + i.bonusCount + '回 ＝ ' + yen(r.annualIncome) + '（除外できる手当は支給額には含み、時給換算の算定基礎からは除く）');
+if (r.prescribedRate !== null && i.mode === 'b') lines.push('・所定時給: 算定基礎（基本給＋算入する手当）' + yen(r.baseMonthly) + ' ÷ 1か月平均所定労働時間 ' + hoursFmt(i.avgHours) + ' ＝ ' + yen(r.prescribedRate) + '（端数は50銭ルール: 50銭未満切り捨て・50銭以上切り上げ）');
+lines.push('・実質時給（額面）: 年収 ' + yen(r.annualIncome) + ' ÷ 年間総労働時間 ' + hoursFmt(r.totalHours) + ' ＝ ' + rate1(r.grossRate) + '（小数第1位まで表示）');
+if (r.net) lines.push('・実質時給（手取り）: 年間手取り ' + yen(r.net.net) + '（＝ 年収 − 社会保険料 ' + yen(r.net.social.total) + ' − 所得税 ' + yen(r.net.incomeTax) + ' − 住民税 ' + yen(r.net.residentTax) + '）÷ 年間総労働時間 ＝ ' + rate1(r.netRate));
+if (r.minWage) lines.push('・最低賃金チェック: 対象となる賃金を1か月平均所定労働時間で割った時間額 ' + rate2(r.minWage.hourly) + '（小数第2位まで切り捨て）と ' + r.minWage.prefecture + ' の最低賃金 ' + yen(r.minWage.minWage) + ' を比較');
+lines.push('');
 lines.push('前提: 「実質時給」は本ツールの定義（年収または年間手取り ÷ 年間総労働時間）による試算で、法定の金額ではない。手取りは単身者・標準ケース（控除は社会保険料と基礎控除のみ）の目安で、住民税はその年の収入ベースの目安計算。最低賃金チェックは厚生労働省の公式方法（対象となる賃金 ÷ 1か月平均所定労働時間）による。');
 lines.push('根拠: 労働基準法施行規則第19条（1時間当たりの賃金の換算）、厚生労働省 最低賃金特設サイト「あなたの賃金を比較チェック」「地域別最低賃金全国一覧」https://saiteichingin.mhlw.go.jp/table/page_list_nationallist.php');
 lines.push('');
