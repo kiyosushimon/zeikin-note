@@ -287,16 +287,38 @@ section('再判定対応 REM-01 自営業・60〜64歳の国民年金と年齢�
   eq('REM-01 60〜64歳 ガントの年金行 年額0', prow.annual, 0);
   eq('REM-01 60〜64歳 ガント 月合計の総和=総負担', r.gantt.monthTotals.reduce((a, b) => a + b, 0), 730600);
 
-  /* 40〜59歳は従来の「40〜64歳」と同じ扱い（年金あり・介護分あり）。
-   * 分割前の区分値 '40to64'（保存済み入力など）も '40to59' と同じ結果になること */
+  /* 40〜59歳は従来の「40〜64歳」と同じ扱い（年金あり・介護分あり） */
   const r59 = E.compute(DATA, Object.assign({}, base, { ageBand: '40to59' }));
-  const rLegacy = E.compute(DATA, Object.assign({}, base, { ageBand: '40to64' }));
   eq('REM-01 40〜59歳 国民年金は適用される', r59.pensionApplies, true);
   eq('REM-01 40〜59歳 国民年金 年額', r59.pensionAnnual, 218370);
   eq('REM-01 40〜59歳 国保の介護分', r59.kokuho.components.care, 76250);
   eq('REM-01 40〜59歳 総負担', r59.totalNext, 916670);
-  eq('REM-01 旧区分40to64は40to59と同じ総負担', rLegacy.totalNext, r59.totalNext);
-  eq('REM-01 旧区分40to64は40to59と同じ国保', rLegacy.kokuho.total, r59.kokuho.total);
+
+  /* NEW-01（2026-11-24 最終監査）: 旧区分値 '40to64' は40〜59歳と60〜64歳の両方を
+   * 含んでいたため、決め打ちで '40to59' に読み替えると、実年齢60〜64歳の利用者に
+   * 国民年金を誤って計上する。エンジンは旧区分では確定計算せず
+   * 'age-reselect-required' を返し、画面側が再選択を求める仕様に変更した */
+  const rLegacy = E.compute(DATA, Object.assign({}, base, { ageBand: '40to64' }));
+  eq('NEW-01 旧区分40to64は再選択が必要（エラー）', rLegacy.errors.indexOf('age-reselect-required') >= 0, true);
+  eq('NEW-01 旧区分40to64では総負担を確定しない', rLegacy.totalNext, undefined);
+  eq('NEW-01 isLegacyAgeBand(40to64)', E.isLegacyAgeBand('40to64'), true);
+  eq('NEW-01 isLegacyAgeBand(40to59)', E.isLegacyAgeBand('40to59'), false);
+  eq('NEW-01 isLegacyAgeBand(60to64)', E.isLegacyAgeBand('60to64'), false);
+
+  /* 配偶者の年齢区分は旧値の読み替えを維持する。根拠: 配偶者の区分は複合版では
+   * 国保の代表年齢（repAge）にしか使われず、代表年齢50歳（40〜59歳）と62歳（60〜64歳）は
+   * 国保エンジンの年齢判定（介護分40〜64歳・子ども分の18歳以上判定など）で常に同じ側に
+   * 落ちるため、旧区分の範囲内では金額差が出ない（4自治体で実測確認済み） */
+  const spBase = Object.assign({}, base, {
+    ageBand: '40to59',
+    spouse: { has: true, income: 500000, ageBand: '60to64', inKokuho: true }
+  });
+  const sp60 = E.compute(DATA, spBase);
+  const spLegacy = E.compute(DATA, Object.assign({}, spBase, {
+    spouse: { has: true, income: 500000, ageBand: '40to64', inKokuho: true }
+  }));
+  eq('NEW-01 配偶者の旧区分は国保が60〜64歳と同額', spLegacy.kokuho.total, sp60.kokuho.total);
+  eq('NEW-01 配偶者の旧区分は総負担が60〜64歳と同額', spLegacy.totalNext, sp60.totalNext);
 
   /* 会社員コース: 60〜64歳でも社保の介護保険料は発生する（写像が壊れていないこと） */
   const e = E.compute(DATA, {
