@@ -121,10 +121,21 @@ var lines = [
 if (state.forecast) {
 lines.push('・来年の請求予測: 国保 ' + fmt(state.forecast.kokuho) + '円＋住民税 ' + fmt(state.forecast.jumin) + '円＝合計 ' + fmt(state.forecast.kokuho + state.forecast.jumin) + '円');
 }
+var d = r.deductions;
+var cityRec = juminCities[s.cityLabel];
+lines.push('');
+lines.push('【計算過程】');
+lines.push('・所得控除の内訳: 社会保険料 ' + fmt(d.socialInsurance) + '円＋配偶者控除 ' + fmt(d.spouse) + '円＋配偶者特別控除 ' + fmt(d.spouseSpecial) + '円＋扶養控除 ' + fmt(d.dependents) + '円＋本人区分の控除 ' + fmt(d.self) + '円＋基礎控除 ' + fmt(d.basic) + '円 ＝ ' + fmt(r.deductionTotal) + '円');
+lines.push('・課税所得: ' + fmt(r.totalIncome) + '円 − ' + fmt(r.deductionTotal) + '円 ＝ ' + fmt(r.taxable) + '円（1,000円未満切り捨て）');
+if (cityRec) lines.push('・所得割: 課税所得 × 市民税 ' + cityRec.income_levy.city_rate_pct + '% ＝ ' + fmt(Math.round(r.cityGross)) + '円／× 県民税 ' + cityRec.income_levy.prefecture_rate_pct + '% ＝ ' + fmt(Math.round(r.prefGross)) + '円');
+lines.push('・調整控除: 人的控除の差額合計 ' + fmt(r.diffTotal) + '円をもとに計算 ＝ ' + fmt(r.adjustment) + '円（市民税に8割・県民税に2割を按分して差し引く）');
+if (r.creditApplied) lines.push('・住宅ローン控除（住民税分）: ' + fmt(r.creditApplied) + '円を所得割から控除');
+lines.push('・税額の確定: 市民税・県民税の各々について、所得割（調整控除・住宅ローン控除を差し引いた後）に均等割（市民税 ' + fmt(cityRec ? cityRec.per_capita_levy.city_yen : 0) + '円・県民税 ' + fmt(cityRec ? cityRec.per_capita_levy.prefecture_yen : 0) + '円' + (r.perCapitaExempt ? '。ただし均等割は非課税のため加算なし' : '') + '）を加え、各々100円未満切り捨て。森林環境税 ' + fmt(r.forestTax) + '円を加えて合計 ' + fmt(r.total) + '円');
 lines.push(
 '',
 '',
 '・令和8年度の税率・控除で計算。生命保険料控除・医療費控除・寄附金税額控除は未反映',
+'・根拠: 総務省「個人住民税」 https://www.soumu.go.jp/main_sosiki/jichi_zeisei/czaisei/czaisei_seido/150790_14.html ／ 税率・均等割額は ' + s.cityLabel + ' の公式の料率',
 '',
 '',
 '1. この試算で見落としている控除や前提はありますか？',
