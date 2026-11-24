@@ -22,8 +22,8 @@ function animateValue(el, target) {
 if (!el) return;
 el.textContent = fmt(target) + '円';
 }
-function toIncome(kind, amount, age) {
-if (kind === 'salary') return KokuhoEngine.salaryIncome(amount);
+function toIncome(kind, amount, age, year) {
+if (kind === 'salary') return KokuhoEngine.salaryIncome(amount, year);
 if (kind === 'pension') return KokuhoEngine.pensionIncome(amount, age);
 return amount;
 }
@@ -55,7 +55,7 @@ var meta = CITY_FILES.filter(function (c) { return c.file === $('city').value;})
 var city = juminCities[meta.key];
 if (!city) return;
 var age = parseInt($('age').value, 10) || 0;
-var income = toIncome($('incomeKind').value, parseInt($('incomeAmount').value, 10) || 0, age);
+var income = toIncome($('incomeKind').value, parseInt($('incomeAmount').value, 10) || 0, age, 'r7');
 var r = JuminzeiEngine.compute(rules, city, familyInput(income));
 state.result = { cityLabel: meta.key, income: income, r: r};
 
@@ -85,7 +85,7 @@ forecast(meta, city, age);
 function forecast(meta, city, age) {
 var kData = kokuhoCities[meta.file];
 if (!kData) return;
-var nextIncome = toIncome($('nextKind').value, parseInt($('nextAmount').value, 10) || 0, age + 1);
+var nextIncome = toIncome($('nextKind').value, parseInt($('nextAmount').value, 10) || 0, age + 1, 'r8');
 var jr = JuminzeiEngine.compute(rules, city, familyInput(nextIncome));
 var fam = familyInput(nextIncome);
 var members = [{ age: age + 1, income: nextIncome, judgementIncome: nextIncome, earner: nextIncome > 0, preschool: false}];

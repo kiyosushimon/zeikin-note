@@ -127,7 +127,28 @@ function specificRelativeOne(t, income) {
 /* d: { general, specific, elderlyCohab, elderlyOther,
  *      disabledGeneral, disabledSpecial, disabledCohabSpecial,
  *      selfStatus: 'none'|'widow'|'singleParent'|'workingStudent' } */
-function dependentEtc(t, d) {
+/* 本人区分（寡婦・ひとり親・勤労学生）の所得要件（合計所得金額）:
+ * 寡婦・ひとり親は500万円以下（国税庁タックスアンサー No.1170・No.1171、仕様§1.10）。
+ * 勤労学生は令和8年分から89万円以下（国税庁タックスアンサー No.1175:
+ * 令和8年12月1日施行・令和8年分から適用。改正前の令和7年分は85万円以下）。
+ * 勤労学生の「勤労に基づく所得以外の所得が10万円以下」などの細目は、
+ * 本ツールでは判定せず注記に倒す（アプリ側の注記・コピー文で明示）。 */
+var SELF_STATUS_RULES = {
+  widow: { amountKey: 'widow', limit: 5000000 },
+  singleParent: { amountKey: 'single_parent', limit: 5000000 },
+  workingStudent: { amountKey: 'working_student', limit: 890000 }
+};
+function selfStatusDeduction(t, d, totalIncome) {
+  var status = (d && d.selfStatus) || 'none';
+  var rule = SELF_STATUS_RULES[status];
+  if (!rule) return { status: status, applied: false, amount: 0, limit: null, reason: null };
+  /* totalIncome を渡さない呼び出し（部品単体利用）は従来どおり適用する */
+  if (totalIncome == null || totalIncome <= rule.limit) {
+    return { status: status, applied: true, amount: t.dependent_amounts[rule.amountKey], limit: rule.limit, reason: null };
+  }
+  return { status: status, applied: false, amount: 0, limit: rule.limit, reason: 'over-limit' };
+}
+function dependentEtc(t, d, totalIncome) {
   d = d || {};
   var a = t.dependent_amounts;
   var total = count0(d.general) * a.general
@@ -137,9 +158,7 @@ function dependentEtc(t, d) {
     + count0(d.disabledGeneral) * a.disabled_general
     + count0(d.disabledSpecial) * a.disabled_special
     + count0(d.disabledCohabSpecial) * a.disabled_cohab_special;
-  if (d.selfStatus === 'widow') total += a.widow;
-  else if (d.selfStatus === 'singleParent') total += a.single_parent;
-  else if (d.selfStatus === 'workingStudent') total += a.working_student;
+  total += selfStatusDeduction(t, d, totalIncome).amount;
   return total;
 }
 
@@ -191,7 +210,8 @@ function compute(t, input) {
   var spouse = spouseDeduction(t, totalIncome, !!spouseIn.has, spouseIn.income, !!spouseIn.elderly);
   var specificList = (input.specificRelatives || []).map(function (v) { return specificRelativeOne(t, v); });
   var specificTotal = specificList.reduce(function (a, b) { return a + b; }, 0);
-  var depEtc = dependentEtc(t, input.dependents);
+  var depEtc = dependentEtc(t, input.dependents, totalIncome);
+  var selfStatus = selfStatusDeduction(t, input.dependents, totalIncome);
   var basic = basicDeduction(t, totalIncome);
 
   var deductionsTotal = social + small + life.total + quake + spouse.amount + specificTotal + depEtc + basic;
@@ -212,7 +232,7 @@ function compute(t, input) {
     socialInsurance: social, smallBusiness: small,
     life: life, earthquake: quake, spouse: spouse,
     specificList: specificList, specificTotal: specificTotal,
-    dependentEtc: depEtc, basic: basic,
+    dependentEtc: depEtc, selfStatus: selfStatus, basic: basic,
     deductionsTotal: deductionsTotal,
     taxable: taxable,
     taxCalc: taxCalc,
@@ -235,6 +255,7 @@ var api = {
   spouseDeduction: spouseDeduction,
   specificRelativeOne: specificRelativeOne,
   dependentEtc: dependentEtc,
+  selfStatusDeduction: selfStatusDeduction,
   basicDeduction: basicDeduction,
   taxFromTable: taxFromTable
 };

@@ -300,15 +300,28 @@
 
   /* ---------- 収入→所得の換算（法定の控除表） ---------- */
 
-  /* 給与所得: 給与所得控除を差し引く（令和7年分以後） */
-  function salaryIncome(revenue) {
+  /* 給与所得: 給与所得控除を差し引く。年度で表を切り替える。
+   * 国保・住民税は「前年の所得」に課されるため、令和8年度の料率・課税に対応する
+   * 収入は令和7年分であり、既定は令和7年分の表（給与所得控除の最低保障65万円。
+   * 所得税法別表第五・令和7年分改正）を使う。
+   * 令和8年分の収入を扱う経路（住民税ツールの来年予測など）は 'r8' を渡す
+   * （最低保障74万円。ふるさと納税ツールの salaryIncomeOf と同じ表）。
+   * 別表第五の4,000円区間の平坦部は再現しない（従来どおりの簡易式）。 */
+  function salaryIncome(revenue, year) {
     var d;
-    if (revenue <= 1625000) d = 550000;
-    else if (revenue <= 1800000) d = revenue * 0.4 - 100000;
-    else if (revenue <= 3600000) d = revenue * 0.3 + 80000;
-    else if (revenue <= 6600000) d = revenue * 0.2 + 440000;
-    else if (revenue <= 8500000) d = revenue * 0.1 + 1100000;
-    else d = 1950000;
+    if (year === 'r8') {
+      if (revenue <= 2200000) d = 740000;
+      else if (revenue <= 3600000) d = revenue * 0.3 + 80000;
+      else if (revenue <= 6600000) d = revenue * 0.2 + 440000;
+      else if (revenue <= 8500000) d = revenue * 0.1 + 1100000;
+      else d = 1950000;
+    } else {
+      if (revenue <= 1900000) d = 650000;
+      else if (revenue <= 3600000) d = revenue * 0.3 + 80000;
+      else if (revenue <= 6600000) d = revenue * 0.2 + 440000;
+      else if (revenue <= 8500000) d = revenue * 0.1 + 1100000;
+      else d = 1950000;
+    }
     return Math.max(0, Math.floor(revenue - d));
   }
 

@@ -149,7 +149,7 @@ var kind = r.querySelector('.m-kind').value;
 var amount = parseInt(r.querySelector('.m-amount').value, 10) || 0;
 if (isNaN(age)) { errors.push((i + 1) + '人目の年齢を入力してください。'); continue;}
 var income;
-if (kind === 'salary') income = window.KokuhoEngine.salaryIncome(amount);
+if (kind === 'salary') income = window.KokuhoEngine.salaryIncome(amount, 'r7');
 else if (kind === 'pension') income = window.KokuhoEngine.pensionIncome(amount, age);
 else income = amount;
 var judgement = income;

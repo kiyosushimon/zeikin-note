@@ -83,6 +83,17 @@ $('specWrap').hidden = input.specificRelatives.length === 0;
 var r = E.compute(T, input);
 last = { input: input, result: r };
 
+/* 給与収入2,000万円超は年末調整の対象外: 金額の見出し表示をやめ、対象外表示に切り替える */
+if (r.overIncomeLimit) {
+$('verdictLabel').textContent = '年末調整の対象外です';
+$('balance').textContent = '対象外';
+$('resultDetail').hidden = true;
+$('taxExplain').textContent = '給与収入が2,000万円を超える方は年末調整の対象にならないため、この試算では金額を計算していません。確定申告が必要です。';
+$('detailNotes').innerHTML = '<li>給与収入が2,000万円を超える方は年末調整の対象とならないため、この試算は適用されません。確定申告が必要です。</li>';
+return;
+}
+$('resultDetail').hidden = false;
+
 /* 判定（還付／徴収／過不足なし） */
 var label, amount;
 if (r.balance > 0) { label = '年末調整で戻る額（還付）'; amount = r.balance; }
@@ -138,7 +149,13 @@ notes.push('令和8年分は、11月までの源泉徴収が改正前（基礎�
 if (input.otherIncome > 0) notes.push('給与以外の所得 ' + yen(input.otherIncome) + ' は、基礎控除・配偶者控除などの判定（合計所得金額）にだけ反映しています。その所得にかかる税金は年末調整では精算されず、確定申告で精算されます。');
 notes.push('転職した方は、前職分の給与・社会保険料・源泉徴収税額を合算して入力してください。合算が漏れると過不足額が実際とずれます。');
 notes.push('生命保険料控除・地震保険料控除の計算で生じる1円未満の端数は、切り上げて計算しています（勤務先の計算と1円程度異なる場合があります）。');
-if (r.overIncomeLimit) notes.push('給与収入が2,000万円を超える方は年末調整の対象とならないため、この試算は適用されません。確定申告が必要です。');
+if (r.selfStatus && r.selfStatus.status !== 'none' && !r.selfStatus.applied) {
+var ssLabel = { widow: '寡婦控除', singleParent: 'ひとり親控除', workingStudent: '勤労学生控除' }[r.selfStatus.status];
+notes.push(ssLabel + 'は、合計所得金額の要件（' + yen(r.selfStatus.limit) + '以下）を満たさないため適用していません（あなたの合計所得金額は ' + yen(r.totalIncome) + ' です）。');
+}
+if (r.selfStatus && r.selfStatus.status === 'workingStudent' && r.selfStatus.applied) {
+notes.push('勤労学生控除は、合計所得金額89万円以下かどうかで判定しています。勤労に基づく所得以外の所得が10万円以下であることなどの細かい要件は判定していないため、勤務先・税務署でご確認ください。');
+}
 $('detailNotes').innerHTML = notes.map(function (n) { return '<li>' + n + '</li>';}).join('');
 }
 
@@ -156,8 +173,18 @@ if (i.specificRelatives.length) lines.push('・特定親族（19歳以上23歳�
 lines.push('・扶養親族: 一般 ' + i.dependents.general + '人／特定扶養 ' + i.dependents.specific + '人／老人（同居老親等） ' + i.dependents.elderlyCohab + '人／老人（その他） ' + i.dependents.elderlyOther + '人');
 lines.push('・障害者: 一般 ' + i.dependents.disabledGeneral + '人／特別 ' + i.dependents.disabledSpecial + '人／同居特別 ' + i.dependents.disabledCohabSpecial + '人');
 lines.push('・本人の区分: ' + ({ none: 'なし', widow: '寡婦', singleParent: 'ひとり親', workingStudent: '勤労学生' })[i.dependents.selfStatus]);
+if (r.selfStatus && r.selfStatus.status !== 'none') {
+lines.push('・本人区分の控除の適用: ' + (r.selfStatus.applied
+? '適用しています（合計所得金額 ' + yen(r.totalIncome) + ' が要件の ' + yen(r.selfStatus.limit) + '以下）'
+: '適用していません（合計所得金額 ' + yen(r.totalIncome) + ' が要件の ' + yen(r.selfStatus.limit) + '以下を超えるため）'));
+if (r.selfStatus.status === 'workingStudent') lines.push('・勤労学生控除の細かい要件（勤労に基づく所得以外の所得が10万円以下であることなど）は判定していません。');
+}
 lines.push('・住宅借入金等特別控除額: ' + yen(i.housing));
 lines.push('');
+if (r.overIncomeLimit) {
+lines.push('・結果: 対象外（給与収入が2,000万円を超えるため、年末調整の対象になりません。金額は計算していません。確定申告が必要です）');
+lines.push('');
+} else {
 lines.push('・給与所得控除後の金額: ' + yen(r.salaryAfter) + (r.adjustment ? '（所得金額調整控除 ' + yen(r.adjustment) + '）' : ''));
 lines.push('・所得控除の合計: ' + yen(r.deductionsTotal) + '（うち基礎控除 ' + yen(r.basic) + '）');
 lines.push('・課税給与所得金額: ' + yen(r.taxable));
@@ -173,6 +200,7 @@ if (i.housing > 0) lines.push('・住宅借入金等特別控除: 算出税額 '
 lines.push('・年調年税額: ' + yen(r.afterHousing) + ' × 1.021（復興特別所得税）→ 100円未満切り捨て ＝ ' + yen(r.annualTax));
 lines.push('・過不足額: 源泉徴収税額 ' + yen(i.withheld) + ' − 年調年税額 ' + yen(r.annualTax) + ' ＝ ' + (r.balance >= 0 ? '還付 ' + yen(r.balance) : '徴収 ' + yen(-r.balance)));
 lines.push('');
+}
 lines.push('前提: 令和8年分（2026年分）の年末調整。主たる給与（扶養控除等申告書を提出した勤務先）が対象。入力は見積額・申告内容に基づく試算で、実際の年末調整は勤務先が確定値で行います。医療費控除・寄附金控除は年末調整では扱えず確定申告が必要です。');
 lines.push('根拠: 国税庁「令和8年分 年末調整のしかた」（手順・金額の表・速算表） https://www.nta.go.jp/users/gensen/nencho/index/shikata.htm、国税庁タックスアンサー No.1199（基礎控除） https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1199.htm・No.1191（配偶者控除） https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1191.htm・No.1195（配偶者特別控除） https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1195.htm・No.1140（生命保険料控除） https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1140.htm・No.1145（地震保険料控除） https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1145.htm');
 lines.push('');

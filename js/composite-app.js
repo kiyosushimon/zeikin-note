@@ -262,7 +262,7 @@ var rows = [];
 rows.push(['住民税' + kindBadge('ツケ型'), yen(r.resident.total)]);
 if (input.course === 'self') {
 rows.push(['国民健康保険料' + kindBadge('ツケ型'), yen(r.kokuho.total)]);
-rows.push(['国民年金保険料' + kindBadge('現年型'), yen(r.pension.annualNext)]);
+rows.push(['国民年金保険料' + kindBadge('現年型'), yen(r.pension.annualApplied)]);
 }
 rows.push(['所得税' + kindBadge('現年型'), yen(r.incomeTax.annualTax)]);
 if (input.course === 'employee') {
@@ -319,6 +319,7 @@ notes.push('社会保険料は、月給の目安 ' + yen(r.socialNext.monthlyGro
 } else {
 notes.push('国民健康保険料の納期の回数と開始月は自治体によって異なります（年8回・10回・11回など）。ここでは年10回・6月開始の標準的なパターンで表示しています。実際の納期はお住まいの自治体の納入通知書で確認してください。');
 notes.push('自営業コースの社会保険料控除は、国保料＋国民年金保険料（来年1年分）の近似値 ' + yen(r.socialDeductionApprox) + ' を使っています。手取りは所得ベースの表示です（所得は確定申告書の「所得金額の合計」で、青色申告特別控除を受ける場合は控除後の金額を入力してください）。');
+if (!r.pensionApplies) notes.push('本人の年齢区分が65歳以上のため、国民年金保険料は計上していません（国民年金の強制加入は20歳以上60歳未満です。任意加入の保険料は対象外とし、社会保険料控除の近似にも含めていません）。');
 }
 notes.push('この結果は印刷（ブラウザの印刷機能でPDF保存）できます。印刷時は入力欄を除き、結果とガントだけが出力されます。');
 $('resultNotes').innerHTML = notes.map(function (n) { return '<li>' + n + '</li>';}).join('');
@@ -374,8 +375,12 @@ lines.push('・社会保険料: ' + lab(0) + '〜' + lab(11) + '、毎月 ' + ye
 lines.push('・国民健康保険料: ' + lab(5) + '〜' + lab(14) + ' の10回、各 ' + yen(cells[6]) +
 (cells[5]!== cells[6]? '（第1期のみ ' + yen(cells[5]) + '）': '') + '。年10回・6月開始の標準パターン');
 } else if (row.key === 'pension') {
+if (row.annual > 0) {
 lines.push('・国民年金保険料: ' + lab(0) + '〜' + lab(2) + ' は月 ' + yen(cells[0]) + '（令和8年度額）、' +
 lab(3) + '〜' + lab(11) + ' は月 ' + yen(cells[3]) + '（令和9年度額）');
+} else {
+lines.push('・国民年金保険料: 60歳以上のため計上していません（強制加入は20歳以上60歳未満。任意加入は対象外）');
+}
 } else if (row.key === 'resident') {
 if (input.residentCollection === 'special') {
 lines.push('・住民税（特別徴収）: ' + lab(5) + '〜' + lab(16) + '、毎月 ' + yen(cells[6]) +
@@ -434,7 +439,7 @@ lines.push('・総負担: ' + yen(r.totalNext) + '（ツケ型 ' + yen(r.tsukeTo
 var parts = ['住民税 ' + yen(r.resident.total) + '（ツケ型）'];
 if (!emp) {
 parts.push('国民健康保険料 ' + yen(r.kokuho.total) + '（ツケ型）');
-parts.push('国民年金保険料 ' + yen(r.pension.annualNext) + '（現年型）');
+parts.push('国民年金保険料 ' + yen(r.pension.annualApplied) + '（現年型）');
 }
 parts.push('所得税 ' + yen(r.incomeTax.annualTax) + '（現年型）');
 if (emp) parts.push('社会保険料 ' + yen(r.socialNext.total) + '（現年型）');
@@ -501,8 +506,12 @@ lines.push('・区分別: ' + deductionParts([
 lines.push('・世帯類型は「一般世帯」固定で、未就学児の均等割5割減額は適用していません（高めに出る近似です）。');
 lines.push('');
 lines.push('■ 国民年金保険料（現年型）');
+if (r.pensionApplies) {
 lines.push('・令和9年1〜3月: ' + yen(r.pension.monthlyR8) + '/月（令和8年度額）× 3か月 ＋ 4〜12月: ' +
 yen(r.pension.monthlyR9) + '/月（令和9年度額）× 9か月 ＝ ' + yen(r.pension.annualNext) + '（1人分）');
+} else {
+lines.push('・本人の年齢区分が65歳以上のため計上していません（国民年金の強制加入は20歳以上60歳未満。任意加入は対象外）＝ 0円');
+}
 lines.push('');
 var st = r.incomeTaxSelf;
 lines.push('■ 所得税（現年型）');

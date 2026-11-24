@@ -32,6 +32,13 @@ var WAGE_MONTHLY_LINE = 88000;      // K2 賃金要件（月額。§1.5）
 var WAGE_ANNUAL_GUIDE = 1056000;    // K2 年収換算の目安（8.8万円 × 12）
 var DEPENDENT_LINE = 1300000;       // K3 被扶養者の年間収入の線（未満。§1.6）
 var DEPENDENT_LINE_YOUNG = 1500000; // K3b 19歳以上23歳未満（未満。§1.6）
+var DEPENDENT_LINE_SENIOR = 1800000; // K3 60歳以上の被扶養者（未満。日本年金機構の被扶養者認定の年間収入要件）
+
+/* 被扶養者が60歳以上かどうか（年齢区分 '60to64'|'65to69' で判定する） */
+function isSeniorBand(ageBand) { return ageBand === '60to64' || ageBand === '65to69'; }
+/* 社会保険料の計算（ShahoEngine）に渡す年齢区分: '60to64' は介護保険の扱いが
+ * '40to64' と同じため読み替える */
+function shahoBand(ageBand) { return ageBand === '60to64' ? '40to64' : ageBand; }
 var SPOUSE_DED_LINE = 1360000;      // K4 配偶者控除の壁（配偶者の合計所得62万円。§1.7）
 var SPOUSE_FULL_LINE = 1690000;     // K5 配偶者特別控除の満額ゾーン上限（同95万円）
 var SPOUSE_END_LINE = 2070000;      // K6 配偶者特別控除の消滅（同133万円）
@@ -69,7 +76,7 @@ function socialAnnual(data, income, ageBand, prefecture, industry) {
   var r = ShahoEngine.compute(
     { kenpo: data.kenpo, params: data.shahoParams },
     {
-      prefecture: prefecture, ageBand: ageBand,
+      prefecture: prefecture, ageBand: shahoBand(ageBand),
       salaryMode: 'gross', gross: monthlyGross,
       bonusGross: 0, bonusCount: 0,
       industry: industry, employmentInsured: true, cumulativeBonus: 0
@@ -336,13 +343,13 @@ function wallK2(k2, monthlyWage, valley) {
   return w;
 }
 
-/* K3/K3b 被扶養者の壁（§1.6）。line は 130万円 or 150万円 */
-function wallK3(income, line, young) {
-  var w = wall(young ? 'K3b' : 'K3', young ? '150万円の壁（被扶養者・19〜22歳）' : '130万円の壁（被扶養者）', line);
+/* K3/K3b 被扶養者の壁（§1.6）。line は 130万円 or 150万円 or 180万円（60歳以上） */
+function wallK3(income, line, young, senior) {
+  var w = wall(young ? 'K3b' : 'K3', young ? '150万円の壁（被扶養者・19〜22歳）' : senior ? '180万円の壁（被扶養者・60歳以上）' : '130万円の壁（被扶養者）', line);
   w.type = 'cliff';
   if (yen0(income) < line) { w.status = 'within'; w.remaining = line - yen0(income); }
   else { w.status = 'over'; w.overBy = yen0(income) - line; }
-  w.detail = { monthlyGuide: Math.floor(line / 12) };
+  w.detail = { monthlyGuide: Math.floor(line / 12), senior: !!senior };
   return w;
 }
 
@@ -352,17 +359,20 @@ function computeSpouse(data, input) {
   var income = yen0(input.income);
   var supporterIncome = yen0(input.supporterIncome);
   var k2 = judgeK2(input);
+  /* 被扶養者（配偶者）が60歳以上なら、被扶養者の線は180万円 */
+  var seniorDep = isSeniorBand(input.selfAgeBand);
+  var depLine = seniorDep ? DEPENDENT_LINE_SENIOR : DEPENDENT_LINE;
 
   /* 配偶者（働く本人）の社会保険の扱い（§3-7） */
   var route;
   if (k2.kind === 'full' || k2.met) route = 'join';
-  else if (income < DEPENDENT_LINE) route = 'dependent';
+  else if (income < depLine) route = 'dependent';
   else route = 'kokuho';
 
   function household(spIncome, spRoute) {
     return SetaiEngine.computeHousehold(data, {
-      self: { income: supporterIncome, ageBand: input.supporterAgeBand, bonusPer: 0, bonusCount: 0 },
-      spouse: { income: yen0(spIncome), ageBand: input.selfAgeBand, bonusPer: 0, bonusCount: 0 },
+      self: { income: supporterIncome, ageBand: shahoBand(input.supporterAgeBand), bonusPer: 0, bonusCount: 0 },
+      spouse: { income: yen0(spIncome), ageBand: shahoBand(input.selfAgeBand), bonusPer: 0, bonusCount: 0 },
       prefecture: input.prefecture, industry: 'general',
       spouseSocial: spRoute === 'join' ? 'join' : 'dependent',
       children: { under16: 0, general: 0, specific: 0, parent: 'self' }
@@ -388,7 +398,7 @@ function computeSpouse(data, input) {
     }
   }
   /* ステップ表（§1.12）: 現在＋壁の直前・直後 */
-  var stepPoints = [income, 1050000, 1070000, 1290000, 1310000];
+  var stepPoints = [income, 1050000, 1070000, depLine - 10000, depLine + 10000];
   var seen = {};
   steps = [];
   stepPoints.forEach(function (p) {
@@ -398,7 +408,7 @@ function computeSpouse(data, input) {
     if (p === income) r2 = route;
     else if (k2.kind === 'full') r2 = 'join';
     else if (nonWageMet && Math.floor(p / 12) >= WAGE_MONTHLY_LINE) r2 = 'join';
-    else if (p < DEPENDENT_LINE) r2 = 'dependent';
+    else if (p < depLine) r2 = 'dependent';
     else if (nonWageMet) r2 = 'join';
     else r2 = 'kokuho';
     var h = household(p, r2);
@@ -418,7 +428,7 @@ function computeSpouse(data, input) {
   w1.impact = { kind: 'residentTax', amount: cur.spouse.residentTax.tax };
   walls.push(w1);
   walls.push(wallK2(k2, input.monthlyWage, nonWageMet ? valley : null));
-  var w3 = wallK3(income, DEPENDENT_LINE, false);
+  var w3 = wallK3(income, depLine, false, seniorDep);
   if (route === 'join') w3.impact = { kind: 'socialCost', amount: cur.spouse.social.total };
   w3.detail.route = route;
   w3.detail.supporterHalf = supporterIncome > 0 ? Math.floor(supporterIncome / 2) : null;
@@ -498,7 +508,9 @@ function computeStudent(data, input) {
   var childTotal = totalIncomeTax(t, income);
   var childResident = residentIncome(income);
   var young = input.studentAgeBand === '19to22';
-  var line = young ? DEPENDENT_LINE_YOUNG : DEPENDENT_LINE;
+  /* 被扶養者（子）が60歳以上なら線は180万円（19〜22歳の150万円とは重ならない） */
+  var seniorDep = !young && isSeniorBand(input.selfAgeBand);
+  var line = young ? DEPENDENT_LINE_YOUNG : (seniorDep ? DEPENDENT_LINE_SENIOR : DEPENDENT_LINE);
   var k2 = judgeK2({
     weeklyHours: input.weeklyHours, monthlyWage: input.monthlyWage,
     employees: input.employees, isStudent: true
@@ -532,7 +544,7 @@ function computeStudent(data, input) {
   w1.impact = { kind: 'residentTax', amount: child.residentTax.tax };
   walls.push(w1);
   walls.push(wallK2(k2, input.monthlyWage, null));
-  var w3 = wallK3(income, line, young);
+  var w3 = wallK3(income, line, young, seniorDep);
   w3.detail.route = route;
   w3.detail.supporterHalf = yen0(input.supporterIncome) > 0 ? Math.floor(yen0(input.supporterIncome) / 2) : null;
   if (route === 'join') w3.impact = { kind: 'socialCost', amount: child.social ? child.social.total : 0 };
@@ -650,6 +662,7 @@ var api = {
     RESIDENT_WALL_1: RESIDENT_WALL_1, RESIDENT_WALL_2: RESIDENT_WALL_2, RESIDENT_WALL_3: RESIDENT_WALL_3,
     WAGE_MONTHLY_LINE: WAGE_MONTHLY_LINE, WAGE_ANNUAL_GUIDE: WAGE_ANNUAL_GUIDE,
     DEPENDENT_LINE: DEPENDENT_LINE, DEPENDENT_LINE_YOUNG: DEPENDENT_LINE_YOUNG,
+    DEPENDENT_LINE_SENIOR: DEPENDENT_LINE_SENIOR,
     SPOUSE_DED_LINE: SPOUSE_DED_LINE, SPOUSE_FULL_LINE: SPOUSE_FULL_LINE, SPOUSE_END_LINE: SPOUSE_END_LINE,
     DEP_DED_LINE: DEP_DED_LINE, SPEC_REL_END_LINE: SPEC_REL_END_LINE,
     INCOME_TAX_WALL: INCOME_TAX_WALL, WORKING_STUDENT_LINE: WORKING_STUDENT_LINE

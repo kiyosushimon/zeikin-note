@@ -15,7 +15,7 @@ var last = null;
 var wageAuto = true;
 
 var MODE_LABEL = { spouse: '配偶者として働く', student: '学生（子）として働く', self: '自分自身の税金を見る' };
-var AGE_LABEL = { under40: '40歳未満', '40to64': '40〜64歳（介護保険料あり）', '65to69': '65〜69歳' };
+var AGE_LABEL = { under40: '40歳未満', '40to64': '40〜64歳（介護保険料あり）', '60to64': '60〜64歳（介護保険料あり）', '65to69': '65〜69歳' };
 var HOURS_LABEL = { lt20: '週20時間未満', ge20: '週20時間以上（正社員の4分の3未満）', full: '正社員の4分の3以上' };
 var EMP_LABEL = { '51plus': '従業員51人以上', le50: '従業員50人以下', unknown: '従業員数は分からない' };
 var STUDENT_AGE_LABEL = { under19: '19歳未満', '19to22': '19〜22歳', '23plus': '23歳以上' };
@@ -112,6 +112,7 @@ break;
 case 'K3':
 case 'K3b':
 lines.push('被扶養者でいるための年間収入の線です。判定は過去の収入ではなく「今後1年の収入見込み」で行われます（月額の目安 ' + yen(d.monthlyGuide) + '）。繁忙期の残業など一時的な収入増なら、事業主の証明で扶養を続けられる場合があります（原則として連続2回まで）。被扶養者でなくなると、国民年金も第3号被保険者から第1号への変更が必要になります。');
+if (d.senior) lines.push('被扶養者が60歳以上のため、線は通常の130万円ではなく180万円です（60歳以上・障害者の被扶養者は年間収入180万円未満が認定の要件です）。');
 if (d.supporterHalf && r.worker.income >= d.supporterHalf && r.worker.income > 0) {
 lines.push('扶養者の年収の半分（' + yen(d.supporterHalf) + '）も認定の目安になります。実際の認定は世帯の生計状況により保険者が判断します。');
 }
@@ -150,7 +151,9 @@ case 'K7':
 if (r.mode === 'student' && last && last.input.studentAgeBand === '19to22') {
 lines.push('親の扶養控除が外れる線です。ただし19〜22歳は、超えても特定親族特別控除が満額（63万円）で受け継ぐため、親の控除額は変わりません。被扶養者の線（150万円）とは別の制度の別の線です。');
 } else {
-lines.push('親の扶養控除が外れる線です。この年齢では受け継ぐ控除がないため、崖になります。被扶養者の線（130万円）とは別の制度の別の線です。');
+var k3w = null;
+r.walls.forEach(function (x) { if (x.id === 'K3' || x.id === 'K3b') k3w = x; });
+lines.push('親の扶養控除が外れる線です。この年齢では受け継ぐ控除がないため、崖になります。被扶養者の線（' + (k3w ? amountText(k3w) : '130万円') + '）とは別の制度の別の線です。');
 }
 if (d.parentKindNow) lines.push('現在の親の控除（所得税）: ' + d.parentKindNow + ' ' + yen(d.parentAmountNow) + '。');
 else lines.push('現在、親に子の控除はありません。');
@@ -353,7 +356,7 @@ lines.push('【計算過程】');
 var wk = r.worker;
 lines.push('・本人の所得税: 給与所得（年収 ' + yen(i.income) + ' − 給与所得控除）' + yen(wk.salaryTax) + ' から控除（社会保険料 ' + yen(wk.incomeTax.social) + '＋配偶者 ' + yen(wk.incomeTax.spouseAmount) + '＋扶養 ' + yen(wk.incomeTax.dependentAmount) + '＋基礎 ' + yen(wk.incomeTax.basic) + '）＝ ' + yen(wk.incomeTax.deductionsTotal) + ' を引き、課税所得 ' + yen(wk.incomeTax.taxable) + '（1,000円未満切り捨て）に速算表を適用し ×1.021（復興特別所得税）＝ ' + yen(wk.incomeTax.tax));
 lines.push('・本人の住民税: 課税所得 ' + yen(wk.residentTax.taxable) + ' × 10% − 調整控除 ' + yen(wk.residentTax.adjustment) + ' ＋ 均等割 ' + yen(wk.residentTax.perCapita) + ' ＋ 森林環境税 ' + yen(wk.residentTax.forest) + ' ＝ ' + yen(wk.residentTax.tax) + '（100円未満切り捨て）');
-lines.push('・壁の判定の根拠: 所得税の壁178万円 ＝ 基礎控除104万円 ＋ 給与所得控除の最低保障74万円。住民税の壁110万円は1級地・単身の非課税限度額（給与所得に換算して判定）。社会保険の壁は、被扶養者の収入要件130万円（19〜22歳は150万円）と、短時間労働者の加入要件（週の所定労働時間20時間・賃金月額8.8万円・従業員数51人以上・学生でないこと）で判定');
+lines.push('・壁の判定の根拠: 所得税の壁178万円 ＝ 基礎控除104万円 ＋ 給与所得控除の最低保障74万円。住民税の壁110万円は1級地・単身の非課税限度額（給与所得に換算して判定）。社会保険の壁は、被扶養者の収入要件130万円（19〜22歳は150万円、60歳以上は180万円）と、短時間労働者の加入要件（週の所定労働時間20時間・賃金月額8.8万円・従業員数51人以上・学生でないこと）で判定');
 r.walls.forEach(function (w) {
 var s = '・' + w.name + ': 線 ' + yen(w.line);
 if (w.id === 'K1' && w.detail && w.detail.residentIncome !== undefined) s += '（本人の給与所得換算 ' + yen(w.detail.residentIncome) + ' と非課税限度 ' + yen(w.detail.limit) + ' を比較）';

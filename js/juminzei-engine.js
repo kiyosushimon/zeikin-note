@@ -15,9 +15,14 @@
     return 0;
   }
 
-  function spouseDeduction(rules, totalIncome, spouse) {
+  /* 配偶者の所得要件（同一生計配偶者）: 対象年度で切り替える。
+   * 令和8年度は58万円、令和9年度は62万円（複合版の経路から渡される）。
+   * input.spouseIncomeLimit が無い場合は令和8年度の58万円。 */
+  function spouseLimitOf(input) { return input.spouseIncomeLimit || 580000; }
+
+  function spouseDeduction(rules, totalIncome, spouse, spouseLimit) {
     if (!spouse || totalIncome > 10000000) return 0;
-    if (spouse.income > 580000) return 0;
+    if (spouse.income > spouseLimit) return 0;
     var rows = rules.income_deductions.spouse.by_taxpayer_total_income;
     for (var i = 0; i < rows.length; i++) {
       if (totalIncome <= rows[i].taxpayer_income_max_yen) return spouse.elderly ? rows[i].elderly_yen : rows[i].general_yen;
@@ -25,9 +30,9 @@
     return 0;
   }
 
-  function spouseSpecialDeduction(rules, totalIncome, spouse) {
+  function spouseSpecialDeduction(rules, totalIncome, spouse, spouseLimit) {
     if (!spouse || totalIncome > 10000000) return 0;
-    if (spouse.income <= 580000 || spouse.income > 1330000) return 0;
+    if (spouse.income <= spouseLimit || spouse.income > 1330000) return 0;
     var key = totalIncome <= 9000000 ? 'taxpayer_le_900man' : (totalIncome <= 9500000 ? 'taxpayer_le_950man' : 'taxpayer_le_1000man');
     var rows = rules.income_deductions.spouse_special.table;
     for (var i = 0; i < rows.length; i++) {
@@ -36,8 +41,8 @@
     return 0;
   }
 
-  function spouseDifference(rules, totalIncome, spouse) {
-    if (!spouse || totalIncome > 10000000 || spouse.income > 580000) return 0;
+  function spouseDifference(rules, totalIncome, spouse, spouseLimit) {
+    if (!spouse || totalIncome > 10000000 || spouse.income > spouseLimit) return 0;
     var rows = rules.adjustment_deduction.personal_deduction_differences_yen.spouse_by_taxpayer_income;
     for (var i = 0; i < rows.length; i++) {
       if (totalIncome <= rows[i].taxpayer_income_max_yen) return spouse.elderly ? rows[i].elderly_yen : rows[i].general_yen;
@@ -57,12 +62,16 @@
   };
 
   /* input: { totalIncome, spouse:{income, elderly}|null, dependents:{general,specific,elderly,cohabiting,young},
-              socialInsurance, selfStatus, isMinor, housingCredit } */
+              socialInsurance, selfStatus, isMinor, housingCredit, spouseIncomeLimit } */
   function compute(rules, city, input) {
     var totalIncome = input.totalIncome || 0;
+    var spouseLimit = spouseLimitOf(input);
     var dep = input.dependents || {};
     var nDep = (dep.general || 0) + (dep.specific || 0) + (dep.elderly || 0) + (dep.cohabiting || 0) + (dep.young || 0);
-    var n = 1 + (input.spouse ? 1 : 0) + nDep;
+    /* 非課税判定の人数: 配偶者は、同一生計配偶者の所得要件（対象年度の閾値以下）を
+     * 満たす場合だけ数える（要件を超える配偶者を数えると非課税限度額が誤って広がる） */
+    var spouseCounted = !!input.spouse && (input.spouse.income || 0) <= spouseLimit;
+    var n = 1 + (spouseCounted ? 1 : 0) + nDep;
 
     /* ---- 非課税判定 ---- */
     var specialStatus = ['disability_general', 'disability_special', 'disability_cohabiting', 'widow', 'single_parent'].indexOf(input.selfStatus) >= 0 || !!input.isMinor;
@@ -77,8 +86,8 @@
     var selfKey = input.selfStatus || 'none';
     var deductions = {
       basic: basicDeduction(rules, totalIncome),
-      spouse: spouseDeduction(rules, totalIncome, input.spouse),
-      spouseSpecial: spouseSpecialDeduction(rules, totalIncome, input.spouse),
+      spouse: spouseDeduction(rules, totalIncome, input.spouse, spouseLimit),
+      spouseSpecial: spouseSpecialDeduction(rules, totalIncome, input.spouse, spouseLimit),
       dependents: (dep.general || 0) * 330000 + (dep.specific || 0) * 450000 + (dep.elderly || 0) * 380000 + (dep.cohabiting || 0) * 450000,
       self: SELF_DEDUCTION[selfKey] || 0,
       socialInsurance: input.socialInsurance || 0
@@ -97,7 +106,7 @@
     var diffTotal = 0;
     if (totalIncome <= 25000000) {
       diffTotal += diff.basic;
-      diffTotal += spouseDifference(rules, totalIncome, input.spouse);
+      diffTotal += spouseDifference(rules, totalIncome, input.spouse, spouseLimit);
       diffTotal += (dep.general || 0) * diff.dependent.general + (dep.specific || 0) * diff.dependent.specific +
         (dep.elderly || 0) * diff.dependent.elderly + (dep.cohabiting || 0) * diff.dependent.cohabiting_elderly_parent;
       var sdKey = selfKey === 'single_parent' ? (input.singleParentMother ? 'single_parent_mother' : 'single_parent_father') : selfKey;

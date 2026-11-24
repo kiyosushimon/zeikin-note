@@ -41,6 +41,26 @@ $('depWrap').hidden = input.column === 'otsu';
 var r = E.compute(DATA, input);
 last = { input: input, result: r };
 
+/* 75歳以上は後期高齢者医療制度の対象で、協会けんぽの賞与計算自体が対象外 */
+if (r.outOfScope) {
+$('netLabel').textContent = '対象外';
+$('net').textContent = '対象外';
+$('dGross').textContent = yen(r.gross);
+$('dHealth').textContent = '—';
+$('careRow').hidden = true;
+$('dCare').textContent = '—';
+$('dChild').textContent = '—';
+$('dPension').textContent = '—';
+$('dEmployment').textContent = '—';
+$('dSocial').textContent = '—';
+$('dTax').textContent = '—';
+$('taxExplain').textContent = '75歳以上の方は後期高齢者医療制度の対象となり、協会けんぽ・厚生年金の賞与計算は行われません。このツールでは金額を計算しません。';
+$('detailNotes').innerHTML = '<li>75歳以上の方の医療保険は後期高齢者医療制度に移行しています。保険料はお住まいの都道府県の後期高齢者医療広域連合の基準で決まります。</li>' +
+'<li>住民税は賞与からは天引きされません。賞与を含む年収全体への課税は、翌年度の住民税に反映されます。</li>';
+return;
+}
+$('netLabel').textContent = '手取り額';
+
 $('net').textContent = yen(r.net);
 $('dGross').textContent = yen(r.gross);
 $('dHealth').textContent = yen(r.health);
@@ -81,6 +101,7 @@ if (r.pensionCapped) notes.push('厚生年金の標準賞与額は、上限の15
 if (input.prevMode === 'grossOnly' && r.prevComputed) {
 notes.push('前月の社会保険料等は、標準報酬月額 ' + yen(r.prevComputed.standard) + '（等級表 第' + r.prevComputed.grade + '級）から計算した ' + yen(r.prevComputed.total) + ' を使っています（協会けんぽ加入・前月の標準報酬月額が等級表どおり・前月に賞与の支給がないことが前提です）。');
 }
+if (input.ageBand === '70to74') notes.push('70歳以上のため、厚生年金保険料は計算していません（健康保険料・子ども・子育て支援金・雇用保険料はかかります）。');
 if (input.ageBand !== 'under40') notes.push('介護保険料がかかるかどうかは誕生月で前後する場合があります。40歳・65歳の誕生月に当たる場合は、勤務先の計算とずれることがあります。');
 if (!input.employmentInsured) notes.push('雇用保険の被保険者ではないため、雇用保険料は0円として計算しています。');
 notes.push('住民税は賞与からは天引きされません（住民税の特別徴収は、6月〜翌年5月の毎月の給与から年税額の12分の1ずつを徴収する仕組みです）。賞与を含む年収全体への課税は、翌年度の住民税に反映されます。');
@@ -93,11 +114,15 @@ var i = last.input, r = last.result;
 var lines = ['賞与の手取り計算の試算結果について相談です。', ''];
 lines.push('・賞与の総支給額: ' + yen(i.gross));
 lines.push('・勤務先の都道府県: ' + i.prefecture + '（協会けんぽ）');
-lines.push('・年齢区分: ' + (i.ageBand === 'under40' ? '40歳未満' : i.ageBand === '40to64' ? '40〜64歳（介護保険料あり）' : '65歳以上'));
+lines.push('・年齢区分: ' + (i.ageBand === 'under40' ? '40歳未満' : i.ageBand === '40to64' ? '40〜64歳（介護保険料あり）' : i.ageBand === '65to69' ? '65〜69歳' : i.ageBand === '70to74' ? '70〜74歳（厚生年金保険料はかかりません）' : '75歳以上'));
 lines.push('・雇用保険: ' + (i.employmentInsured ? '被保険者（' + (i.industry === 'general' ? '一般の事業' : i.industry === 'nourin' ? '農林水産・清酒製造の事業' : '建設の事業') + '）' : '被保険者ではない'));
 lines.push('・扶養控除等申告書: ' + (i.column === 'kou' ? '提出している（甲欄）・扶養親族等 ' + i.dependents + '人' : '提出していない（乙欄）'));
 if (i.prevMode === 'none') lines.push('・前月の給与: 支払なし');
 else lines.push('・前月の社会保険料等控除後の給与: ' + yen(r.prevAfter) + (i.prevMode === 'grossOnly' ? '（総支給額から等級表で計算した社会保険料等を差し引いて算出）' : ''));
+if (r.outOfScope) {
+lines.push('・結果: 対象外（75歳以上のため、後期高齢者医療制度の対象です。協会けんぽ・厚生年金の賞与計算は行われないため、金額は計算していません）');
+lines.push('');
+} else {
 lines.push('・手取り額: ' + yen(r.net));
 lines.push('・控除の内訳: 健康保険料 ' + yen(r.health) + (i.ageBand === '40to64' ? '／介護保険料 ' + yen(r.care) : '') + '／子ども・子育て支援金 ' + yen(r.child) + '／厚生年金保険料 ' + yen(r.pension) + '／雇用保険料 ' + yen(r.employment) + '／所得税（源泉徴収） ' + yen(r.incomeTax));
 lines.push('・所得税の計算方法: ' + (r.taxMethod === 'rate' ? '算出率の表（率 ' + pct(r.rateInfo.ratePct) + '）' : '月額表による特例計算'));
@@ -109,7 +134,8 @@ lines.push('・標準賞与額: 総支給額 ' + yen(i.gross) + ' の1,000円未
 lines.push('・健康保険料: ' + yen(r.standardHealth) + ' × ' + rp(pref.health_rate) + ' ÷ 2（労使折半）＝ ' + yen(r.health));
 if (i.ageBand === '40to64') lines.push('・介護保険料: ' + yen(r.standardHealth) + ' × ' + rp(pref.care_rate) + ' ÷ 2 ＝ ' + yen(r.care));
 lines.push('・子ども・子育て支援金: ' + yen(r.standardHealth) + ' × ' + rp(pref.child_rate) + ' ÷ 2 ＝ ' + yen(r.child));
-lines.push('・厚生年金保険料: ' + yen(r.standardPension) + ' × 18.3% ÷ 2（労使折半）＝ ' + yen(r.pension));
+if (r.pensionApplied) lines.push('・厚生年金保険料: ' + yen(r.standardPension) + ' × 18.3% ÷ 2（労使折半）＝ ' + yen(r.pension));
+else lines.push('・厚生年金保険料: 70歳以上のため対象外（0円）');
 if (i.employmentInsured) lines.push('・雇用保険料: ' + yen(i.gross) + ' × ' + pct(E.EMPLOYMENT_RATES[i.industry]) + '（本人負担）＝ ' + yen(r.employment));
 lines.push('・社会保険料の合計: ' + yen(r.socialTotal) + '（保険料の端数は項目ごとに処理: 50銭以下切り捨て・50銭超切り上げ）');
 if (r.taxMethod === 'rate') {
@@ -121,6 +147,7 @@ lines.push('・所得税（月額表方式・前月の給与の10倍を超える
 }
 lines.push('・手取り額: ' + yen(i.gross) + ' − 社会保険料 ' + yen(r.socialTotal) + ' − 所得税 ' + yen(r.incomeTax) + ' ＝ ' + yen(r.net));
 lines.push('');
+}
 lines.push('前提: 令和8年度に支払われる賞与。健康保険は協会けんぽ加入者前提。住民税は賞与からは天引きされません。所得税は源泉徴収額で、最終税額は年末調整・確定申告で精算されます。');
 lines.push('根拠: 国税庁タックスアンサー No.2523（賞与に対する源泉徴収） https://www.nta.go.jp/taxes/shiraberu/taxanswer/gensen/2523.htm、国税庁「令和8年分 源泉徴収税額表」（算出率の表・月額表）、日本年金機構「厚生年金保険の保険料」（標準賞与額と上限） https://www.nenkin.go.jp/service/kounen/hokenryo/hoshu/20150515-01.html、協会けんぽ「令和8年度の都道府県単位保険料率」 https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/rate_prefectures/r08/index.html、厚生労働省「令和8（2026）年度 雇用保険料率のご案内」 https://jsite.mhlw.go.jp/gunma-roudoukyoku/content/contents/002597764.pdf');
 lines.push('');

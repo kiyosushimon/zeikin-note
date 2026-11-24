@@ -24,8 +24,11 @@ var DEPENDENT_LINE = 1300000;   // 被扶養者認定の年間収入の線（§1
 var RESIDENT_SPOUSE_LINE = 580000; // 住民税の同一生計配偶者の所得要件（rules.json）
 
 /* ---------- 住民税用の給与所得換算（§1.3(b)） ---------- */
-/* 給与所得控除額 = max(式の額, 650,000円)。式は自治体公式の給与所得速算表（令和8年度）。 */
-function residentSalaryIncome(income) {
+/* 給与所得控除額 = max(式の額, 最低保障額)。式は自治体公式の給与所得速算表（令和8年度）。
+ * 最低保障額は既定65万円（令和8年度住民税＝令和7年分の所得が根拠）。
+ * 複合版の「来年の住民税」（令和9年度・根拠は令和8年分の所得）では、
+ * 令和8年分の最低保障74万円を第2引数で渡して切り替える。 */
+function residentSalaryIncome(income, minDeduction) {
   income = yen0(income);
   if (income <= 0) return 0;
   var ded;
@@ -34,7 +37,8 @@ function residentSalaryIncome(income) {
   else if (income <= 6600000) ded = Math.floor(income * 20 / 100) + 440000;
   else if (income <= 8500000) ded = Math.floor(income * 10 / 100) + 1100000;
   else ded = 1950000;
-  if (ded < 650000) ded = 650000;
+  var floorDed = minDeduction || 650000;
+  if (ded < floorDed) ded = floorDed;
   return Math.max(0, income - ded);
 }
 

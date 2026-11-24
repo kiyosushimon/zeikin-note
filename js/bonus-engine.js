@@ -140,7 +140,8 @@ function prevMonthInsurance(kenpo, prefName, ageBand, industry, employmentInsure
   var health = premiumHalf(std, pref.health_rate * 100);
   var child = premiumHalf(std, pref.child_rate * 100);
   var care = withCare ? premiumHalf(std, pref.care_rate * 100) : 0;
-  var pension = premiumHalf(std, PENSION_RATE_PCT);
+  /* 厚生年金は70歳で資格喪失のため、70歳以上は課金しない */
+  var pension = (ageBand === '70to74' || ageBand === '75over') ? 0 : premiumHalf(std, PENSION_RATE_PCT);
   var employment = employmentInsured ? premiumFull(prevGross, EMPLOYMENT_RATES[industry]) : 0;
   return {
     standard: std, grade: grade.grade,
@@ -151,17 +152,23 @@ function prevMonthInsurance(kenpo, prefName, ageBand, industry, employmentInsure
 
 /* ---------- 全体計算（§3） ---------- */
 /* input: {
- *   gross, prefecture, ageBand ('under40'|'40to64'|'65over'),
+ *   gross, prefecture, ageBand ('under40'|'40to64'|'65to69'|'70to74'|'75over'),
  *   industry ('general'|'nourin'|'kensetsu'), employmentInsured (bool),
  *   column ('kou'|'otsu'), dependents,
  *   prevMode ('after'|'grossAndInsurance'|'grossOnly'|'none'),
  *   prevAfter, prevGross, prevInsurance,
  *   periodOver6 (bool), cumulativeBonus (B9)
- * } */
+ * }
+ * 年齢の扱い: 70〜74歳は厚生年金を課金しない（70歳で資格喪失）。
+ * 健康保険・子ども子育て支援金・雇用保険は継続する。
+ * 75歳以上は後期高齢者医療制度の対象で、協会けんぽの賞与計算自体が対象外
+ * （outOfScope: true を返し、表示側で「対象外」に切り替える）。 */
 function compute(data, input) {
   var gross = Math.max(0, Math.floor(+input.gross || 0));
   var pref = data.kenpo.prefectures[input.prefecture];
   var withCare = input.ageBand === '40to64';
+  var noPension = input.ageBand === '70to74' || input.ageBand === '75over';
+  var outOfScope = input.ageBand === '75over';
   var cumulative = Math.max(0, Math.floor(+input.cumulativeBonus || 0));
 
   var stdGross = floor1000(gross);
@@ -171,7 +178,7 @@ function compute(data, input) {
   var health = premiumHalf(stdHealth, pref.health_rate * 100);
   var care = withCare ? premiumHalf(stdHealth, pref.care_rate * 100) : 0;
   var child = premiumHalf(stdHealth, pref.child_rate * 100);
-  var pension = premiumHalf(stdPension, PENSION_RATE_PCT);
+  var pension = noPension ? 0 : premiumHalf(stdPension, PENSION_RATE_PCT);
   var employment = input.employmentInsured ? premiumFull(gross, EMPLOYMENT_RATES[input.industry]) : 0;
   var socialTotal = health + care + child + pension + employment;
 
@@ -207,7 +214,9 @@ function compute(data, input) {
     taxMethod: tax.method, rateInfo: tax.rateInfo || null, monthly: tax.monthly || null,
     divisor: tax.divisor || (input.periodOver6 ? 12 : 6),
     incomeTax: tax.tax,
-    net: gross - socialTotal - tax.tax
+    net: gross - socialTotal - tax.tax,
+    pensionApplied: !noPension,
+    outOfScope: outOfScope
   };
 }
 

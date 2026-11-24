@@ -30,6 +30,11 @@ var PENSION_R9_MONTHLY = 18290;
 /* 来年（令和9年）1年分: 1〜3月は令和8年度額、4〜12月は令和9年度額 */
 var PENSION_ANNUAL_NEXT = PENSION_R8_MONTHLY * 3 + PENSION_R9_MONTHLY * 9; // 218,370
 
+/* 複合版の住民税は令和9年度課税（根拠は今年=令和8年分の所得）のため、
+ * 給与所得換算の最低保障は令和8年分の74万円を使う（SetaiEngine の既定65万円は
+ * 令和8年度住民税=令和7年分所得ベースの世帯・住民税ツール用） */
+var RESIDENT_SALARY_MIN_R8 = 740000;
+
 /* ガント表示期間: 来年1月（令和9年1月）〜再来年5月（令和10年5月）の17か月 */
 var GANTT_MONTHS = [];
 for (var gi = 0; gi < 17; gi++) {
@@ -130,14 +135,18 @@ function shahoCalc(data, income, bonusPer, bonusCount, prefecture, ageBand, indu
   };
 }
 
-/* 住民税（JuminzeiEngine 経路に統一） */
+/* 住民税（JuminzeiEngine 経路に統一）
+ * 複合版の住民税は「来年の住民税」= 令和9年度課税で、根拠は今年（令和8年分）の所得。
+ * そのため同一生計配偶者の所得要件は令和9年度の62万円を渡す
+ * （住民税ツール本体・令和8年度はエンジン既定の58万円）。 */
 function residentCalc(data, cityRec, totalIncome, socialInsurance, spouseJuminzei, deps) {
   var r = JuminzeiEngine.compute(data.juminzeiRules, cityRec, {
     totalIncome: totalIncome,
     spouse: spouseJuminzei,
     dependents: deps.juminzei,
     socialInsurance: socialInsurance,
-    selfStatus: 'none', isMinor: false, housingCredit: 0
+    selfStatus: 'none', isMinor: false, housingCredit: 0,
+    spouseIncomeLimit: 620000
   });
   r.cityRatePct = cityRec.income_levy.city_rate_pct;
   r.prefRatePct = cityRec.income_levy.prefecture_rate_pct;
@@ -231,9 +240,12 @@ function buildGantt(course, r, input) {
     for (i = 6; i <= 14; i++) khRow.cells[i] = s.rest;
     rows.push(khRow);
 
-    var pnRow = newRow('pension', '国民年金保険料', '現年型', PENSION_ANNUAL_NEXT,
-      '納付期限は翌月末です。1〜3月は令和8年度額、4月から令和9年度額');
-    for (i = 0; i < 12; i++) pnRow.cells[i] = i < 3 ? PENSION_R8_MONTHLY : PENSION_R9_MONTHLY;
+    var pnAnnual = (r.pensionAnnual != null ? r.pensionAnnual : PENSION_ANNUAL_NEXT);
+    var pnRow = newRow('pension', '国民年金保険料', '現年型', pnAnnual,
+      pnAnnual > 0
+        ? '納付期限は翌月末です。1〜3月は令和8年度額、4月から令和9年度額'
+        : '60歳以上のため計上していません（国民年金の強制加入は20歳以上60歳未満。任意加入は対象外）');
+    for (i = 0; i < 12; i++) pnRow.cells[i] = pnAnnual > 0 ? (i < 3 ? PENSION_R8_MONTHLY : PENSION_R9_MONTHLY) : 0;
     rows.push(pnRow);
   }
 
@@ -274,7 +286,8 @@ function computeComposite(data, input) {
     residentPrecise: !!input.residentPrecise,
     errors: errors,
     pension: {
-      monthlyR8: PENSION_R8_MONTHLY, monthlyR9: PENSION_R9_MONTHLY, annualNext: PENSION_ANNUAL_NEXT
+      monthlyR8: PENSION_R8_MONTHLY, monthlyR9: PENSION_R9_MONTHLY, annualNext: PENSION_ANNUAL_NEXT,
+      annualApplied: PENSION_ANNUAL_NEXT
     }
   };
 
@@ -284,9 +297,9 @@ function computeComposite(data, input) {
       input.prefecture, input.ageBand, input.industry);
     /* (2) 住民税: 今年の所得 × 今年の社保控除 */
     var spouseResidentIncomeThis = input.spouse.has
-      ? SetaiEngine.residentSalaryIncome(input.spouse.income) : 0;
+      ? SetaiEngine.residentSalaryIncome(input.spouse.income, RESIDENT_SALARY_MIN_R8) : 0;
     r.resident = residentCalc(data, cityRec,
-      SetaiEngine.residentSalaryIncome(input.incomeThisYear), r.socialThis.total,
+      SetaiEngine.residentSalaryIncome(input.incomeThisYear, RESIDENT_SALARY_MIN_R8), r.socialThis.total,
       input.spouse.has ? { income: spouseResidentIncomeThis, elderly: false } : null, deps);
     /* (3) 来年の社会保険料 */
     r.socialNext = shahoCalc(data, input.incomeNextYear, input.bonusPer, input.bonusCount,
@@ -326,7 +339,7 @@ function computeComposite(data, input) {
     r.currentTotal = r.incomeTax.annualTax + r.socialNext.total;
     /* 対照値: もし住民税が来年の所得で決まるなら（ツケのズレの可視化） */
     var residentIfNext = residentCalc(data, cityRec,
-      SetaiEngine.residentSalaryIncome(input.incomeNextYear), r.socialNext.total,
+      SetaiEngine.residentSalaryIncome(input.incomeNextYear, RESIDENT_SALARY_MIN_R8), r.socialNext.total,
       input.spouse.has ? { income: spouseResidentIncomeThis, elderly: false } : null, deps);
     r.counterfactual = {
       resident: residentIfNext.total,
@@ -342,8 +355,16 @@ function computeComposite(data, input) {
     }
     /* (1) 国保: 今年の所得ベース */
     r.kokuho = kokuhoCalc(data, input, input.bizThisYear);
+    /* (2) 国民年金: 強制加入は20歳以上60歳未満。年齢区分が65歳以上の場合は
+     * 加算しない（任意加入は対象外として注記に倒す）。
+     * 社会保険料控除の近似にも含めないため、住民税・所得税も連動して変わる */
+    var pensionApplies = input.ageBand !== '65plus';
+    var pensionAnnual = pensionApplies ? PENSION_ANNUAL_NEXT : 0;
+    r.pensionApplies = pensionApplies;
+    r.pensionAnnual = pensionAnnual;
+    r.pension.annualApplied = pensionAnnual;
     /* (3) 社保控除の近似 = 国保料 + 国民年金（来年1年分） */
-    r.socialDeductionApprox = r.kokuho.total + PENSION_ANNUAL_NEXT;
+    r.socialDeductionApprox = r.kokuho.total + pensionAnnual;
     /* (4) 住民税: 今年の所得 × 近似の社保控除 */
     r.resident = residentCalc(data, cityRec, input.bizThisYear, r.socialDeductionApprox,
       input.spouse.has ? { income: input.spouse.income, elderly: false } : null, deps);
@@ -363,15 +384,15 @@ function computeComposite(data, input) {
     r.incomeTax = { annualTax: r.incomeTaxSelf.annualTax, taxable: r.incomeTaxSelf.taxable };
     var incomeTaxThisSelf = selfIncomeTaxOf(input.bizThisYear, r.socialDeductionApprox);
     /* (6) 合計（帰属ベース）。手取りは所得ベース */
-    r.totalNext = r.resident.total + r.kokuho.total + PENSION_ANNUAL_NEXT + r.incomeTax.annualTax;
+    r.totalNext = r.resident.total + r.kokuho.total + pensionAnnual + r.incomeTax.annualTax;
     r.netNext = input.bizNextYear - r.totalNext;
-    var totalThis = r.resident.total + r.kokuho.total + PENSION_ANNUAL_NEXT + incomeTaxThisSelf.annualTax;
+    var totalThis = r.resident.total + r.kokuho.total + pensionAnnual + incomeTaxThisSelf.annualTax;
     r.thisYear = { total: totalThis, net: input.bizThisYear - totalThis, incomeTax: { annualTax: incomeTaxThisSelf.annualTax } };
     r.tsukeTotal = r.resident.total + r.kokuho.total;
-    r.currentTotal = PENSION_ANNUAL_NEXT + r.incomeTax.annualTax;
+    r.currentTotal = pensionAnnual + r.incomeTax.annualTax;
     /* 対照値: 来年の所得で国保・住民税が決まるなら */
     var kokuhoIfNext = kokuhoCalc(data, input, input.bizNextYear);
-    var approxIfNext = kokuhoIfNext.total + PENSION_ANNUAL_NEXT;
+    var approxIfNext = kokuhoIfNext.total + pensionAnnual;
     var residentIfNextSelf = residentCalc(data, cityRec, input.bizNextYear, approxIfNext,
       input.spouse.has ? { income: input.spouse.income, elderly: false } : null, deps);
     r.counterfactual = {
