@@ -66,8 +66,19 @@ function findJuminzeiCity(citiesJson, name) {
   return null;
 }
 
-/* 年齢区分の正規化。2026-11-24の分割前の区分 '40to64'（保存済み入力などに残る）は
- * '40to59' として扱う（国民年金が計上される側に倒す） */
+/* 旧年齢区分 '40to64'（2026-11-24の分割前の区分）の判定。
+ * 旧区分は40〜59歳と60〜64歳の両方を含んでいたため、本人の区分としては曖昧で、
+ * 決め打ちで読み替えると実年齢60〜64歳の利用者に国民年金（218,370円）を誤計上する。
+ * そのため compute は本人の '40to64' を確定計算せず 'age-reselect-required' を返す
+ * （NEW-01・2026-11-24最終監査）。画面側は再選択を利用者に求める */
+function isLegacyAgeBand(ageBand) {
+  return ageBand === '40to64';
+}
+/* 年齢区分の正規化。旧区分 '40to64' を '40to59' に読み替えるのは、
+ * 配偶者の国保代表年齢の写像など、40〜59歳と60〜64歳で金額が変わらない経路だけ
+ * （配偶者の区分は repAge にしか使われず、代表年齢50歳・62歳は国保の年齢判定
+ * ＝介護分40〜64歳・18歳以上判定等＝で常に同じ側に落ちるため金額差は出ない）。
+ * 本人の区分は compute の入口で旧区分を弾くので、ここには届かない */
 function normalizeAgeBand(ageBand) {
   return ageBand === '40to64' ? '40to59' : ageBand;
 }
@@ -306,6 +317,14 @@ function computeComposite(data, input) {
     }
   };
 
+  /* 本人の年齢区分が旧区分 '40to64' のままでは確定計算しない（NEW-01）。
+   * 40〜59歳か60〜64歳かで国民年金の計上が変わるため、画面側で再選択を求める */
+  if (isLegacyAgeBand(input.ageBand)) {
+    errors.push('age-reselect-required');
+    r.errors = errors;
+    return r;
+  }
+
   if (input.course === 'employee') {
     /* (1) 今年の社会保険料 → 住民税の社保控除にも使う */
     r.socialThis = shahoCalc(data, input.incomeThisYear, input.bonusPer, input.bonusCount,
@@ -434,7 +453,8 @@ var api = {
   PENSION_ANNUAL_NEXT: PENSION_ANNUAL_NEXT,
   mapDependents: mapDependents,
   pensionAppliesFor: pensionAppliesFor,
-  normalizeAgeBand: normalizeAgeBand
+  normalizeAgeBand: normalizeAgeBand,
+  isLegacyAgeBand: isLegacyAgeBand
 };
 if (typeof module !== 'undefined' && module.exports) module.exports = api;
 global.CompositeEngine = api;
