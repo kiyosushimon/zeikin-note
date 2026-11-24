@@ -211,6 +211,38 @@ var ids = ['mainIncome', 'prefecture', 'ageBand', 'industry', 'bonusPer', 'bonus
 'socialOverride', 'sideType', 'sideRevenue', 'sideExpenses', 'sideCategory',
 'sideWithholding', 'sideSalaryIncome', 'sideYearEndAdjusted', 'willFile'];
 ids.forEach(function (id) { $(id).addEventListener('input', compute); $(id).addEventListener('change', compute);});
+/* 共通プロファイル連携（js/profile.js）: 初期値の読み書きだけを行い、計算には触らない */
+if (window.ZnProfile) {
+var savedToolF = ZnProfile.loadTool('fukugyo');
+if (savedToolF) {
+ids.forEach(function (id) { if (savedToolF[id] !== undefined && $(id)) $(id).value = savedToolF[id];});
+} else {
+var profF = ZnProfile.loadProfile();
+if (profF.incomeThisYearSalary !== undefined) $('mainIncome').value = profF.incomeThisYearSalary;
+if (profF.prefecture) $('prefecture').value = profF.prefecture;
+if (profF.ageBand) $('ageBand').value = profF.ageBand === '65plus' ? '65to69' : profF.ageBand;
+if (profF.industry) $('industry').value = profF.industry;
+if (profF.bonusPer !== undefined) $('bonusPer').value = profF.bonusPer;
+if (profF.bonusCount !== undefined) $('bonusCount').value = profF.bonusCount;
+}
+var persistFukugyo = function () {
+var st = {};
+ids.forEach(function (id) { st[id] = $(id).value;});
+ZnProfile.saveTool('fukugyo', st);
+ZnProfile.saveProfile({
+incomeThisYearSalary: num('mainIncome'),
+prefecture: $('prefecture').value,
+ageBand: $('ageBand').value === '65to69' ? '65plus' : $('ageBand').value,
+industry: $('industry').value,
+bonusPer: num('bonusPer'),
+bonusCount: Math.floor(num('bonusCount'))
+});
+};
+ids.forEach(function (id) { $(id).addEventListener('input', persistFukugyo); $(id).addEventListener('change', persistFukugyo);});
+if ($('clearSaved')) $('clearSaved').addEventListener('click', function () {
+if (window.confirm('保存した入力（共通プロファイルと全ツールの前回入力）をすべて消します。よろしいですか？')) { ZnProfile.clearAll(); location.reload();}
+});
+}
 $('copyPrompt').addEventListener('click', copyPrompt);
 compute();
 }).catch(function () {
