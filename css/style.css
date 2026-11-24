@@ -83,7 +83,7 @@ legend {
 .field { margin-bottom: 16px; }
 .field label { display: block; font-weight: 800; margin-bottom: 5px; }
 .field .hint { font-weight: 500; color: var(--muted); font-size: 0.86rem; display: block; }
-input[type="month"], input[type="number"], select {
+input[type="month"], input[type="date"], input[type="number"], select {
   font: inherit;
   font-size: 1.08rem; font-weight: 700;
   padding: 11px 12px;
@@ -342,7 +342,7 @@ a.tool-card:active { transform: translate(2px, 2px); box-shadow: 4px 4px 0 rgba(
   .dc-period { flex-direction: column; align-items: stretch; }
   .dc-period:first-child { border-top: none; padding-top: 2px; }
   .dc-period input[type="month"], .dc-period select { max-width: none; }
-  input[type="month"], input[type="number"], select { max-width: none; }
+  input[type="month"], input[type="date"], input[type="number"], select { max-width: none; }
   input[type="month"] {
     -webkit-appearance: none; appearance: none;
     display: block; text-align: center;
