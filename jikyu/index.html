@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>実質時給チェッカー（月給から自分の時給を額面・手取りで確認）｜ぜいきんノート</title>
+<meta name="description" content="月給制の会社員向けに、残業を含めた実際の総労働時間で割った「実質時給」を額面と手取りの両方で計算します。施行規則第19条の所定時給、厚生労働省の公式方法による最低賃金チェックつき。無料・登録不要・入力は送信されません。">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3785696031006214" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NYC15XQ95K"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-NYC15XQ95K');
+  </script>
+</head>
+<body>
+<header class="site-header">
+  <a class="logo" href="../"><span class="logo-mark"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><line x1="8.5" y1="7.5" x2="15.5" y2="7.5"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15.5" r="1" fill="currentColor" stroke="none"/></svg></span>ぜいきんノート</a>
+  <nav class="site-nav"><a href="../#tools">ツール一覧</a><a href="../#about">このサイトについて</a>｜<a href="../privacy/">プライバシーポリシー</a></nav>
+  <details class="menu"><summary class="menu-btn" aria-label="メニュー"><span class="burger"></span></summary><nav class="menu-panel"><a href="../taishoku-dc/">退職金 × iDeCo/DC</a><a href="../kokuho/">国民健康保険料</a><a href="../taishoku-hoken/">退職後の健康保険 比較</a><a href="../juminzei/">住民税</a><a href="../furusato/">ふるさと納税</a><a href="../bonus/">賞与の手取り計算</a><a href="../setai/">世帯年収の手取り</a><a href="../kabe/">年収の壁チェッカー</a><a href="../zangyo/">残業代計算・未払いチェック</a><a href="../gensen/">源泉徴収税額チェッカー</a><a href="../jikyu/">実質時給チェッカー</a><a href="../privacy/">プライバシーポリシー</a></nav></details>
+</header>
+<main class="wrap">
+<nav class="crumbs"><a href="../">トップ</a> ＞ 実質時給チェッカー</nav>
+<h1><span class="h1-icon"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span>実質時給チェッカー</h1>
+<p class="lead">月給を所定労働時間で割っただけの時給は、残業が多いほど実態とずれます。このツールは、残業を含めた実際の総労働時間で割り直した「実質時給」を、額面と手取りの両方で計算します。法律で決まった換算方法による「所定時給」と、厚生労働省の公式方法による最低賃金チェックもあわせて表示します。</p>
+
+<div class="scope-box">
+  <p class="scope-title">このツールで計算できないケース</p>
+  <ul>
+    <li>自営業・フリーランス（事業所得）の方</li>
+    <li>歩合給・出来高払いが中心の給与（タクシー・運送・歩合営業など）</li>
+    <li>年俸制・裁量労働制・フレックスタイム制・変形労働時間制の方の「月給の内訳から」の計算（年収から額面の実質時給だけを求めることはできます）</li>
+    <li>配偶者控除・扶養控除・生命保険料控除・iDeCo等を入れた手取り計算（<a href="../setai/">世帯年収の手取りシミュレーター</a>や<a href="../nencho/">年末調整・還付シミュレーター</a>で確認できます）</li>
+    <li>特定（産業別）最低賃金との比較と、固定残業代の不足額チェック（不足額は<a href="../zangyo/">残業代計算・未払いチェック</a>で確認できます）</li>
+  </ul>
+  <p class="small">詳しい前提条件は、ページ下部の「前提条件・対象外のもの」にまとめています。</p>
+</div>
+
+<div id="formError"></div>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 20l1.2-4.2L16.7 4.3a2.15 2.15 0 0 1 3 3L8.2 18.8 4 20z"/><line x1="14.8" y1="6.2" x2="17.8" y2="9.2"/></svg></span>入力（給与の情報）</span></h2>
+<div class="field">
+<label for="mode">入力方式<span class="hint">月給の内訳が分かる場合は「月給の内訳から」がおすすめです（所定時給・手取り・最低賃金チェックまで計算します）。年収しか分からない場合は「年収から」で、額面の実質時給だけを求めます</span></label>
+<select id="mode">
+<option value="b" selected>月給の内訳から</option>
+<option value="a">年収から（簡易）</option>
+</select>
+</div>
+<div id="modeAGroup" style="display:none">
+<div class="grid2">
+<div class="field">
+<label for="annualGross">年間総支給額（額面）<span class="hint">源泉徴収票の「支払金額」欄の金額です</span></label>
+<div class="yen-wrap"><input type="number" id="annualGross" min="0" step="10000" value="5000000"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="aSocial">社会保険料の年額（任意）<span class="hint">源泉徴収票の「社会保険料等の金額」欄です。下の2つとあわせて3つとも入力した場合のみ、手取り時給を表示します</span></label>
+<div class="yen-wrap"><input type="number" id="aSocial" min="0" step="1000" value=""><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="aIncomeTax">所得税の年額（任意）<span class="hint">源泉徴収票の「源泉徴収税額」欄です</span></label>
+<div class="yen-wrap"><input type="number" id="aIncomeTax" min="0" step="1000" value=""><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="aResidentTax">住民税の年額（任意）<span class="hint">住民税決定通知書に記載された年額です</span></label>
+<div class="yen-wrap"><input type="number" id="aResidentTax" min="0" step="1000" value=""><span class="unit">円</span></div>
+</div>
+</div>
+</div>
+<div id="modeBGroup">
+<div class="grid2">
+<div class="field">
+<label for="prefecture">勤務地の都道府県<span class="hint">社会保険料（協会けんぽの料率）と最低賃金の両方に使います</span></label>
+<select id="prefecture"></select>
+</div>
+<div class="field">
+<label for="baseSalary">基本給（月額）<span class="hint">給与明細の「基本給」の欄の金額です</span></label>
+<div class="yen-wrap"><input type="number" id="baseSalary" min="0" step="1000" value="300000"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="includeAllowances">算入する手当の合計（月額）<span class="hint">役職手当・資格手当・精皆勤手当など、右の「除外できる手当」に当たらない手当の合計。名称が家族手当・通勤手当・住宅手当でも、一律支給のものはここに入れます</span></label>
+<div class="yen-wrap"><input type="number" id="includeAllowances" min="0" step="1000" value="0"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="excludeAllowances">除外できる手当の合計（月額）<span class="hint">法律で除外できる7種（家族手当・通勤手当・別居手当・子女教育手当・住宅手当・臨時の賃金・賞与等）に該当し、条件を満たすものだけ。家族手当は扶養家族の人数に応じて、通勤手当は距離・費用に応じて、住宅手当は住宅費用に応じて支給されるものに限ります</span></label>
+<div class="yen-wrap"><input type="number" id="excludeAllowances" min="0" step="1000" value="0"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="fixedOvertime">固定残業代の額（月額）<span class="hint">雇用契約や就業規則で「固定残業代（みなし残業代）」として明示されている額。なければ0のままで構いません。所定時給の算定基礎からは除外し、年収には含めて計算します</span></label>
+<div class="yen-wrap"><input type="number" id="fixedOvertime" min="0" step="1000" value="0"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="variableOvertimeAnnual">変動残業代等の年額（任意）<span class="hint">固定でない残業代・休日手当・深夜手当などの年間合計です。年収に加えます</span></label>
+<div class="yen-wrap"><input type="number" id="variableOvertimeAnnual" min="0" step="1000" value="0"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="bonusPer">賞与（1回分の額）<span class="hint">支給明細の総支給額です。賞与がない場合は0にします</span></label>
+<div class="yen-wrap"><input type="number" id="bonusPer" min="0" step="1000" value="300000"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="bonusCount">賞与の回数（年）<span class="hint">年2回なら2、なければ0にします</span></label>
+<div class="yen-wrap"><input type="number" id="bonusCount" min="0" step="1" value="2"><span class="unit">回</span></div>
+</div>
+<div class="field">
+<label for="ageBand">年齢区分<span class="hint">介護保険料がかかるかどうかが変わります</span></label>
+<select id="ageBand">
+<option value="under40" selected>40歳未満</option>
+<option value="40to64">40〜64歳（介護保険料がかかります）</option>
+<option value="65to69">65〜69歳</option>
+</select>
+</div>
+<div class="field">
+<label for="industry">雇用保険の事業の種類<span class="hint">雇用保険料率が変わります</span></label>
+<select id="industry">
+<option value="general" selected>一般の事業</option>
+<option value="nourin">農林水産・清酒製造の事業</option>
+<option value="kensetsu">建設の事業</option>
+</select>
+</div>
+<div class="field">
+<label for="minWageTarget">最低賃金の対象となる賃金（月額・任意）<span class="hint">最低賃金の比較に使う賃金です。精皆勤手当・通勤手当・家族手当、時間外・休日・深夜の割増賃金、賞与、臨時に支払われる賃金は含めません。空欄の場合は算定基礎の月額（現在 <span id="mwDefault">— 円</span>）で計算します</span></label>
+<div class="yen-wrap"><input type="number" id="minWageTarget" min="0" step="1000" value=""><span class="unit">円</span></div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span>入力（労働時間）</span></h2>
+<div class="grid2">
+<div class="field">
+<label for="avgHours">1か月平均所定労働時間数<span class="hint">就業規則・給与規程に記載がある場合はその数値を、分からない場合は下の補助計算で求められます</span></label>
+<div class="yen-wrap"><input type="number" id="avgHours" min="0" step="0.1" value="160"><span class="unit">時間</span></div>
+</div>
+<div class="field">
+<label for="overtimeHours">月平均の残業時間<span class="hint">所定労働時間を超えて実際に働いた時間です。法定内・法定外を問わず、払われていない分も含めて実際の時間を入れてください（月ごとのばらつきは平均でならします）</span></label>
+<div class="yen-wrap"><input type="number" id="overtimeHours" min="0" step="0.5" value="20"><span class="unit">時間</span></div>
+</div>
+<div class="field">
+<label for="holidayHours">月平均の休日労働時間（任意）<span class="hint">所定休日に働いた時間です</span></label>
+<div class="yen-wrap"><input type="number" id="holidayHours" min="0" step="0.5" value="0"><span class="unit">時間</span></div>
+</div>
+</div>
+<h3 class="subhead">補助計算: 年間休日から1か月平均所定労働時間数を求める</h3>
+<div class="grid2">
+<div class="field">
+<label for="annualHolidays">年間の所定休日日数<span class="hint">会社の年間休日（週休・祝日・年末年始等の合計）</span></label>
+<div class="yen-wrap"><input type="number" id="annualHolidays" min="0" step="1" value="120"><span class="unit">日</span></div>
+</div>
+<div class="field">
+<label for="hoursPerDay">1日の所定労働時間<span class="hint">休憩時間を除いた時間です</span></label>
+<div class="yen-wrap"><input type="number" id="hoursPerDay" min="0" step="0.5" value="8"><span class="unit">時間</span></div>
+</div>
+</div>
+<button type="button" id="avgCalcBtn" class="btn-ai btn-sub">（365日 − 年間休日）× 1日の時間 ÷ 12 で計算して入力する</button>
+<h3 class="subhead">参考値用（任意）</h3>
+<div class="grid2">
+<div class="field">
+<label for="commuteMinutes">片道の通勤時間<span class="hint">入力すると、通勤時間も含めた場合の時給を参考値として別枠で表示します（通勤時間は労働時間ではないため、本体の時給には含めません）</span></label>
+<div class="yen-wrap"><input type="number" id="commuteMinutes" min="0" step="1" value=""><span class="unit">分</span></div>
+</div>
+<div class="field">
+<label for="commuteDays">月の出勤日数<span class="hint">通勤時間の参考値を出す場合に入力します</span></label>
+<div class="yen-wrap"><input type="number" id="commuteDays" min="0" step="1" value=""><span class="unit">日</span></div>
+</div>
+<div class="field">
+<label for="takeHomeHours">持ち帰り仕事の月合計時間（任意）<span class="hint">参考値の分母に加えます。使用者の指示による持ち帰り仕事は本来は労働時間であり、上の残業時間に入れるべきものです</span></label>
+<div class="yen-wrap"><input type="number" id="takeHomeHours" min="0" step="0.5" value="0"><span class="unit">時間</span></div>
+</div>
+</div>
+</section>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><line x1="8.5" y1="7.5" x2="15.5" y2="7.5"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15.5" r="1" fill="currentColor" stroke="none"/></svg></span>計算結果</span></h2>
+<p class="note">本ツールの「実質時給」は、計算方法の定義を明示したうえでの試算であり、法律で定められた金額ではありません。所定時給と最低賃金チェックは公式の計算方法に基づきますが、個別の事情により実際の金額と異なる場合があります。賃金に疑問がある場合は、勤務先の給与担当、労働基準監督署、総合労働相談コーナー、社会保険労務士・弁護士にご確認ください。</p>
+<div class="big-result"><span class="big-label">実質時給（額面）＝ 年収 ÷ 年間総労働時間</span> <span id="totalBig">— 円</span></div>
+<ul class="note">
+<li><strong>所定時給</strong>: 算定基礎の月額 ÷ 1か月平均所定労働時間数（労働基準法施行規則第19条の換算方法。残業代の単価と同じ数字です）</li>
+<li><strong>実質時給（額面）</strong>: 年収（総支給）÷ 年間総労働時間（所定＋残業＋休日労働）。本ツールの定義による数字です</li>
+<li><strong>実質時給（手取り）</strong>: 年間手取り（年収 − 社会保険料 − 所得税 − 住民税）÷ 年間総労働時間。本ツールの定義による数字です</li>
+</ul>
+<div class="table-wrap">
+<table class="result-table">
+<tr><th>項目</th><th>金額</th></tr>
+<tbody id="resultRows"></tbody>
+</table>
+</div>
+<div id="minWageResult"></div>
+<div id="refResult"></div>
+<ul class="note" id="resultNotes"></ul>
+</section>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 13.5v-8A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v8a1.5 1.5 0 0 1-1.5 1.5H13l-4.5 4.2v-4.2H5.5A1.5 1.5 0 0 1 4 13.5z"/></svg></span>自分のAIに相談する</span></h2>
+<p>計算の内容をまとめた文をコピーできます。ChatGPTやClaudeなど、お使いのAIに貼ると、そのまま相談できます。貼る前に、個人が特定できる情報が含まれていないか確認してください。</p>
+<button type="button" id="copyPrompt" class="btn-ai">AIに相談する用の文をコピー</button>
+</section>
+
+<details class="card accordion">
+<summary>前提条件・対象外のもの</summary>
+<ul>
+<li>対象は月給制の会社員です（月給の内訳から計算する方式）。年収から計算する方式は給与形態を問いませんが、額面の実質時給だけを求める簡易版で、所定時給・最低賃金チェック・手取りの自動計算は行いません。</li>
+<li>「実質時給（額面・手取り）」は本ツールが定義した計算方法による数字であり、法律で定められた金額ではありません。他のサイト・媒体の「実質時給」とは定義が異なり、数値が一致しないことがあります。定義（分子・分母）は結果画面に併記しています。</li>
+<li>所定時給は労働基準法施行規則第19条の換算方法によります。算定基礎から除外できる手当は、条件を満たすものとして利用者が入力した額を前提に計算します。固定残業代は算定基礎から除外し、分母には設定時間数ではなく実際の残業時間を使います。固定残業代が法定額に足りているか（不足額）のチェックは行いません（<a href="../zangyo/">残業代計算・未払いチェック</a>の領分です）。</li>
+<li>手取りは単身者・標準ケース（控除は社会保険料と基礎控除のみ）の目安です。住民税は本来、前年の所得に対して翌年に課税されますが、本ツールは「その年の収入に伴う税負担の目安」として、その年の収入ベースで計算しています。社会保険料の月額基礎は（年収 − 賞与）÷ 12 の近似です。</li>
+<li>最低賃金チェックは地域別最低賃金との比較であり、特定（産業別）最低賃金は対象外です。最低賃金の額は、ページを開いた日時点で効力のある額（発効日つきのデータから選択）を使います。対象となる賃金の組み立てが公式の方法と異なる場合は結果も異なります。勤務先の賃金体系の適法性の最終判断は、都道府県労働局・労働基準監督署にご確認ください。</li>
+<li>残業時間は月平均の自己申告に基づきます。月ごとの変動が大きい場合は結果も目安になります。通勤時間は労働時間ではないため、本体の時給には含めず、参考値として分離して表示します。</li>
+<li>対象外: 自営業・フリーランス／歩合給・出来高払いが中心の給与／時給制・日給制・年俸制の方の「月給の内訳から」の機能／裁量労働制・事業場外みなし労働時間制・フレックスタイム制・変形労働時間制の方の「月給の内訳から」の機能／役員・公務員／配偶者控除・扶養控除・生命保険料控除・住宅ローン控除・iDeCo掛金等を入れた手取り計算／副業・兼業の収入／過去の日付時点での最低賃金チェック。</li>
+<li>計算はすべてブラウザの中で行い、入力した内容をサーバーへ送信することはありません。</li>
+</ul>
+</details>
+
+<details class="card accordion">
+<summary>出典・計算の根拠</summary>
+<ul>
+<li>労働基準法施行規則第19条（日本法令外国語訳DB）: 1時間当たりの賃金の換算方法（月給は1年間における1か月平均所定労働時間数で除す）。所定時給の計算に使っています<br><a href="https://www.japaneselawtranslation.go.jp/en/laws/view/343/tb" target="_blank" rel="noopener">https://www.japaneselawtranslation.go.jp/en/laws/view/343/tb</a></li>
+<li>厚生労働省 最低賃金特設サイト「あなたの賃金を比較チェック」: 最低賃金のチェック方法（月給の場合は 月給 ÷ 1箇月平均所定労働時間 ≧ 最低賃金額）、最低賃金の対象とならない賃金の範囲、公式のケーススタディ（対象賃金180,000円 → 1,080円）。本ツールの最低賃金チェックは、この公式例と一致することを確認しています<br><a href="https://saiteichingin.mhlw.go.jp/point/page_point_check.html" target="_blank" rel="noopener">https://saiteichingin.mhlw.go.jp/point/page_point_check.html</a></li>
+<li>厚生労働省 最低賃金特設サイト「地域別最低賃金全国一覧」: 令和8年度の全47都道府県の地域別最低賃金の額と発効日（東京都1,280円・大阪府1,231円など。発効日は都道府県ごとに令和8年10月1日〜12月2日）。本ツールのデータはこの一覧と過去5年分の一覧から作成し、発効日で切り替える構造にしています<br><a href="https://saiteichingin.mhlw.go.jp/table/page_list_nationallist.php" target="_blank" rel="noopener">https://saiteichingin.mhlw.go.jp/table/page_list_nationallist.php</a></li>
+<li>大阪労働局「最低賃金額以上かどうかを確認する方法」: 月給制の換算例（269日 × 7.5時間 ÷ 12 = 168.125時間、206,800円 ÷ 168.125 = 1,230.03円 ＜ 大阪府最低賃金1,231円）。本ツールの表示の切り捨て（小数第2位まで）はこの公式例と一致することを確認しています<br><a href="https://jsite.mhlw.go.jp/osaka-roudoukyoku/jirei_toukei/saitei_chingin/saitei/hikaku.html" target="_blank" rel="noopener">https://jsite.mhlw.go.jp/osaka-roudoukyoku/jirei_toukei/saitei_chingin/saitei/hikaku.html</a></li>
+<li>厚生労働省「労働時間の適正な把握のために使用者が講ずべき措置に関するガイドライン」: 労働時間とは使用者の指揮命令下に置かれている時間であること。通勤時間を本体の時給に含めず参考値に分離する根拠です<br><a href="https://jsite.mhlw.go.jp/osaka-roudoukyoku/hourei_seido_tetsuzuki/roudoukijun_keiyaku/hourei_seido/jikan2/kokuji/kokuji2.html" target="_blank" rel="noopener">https://jsite.mhlw.go.jp/osaka-roudoukyoku/hourei_seido_tetsuzuki/roudoukijun_keiyaku/hourei_seido/jikan2/kokuji/kokuji2.html</a></li>
+<li>社会保険料・所得税・住民税の計算方式とデータは、社会保険料計算（協会けんぽ料率・等級表）・年末調整（所得税の表）・住民税（全国共通ルール）の各ツールと共用しています。各ツールのページに一次ソースを明記しています。</li>
+</ul>
+</details>
+</main>
+<footer class="site-footer">
+<p class="disclaimer">このサイトの計算は一般的な仕組みに基づく試算であり、個別の労務相談ではありません。実際の賃金は、就業規則・労働契約の定めや勤務の実態により異なる場合があります。賃金に疑問がある場合は、勤務先の給与担当、労働基準監督署、総合労働相談コーナー、社会保険労務士・弁護士にご確認ください。</p>
+<nav class="footer-nav">
+<a href="../taishoku-dc/">退職金×iDeCo/DC</a>
+<a href="../kokuho/">国民健康保険料</a>
+<a href="../taishoku-hoken/">退職後の健康保険 比較</a>
+<a href="../juminzei/">住民税</a>
+<a href="../furusato/">ふるさと納税</a>
+<a href="../bonus/">賞与の手取り計算</a>
+<a href="../setai/">世帯年収の手取り</a>
+<a href="../kabe/">年収の壁チェッカー</a>
+<a href="../zangyo/">残業代計算・未払いチェック</a>
+<a href="../gensen/">源泉徴収税額チェッカー</a>
+<a href="../jikyu/">実質時給チェッカー</a>
+<a href="../privacy/">プライバシーポリシー</a>
+</nav>
+<p class="copy">© 2026 ぜいきんノート（zeikin-note.com）</p>
+</footer>
+<div class="toast" id="toast" role="status"></div>
+<script src="../js/nencho-engine.js"></script>
+<script src="../js/shaho-engine.js"></script>
+<script src="../js/setai-engine.js"></script>
+<script src="../js/jikyu-engine.js"></script>
+<script src="../js/jikyu-app.js"></script>
+</body>
+</html>
