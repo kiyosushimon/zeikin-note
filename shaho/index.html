@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>社会保険料計算シミュレーター（月給・賞与・年額、本人負担と会社負担）｜ぜいきんノート</title>
+<meta name="description" content="月給と賞与から、健康保険料・介護保険料・子ども・子育て支援金・厚生年金保険料・雇用保険料を計算します。標準報酬月額の等級表（協会けんぽ令和8年度）で実務どおりに計算し、本人負担だけでなく会社負担と年額も表示。無料・登録不要・入力は送信されません。">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3785696031006214" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NYC15XQ95K"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-NYC15XQ95K');
+  </script>
+</head>
+<body>
+<header class="site-header">
+  <a class="logo" href="../"><span class="logo-mark"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><line x1="8.5" y1="7.5" x2="15.5" y2="7.5"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15.5" r="1" fill="currentColor" stroke="none"/></svg></span>ぜいきんノート</a>
+  <nav class="site-nav"><a href="../#tools">ツール一覧</a><a href="../#about">このサイトについて</a>｜<a href="../privacy/">プライバシーポリシー</a></nav>
+  <details class="menu"><summary class="menu-btn" aria-label="メニュー"><span class="burger"></span></summary><nav class="menu-panel"><a href="../taishoku-dc/">退職金 × iDeCo/DC</a><a href="../kokuho/">国民健康保険料</a><a href="../taishoku-hoken/">退職後の健康保険 比較</a><a href="../juminzei/">住民税</a><a href="../furusato/">ふるさと納税</a><a href="../bonus/">賞与の手取り計算</a><a href="../nencho/">年末調整・還付</a><a href="../shaho/">社会保険料計算</a><a href="../privacy/">プライバシーポリシー</a></nav></details>
+</header>
+<main class="wrap">
+<nav class="crumbs"><a href="../">トップ</a> ＞ 社会保険料計算シミュレーター</nav>
+<h1><span class="h1-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.3-9.2C1.4 8.4 3.6 5 6.9 5c2 0 3.7 1.1 5.1 3 1.4-1.9 3.1-3 5.1-3 3.3 0 5.5 3.4 4.2 6.8C19.5 16.4 12 21 12 21z"/></svg></span>社会保険料計算シミュレーター</h1>
+<p class="lead">月給と賞与から社会保険料を計算します。月給は標準報酬月額の等級表に当てはめて実務どおりに計算し、本人負担だけでなく会社負担と1年間の合計も表示します。令和8年4月分から始まった子ども・子育て支援金（0.23％）にも対応しています。</p>
+
+<div class="scope-box">
+  <p class="scope-title">このツールで計算できないケース</p>
+  <ul>
+    <li>健康保険組合・共済組合に加入している方（このツールは協会けんぽ前提です）</li>
+    <li>自営業の方など、国民健康保険・国民年金に加入している方</li>
+    <li>70歳以上の方の厚生年金保険料、75歳以上の方の健康保険料（年齢区分は65〜69歳までです）</li>
+    <li>年4回以上支払われる賞与（標準報酬月額の対象になるため、計算の仕組みが異なります）</li>
+    <li>育児休業・産前産後の保険料免除期間がある年、年の途中で入社・退職した年</li>
+    <li>令和7年度以前・令和9年度以後の料率での計算</li>
+  </ul>
+  <p class="small">詳しい前提条件は、ページ下部の「前提条件・対象外のもの」にまとめています。</p>
+</div>
+
+<div id="formError"></div>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 20l1.2-4.2L16.7 4.3a2.15 2.15 0 0 1 3 3L8.2 18.8 4 20z"/><line x1="14.8" y1="6.2" x2="17.8" y2="9.2"/></svg></span>入力</span></h2>
+<div class="grid2">
+<div class="field">
+<label for="prefecture">勤務先の都道府県<span class="hint">協会けんぽの料率は事業所の所在地で決まります</span></label>
+<select id="prefecture"></select>
+</div>
+<div class="field">
+<label for="ageBand">年齢区分</label>
+<select id="ageBand">
+<option value="under40">40歳未満</option>
+<option value="40to64" selected>40〜64歳（介護保険料がかかります）</option>
+<option value="65to69">65〜69歳</option>
+</select>
+</div>
+</div>
+<h3 class="subhead">月給</h3>
+<div class="field">
+<label for="salaryMode">月給の入力方法</label>
+<select id="salaryMode">
+<option value="gross" selected>総支給額から等級表に当てはめる（目安）</option>
+<option value="direct">標準報酬月額を直接入力する（正確）</option>
+</select>
+</div>
+<div class="grid2">
+<div class="field">
+<label for="gross">月給の総支給額<span class="hint">給与明細の「総支給額（支給合計）」です。通勤手当・残業代などを含む税引き前の総額を入力してください。雇用保険料の計算にも使います</span></label>
+<div class="yen-wrap"><input type="number" id="gross" min="0" step="10000" value="385000"><span class="unit">円</span></div>
+</div>
+<div class="field" id="directWrap" hidden>
+<label for="directStandard">標準報酬月額<span class="hint">給与明細に「標準報酬月額」の記載がある場合はその額です。厚生年金は等級の範囲（88,000円〜650,000円）に合わせて計算します</span></label>
+<div class="yen-wrap"><input type="number" id="directStandard" min="0" step="1000" value="380000"><span class="unit">円</span></div>
+</div>
+</div>
+<h3 class="subhead">賞与</h3>
+<div class="grid2">
+<div class="field">
+<label for="bonusGross">賞与の総支給額（1回あたり）<span class="hint">給与明細の「総支給額」です。賞与がない場合は0にしてください</span></label>
+<div class="yen-wrap"><input type="number" id="bonusGross" min="0" step="10000" value="600000"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="bonusCount">賞与の回数（年）</label>
+<select id="bonusCount">
+<option value="0">0回</option>
+<option value="1">1回</option>
+<option value="2" selected>2回</option>
+<option value="3">3回</option>
+</select>
+</div>
+<div class="field">
+<label for="cumulative">今年度すでに支払われた賞与の標準賞与額（任意）<span class="hint">夏の賞与など、今年度（4月以降）に支払われた賞与の標準賞与額の合計。健康保険の年度累計上限573万円の判定に使います</span></label>
+<div class="yen-wrap"><input type="number" id="cumulative" min="0" step="10000" value="0"><span class="unit">円</span></div>
+</div>
+</div>
+<h3 class="subhead">雇用保険</h3>
+<div class="grid2">
+<div class="field">
+<label for="industry">雇用保険の事業の種類</label>
+<select id="industry">
+<option value="general" selected>一般の事業</option>
+<option value="nourin">農林水産・清酒製造の事業</option>
+<option value="kensetsu">建設の事業</option>
+</select>
+</div>
+</div>
+<label class="check"><input type="checkbox" id="employmentInsured" checked> 雇用保険の被保険者である</label>
+</section>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><line x1="8.5" y1="7.5" x2="15.5" y2="7.5"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15.5" r="1" fill="currentColor" stroke="none"/></svg></span>月額（月給分）</span></h2>
+<p class="note" id="mGrade"></p>
+<div class="table-wrap">
+<table class="result-table">
+<tr><th>項目</th><th>本人負担</th><th>会社負担</th></tr>
+<tbody id="mRows"></tbody>
+</table>
+</div>
+</section>
+
+<section class="card" id="bonusSection">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="11" rx="2"/><circle cx="12" cy="12.5" r="2.6"/><path d="M6.5 10.5h.01M17.5 15h.01"/></svg></span>賞与分（1回あたり）</span></h2>
+<p class="note" id="bGrade"></p>
+<div class="table-wrap">
+<table class="result-table">
+<tr><th>項目</th><th>本人負担</th><th>会社負担</th></tr>
+<tbody id="bRows"></tbody>
+</table>
+</div>
+</section>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M12 6c-1.8-1.5-4-2-7.5-2v14c3.5 0 5.7.5 7.5 2 1.8-1.5 4-2 7.5-2V4c-3.5 0-5.7.5-7.5 2z"/><path d="M12 6v14"/></svg></span>年額（月給分 × 12 ＋ 賞与分 × 回数）</span></h2>
+<div class="big-result"><span class="big-label">年間の本人負担 合計</span> <span id="annualInsured">— 円</span></div>
+<div class="table-wrap">
+<table class="result-table">
+<tr><th>項目</th><th>本人負担</th><th>会社負担</th></tr>
+<tbody id="aRows"></tbody>
+</table>
+</div>
+<p class="note" id="annualSummary"></p>
+<ul class="note" id="detailNotes"></ul>
+</section>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 13.5v-8A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v8a1.5 1.5 0 0 1-1.5 1.5H13l-4.5 4.2v-4.2H5.5A1.5 1.5 0 0 1 4 13.5z"/></svg></span>自分のAIに相談する</span></h2>
+<p>計算の内容をまとめた文をコピーできます。ChatGPTやClaudeなど、お使いのAIに貼ると、そのまま相談できます。貼る前に、個人が特定できる情報が含まれていないか確認してください。</p>
+<button type="button" id="copyPrompt" class="btn-ai">AIに相談する用の文をコピー</button>
+</section>
+
+<details class="card accordion">
+<summary>前提条件・対象外のもの</summary>
+<ul>
+<li>対象は令和8年度（2026年4月1日〜2027年3月31日）の月給・賞与です。料率は令和8年度のデータを使います。</li>
+<li>健康保険は協会けんぽ加入者を前提とし、勤務先（事業所）の所在地の都道府県の料率を使います。健康保険組合・共済組合の方は料率が異なるため対象外です。任意継続の方は「退職後の健康保険 比較」ツールをご利用ください。</li>
+<li>1年間を通じて同じ勤務先に在籍し、被保険者資格が継続することを前提とします。資格取得月・退職月、育児休業・産前産後の保険料免除期間は計算しません。</li>
+<li>「総支給額から当てはめる」方式の標準報酬月額は目安です。実際の標準報酬月額は定時決定・随時改定・資格取得時の決定で決まります。賞与は年3回以下の支給であることが前提です。</li>
+<li>保険料の本人負担分は、項目ごとに端数処理をしています（端数が50銭以下の場合は切り捨て、50銭を超える場合は切り上げ）。会社負担分は「保険料の総額（1円未満切り捨て）−本人負担分」で求めた表示上の内訳で、実際に会社が納付する額は事業所単位の合算で決まります。会社の給与計算や特約により、1円程度異なる場合があります。</li>
+<li>子ども・子育て拠出金（事業主のみ負担、厚生年金の標準報酬月額・標準賞与額の0.36％）と労災保険料は、このツールの計算には含めていません。</li>
+<li>本ツールは一般的な仕組みに基づく試算であり、個別の税務・労務相談ではありません。実際の保険料は勤務先の給与計算（標準報酬月額の決定、加入している健康保険組合の料率や会社の端数処理の特約など）により異なる場合があります。個別の事情がある場合は、勤務先の給与担当・社会保険労務士にご確認ください。</li>
+<li>計算はすべてブラウザの中で行い、入力した内容をサーバーへ送信することはありません。</li>
+</ul>
+</details>
+
+<details class="card accordion">
+<summary>出典・計算の根拠</summary>
+<ul>
+<li>協会けんぽ「令和8年度の都道府県単位保険料率」: 都道府県別の健康保険料率、介護保険料率1.62％、子ども・子育て支援金率0.23％<br><a href="https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/rate_prefectures/r08/index.html" target="_blank" rel="noopener">https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/rate_prefectures/r08/index.html</a></li>
+<li>協会けんぽ「令和8年度保険料額表（東京支部）」: 等級ごとの保険料額、健康保険50等級と厚生年金32等級の対応、報酬月額の読み替え、折半の端数処理、標準賞与額の上限<br><a href="https://www.kyoukaikenpo.or.jp/assets/R8_13tokyo.pdf" target="_blank" rel="noopener">https://www.kyoukaikenpo.or.jp/assets/R8_13tokyo.pdf</a></li>
+<li>日本年金機構「厚生年金保険の保険料」: 標準報酬月額の決め方、厚生年金の等級（第1級88,000円〜第32級650,000円）と料率18.3％、標準賞与額の上限<br><a href="https://www.nenkin.go.jp/service/kounen/hokenryo/hoshu/20150515-01.html" target="_blank" rel="noopener">https://www.nenkin.go.jp/service/kounen/hokenryo/hoshu/20150515-01.html</a></li>
+<li>日本年金機構「従業員に賞与を支給したときの手続き」: 標準賞与額の決め方と上限（健康保険は年度累計573万円、厚生年金は1か月150万円）<br><a href="https://www.nenkin.go.jp/service/kounen/hokenryo/hoshu/20141203.html" target="_blank" rel="noopener">https://www.nenkin.go.jp/service/kounen/hokenryo/hoshu/20141203.html</a></li>
+<li>厚生労働省「令和8（2026）年度 雇用保険料率のご案内」: 雇用保険の労働者負担率・事業主負担率（一般の事業 5/1,000・8.5/1,000 ほか）<br><a href="https://jsite.mhlw.go.jp/gunma-roudoukyoku/content/contents/002597764.pdf" target="_blank" rel="noopener">https://jsite.mhlw.go.jp/gunma-roudoukyoku/content/contents/002597764.pdf</a></li>
+<li>厚生労働省「雇用保険被保険者からの雇用保険料の控除方法」: 雇用保険料の計算方法と控除時の端数処理<br><a href="https://www.mhlw.go.jp/new-info/kobetu/roudou/gyousei/hoken/kakikata/dl/keizoku-21.pdf" target="_blank" rel="noopener">https://www.mhlw.go.jp/new-info/kobetu/roudou/gyousei/hoken/kakikata/dl/keizoku-21.pdf</a></li>
+<li>協会けんぽ茨城支部「介護保険制度と介護保険料について」: 介護保険料がかかる期間（40歳の誕生日の前日が属する月分から、65歳の誕生日の前日が属する月分まで）<br><a href="https://www.kyoukaikenpo.or.jp/shibu/ibaraki/public_relations/009/?scid=wi_mny_insurance_life_insurance_article_2104_00001_37275_01" target="_blank" rel="noopener">https://www.kyoukaikenpo.or.jp/shibu/ibaraki/public_relations/009/?scid=wi_mny_insurance_life_insurance_article_2104_00001_37275_01</a></li>
+</ul>
+</details>
+</main>
+<footer class="site-footer">
+<p class="disclaimer">このサイトの計算は一般的な仕組みに基づく試算であり、個別の労務相談ではありません。実際の保険料は、勤務先の給与計算や加入している健康保険組合により確定します。個別の事情がある場合は、社会保険労務士等の専門家または勤務先の給与担当にご確認ください。</p>
+<nav class="footer-nav">
+<a href="../taishoku-dc/">退職金×iDeCo/DC</a>
+<a href="../kokuho/">国民健康保険料</a>
+<a href="../taishoku-hoken/">退職後の健康保険 比較</a>
+<a href="../juminzei/">住民税</a>
+<a href="../furusato/">ふるさと納税</a>
+<a href="../bonus/">賞与の手取り計算</a>
+<a href="../nencho/">年末調整・還付</a>
+<a href="../shaho/">社会保険料計算</a>
+<a href="../privacy/">プライバシーポリシー</a>
+</nav>
+<p class="copy">© 2026 ぜいきんノート（zeikin-note.com）</p>
+</footer>
+<div class="toast" id="toast" role="status"></div>
+<script src="../js/shaho-engine.js"></script>
+<script src="../js/shaho-app.js"></script>
+</body>
+</html>
