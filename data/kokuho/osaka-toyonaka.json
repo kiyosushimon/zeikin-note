@@ -1,0 +1,162 @@
+{
+  "common_rules_applied": {
+    "child_component_under18_exemption": {
+      "note": "子ども分の均等割は令和8年3月31日時点で18歳未満の被保険者について10割（全額）軽減（大阪府統一基準。大阪市公式ページで直接確認）"
+    },
+    "preschool_child_reduction": {
+      "applies_to": [
+        "medical",
+        "support",
+        "child"
+      ],
+      "note": "未就学児（令和8年4月1日時点で6歳未満）の均等割5割減額（大阪府統一基準。大阪市公式ページで確認）"
+    },
+    "statutory_reduction": {
+      "applies_to": "均等割額・平等割額（全4区分）",
+      "note": "所得基準による減額（法定軽減）。大阪府統一基準（大阪市公式ページで適用範囲を確認）",
+      "salary_earner_adjustment": "(給与所得者等の数-1)×100,000円（0未満は0）",
+      "tiers": [
+        {
+          "reduction_rate": 0.7,
+          "threshold_formula": "430,000 + 調整額"
+        },
+        {
+          "reduction_rate": 0.5,
+          "threshold_formula": "430,000 + 調整額 + 310,000×被保険者数"
+        },
+        {
+          "reduction_rate": 0.2,
+          "threshold_formula": "430,000 + 調整額 + 570,000×被保険者数"
+        }
+      ]
+    }
+  },
+  "exceptions": [
+    {
+      "conditions": {
+        "note": "特定世帯は平等割が半額、特定継続世帯は4分の3（大阪府統一基準。大阪市の告示額と同額: 医療分 33,908円／16,954円／25,431円、支援分 10,845円／5,423円／8,134円）。介護分・子ども分は平等割なし"
+      },
+      "engine_note": "現行エンジンは倍率（0.5／0.75）で計算するため、支援分の特定世帯・特定継続世帯では告示額と最大1円ずれる場合がある（10,845×0.5=5,422.5 に対し告示は5,423円）",
+      "source_note": "大阪府の府内統一基準および大阪市告示第469号（豊中市の告示での個別確認は未実施）",
+      "type": "single_member_household"
+    }
+  ],
+  "municipality_code": "27203",
+  "name": "豊中市",
+  "official_pages": {
+    "notice_source": "大阪府「令和8年度 市町村標準保険料率及び都道府県標準保険料率 算定結果」（府統一料率）",
+    "rate_page": "https://www.city.toyonaka.osaka.jp/kenko/kokuho/seido/kokuhopanhu.files/R8toyonakashinokokuminkenkouhoken.pdf",
+    "trial_page": null
+  },
+  "prefecture": "大阪府",
+  "provenance": {
+    "rate_recheck": {
+      "checked_at": "2026-11-24",
+      "note": "大阪府公式「令和8年度 市町村標準保険料率及び都道府県標準保険料率 算定結果」で、府統一料率の全項目（医療9.50%・34,990円・33,908円／支援3.06%・11,191円・10,845円／介護2.60%・18,682円／子ども0.28%・均等割合計1,841円）と、別紙の豊中市の子ども分均等割内訳（均等割1,753円＋18歳以上88円）が一致することを確認。市の公式資料でも令和8年度料率と子ども分内訳が府統一料率と一致することを直接確認",
+      "source_url": "https://www.pref.osaka.lg.jp/documents/125887/r8ryouritsu.pdf"
+    },
+    "retrieval_method": "manual",
+    "retrieved_at": "2026-11-24",
+    "source_published": "2026年度（令和8年度）",
+    "source_type": "大阪府公式の算定結果PDF（府統一料率＋別紙の市町村別内訳）",
+    "source_url": "https://www.pref.osaka.lg.jp/documents/125887/r8ryouritsu.pdf",
+    "verification": {
+      "method": "公式モデルケース2件（区分別）＋所得階層別・世帯人数別保険料比較表60件（枚方市国民健康保険運営協議会資料 令和7年度第2回、令和8年2月6日）。大阪府は府内完全統一料率のため、枚方市の公式計算は府内全市町村の照合に使える",
+      "note": "統一パターンとして大阪市と同一の照合を実施（子ども分内訳のみ豊中市の額 均等割1,753円＋18歳以上88円）。70チェック中61件完全一致。残り9件は (A) 子ども分均等割の法定軽減の計算方法の差5件（公式は均等割合計1,841円に軽減率を適用し1円未満切上げ、エンジンは均等割・18歳以上均等割を個別に切上げ。差は最大2円で7割軽減時のみ発生）と (B) 比較表の3人世帯4セル（所得120万/160万/180万/200万円）の市の表側の不整合（令和7年度列でも同じ行に同型の差があり、どの一貫した計算前提でも再現できない）。詳細は tools/verify_osaka.js と収集ログの大阪府の節",
+      "reference_url": "https://www.city.hirakata.osaka.jp/cmsfiles/contents/0000005/5164/R07-02siryou.pdf",
+      "status": "照合済み",
+      "verified_at": "2026-11-24",
+      "verified_cases": 70
+    }
+  },
+  "publication_profile": {
+    "official_decision": "2026-01（大阪府の標準保険料率本算定公表）",
+    "page_update_month": 6
+  },
+  "rate_pattern_id": "osaka_unified",
+  "rate_record": {
+    "base_deduction": {
+      "amount": 430000,
+      "note": "大阪府統一（大阪市公式ページの計算方法表に明記。総所得金額等－基礎控除430,000円）",
+      "tiers": [
+        {
+          "deduction": 430000,
+          "max_total_income": 24000000
+        },
+        {
+          "deduction": 290000,
+          "max_total_income": 24500000
+        },
+        {
+          "deduction": 150000,
+          "max_total_income": 25000000
+        },
+        {
+          "deduction": 0,
+          "max_total_income": null
+        }
+      ]
+    },
+    "components": {
+      "care": {
+        "age_band": [
+          40,
+          64
+        ],
+        "asset_rate": null,
+        "cap": 170000,
+        "income_rate": 0.026,
+        "per_capita": 18682,
+        "per_capita_adult_addon": null,
+        "per_household": null
+      },
+      "child": {
+        "asset_rate": null,
+        "cap": 30000,
+        "income_rate": 0.0028,
+        "note": "大阪府統一料率のうち豊中市の内訳: 均等割1,753円＋18歳以上88円（合計1,841円で府内統一）。18歳未満（令和8年3月31日時点）は均等割全額軽減",
+        "per_capita": 1753,
+        "per_capita_adult_addon": 88,
+        "per_household": null
+      },
+      "medical": {
+        "asset_rate": null,
+        "cap": 660000,
+        "income_rate": 0.095,
+        "per_capita": 34990,
+        "per_capita_adult_addon": null,
+        "per_household": 33908,
+        "per_household_fixed": {
+          "keizoku": 25431,
+          "tokutei": 16954
+        }
+      },
+      "support": {
+        "asset_rate": null,
+        "cap": 260000,
+        "income_rate": 0.0306,
+        "per_capita": 11191,
+        "per_capita_adult_addon": null,
+        "per_household": 10845,
+        "per_household_fixed": {
+          "keizoku": 8134,
+          "tokutei": 5423
+        }
+      }
+    },
+    "fiscal_year": 2026,
+    "levy_type": "料",
+    "method": "3方式",
+    "rate_pattern_id": "osaka_unified",
+    "rounding": {
+      "confirmed_at": "2026-11-24",
+      "note": "区分ごとに1円未満切捨て（区分単位の10円・100円切捨てなし）。大阪市条例第12条・堺市条例第9条の2第2項で確認した府内統一の条例構造と同一の前提。豊中市の条文単位の直接確認は未実施",
+      "per_component": "floor_1yen"
+    }
+  },
+  "scope_group": "osaka_unified",
+  "unconfirmed": [
+    "端数処理の条文単位の直接確認は豊中市では未実施（大阪市・堺市の条例で確認した同一構造の前提）",
+    "子ども分均等割の法定軽減: 公式は均等割合計（均等割＋18歳以上均等割）に軽減率を適用するが、エンジンは内訳ごとに切上げるため、7割軽減時に最大2円の差が出る（2026-11-24の照合で確認済み。エンジン側の対応方針は未定）"
+  ]
+}
