@@ -518,12 +518,12 @@ lines.push('');
 lines.push('');
 lines.push('・住民税: 総務省「個人住民税」 https://www.soumu.go.jp/main_sosiki/jichi_zeisei/czaisei/czaisei_seido/150790_14.html');
 if (emp) {
-lines.push('・所得税: 国税庁「年末調整のしかた」の別表第五（給与所得控除）・基礎控除・税額表（速算表）');
-lines.push('・社会保険料: 協会けんぽの都道府県別保険料額表（令和8年度）と厚生年金・雇用保険の料率');
+lines.push('・所得税: 国税庁「令和8年分 年末調整のしかた」（別表第五（給与所得控除）・基礎控除・税額表（速算表）） https://www.nta.go.jp/users/gensen/nencho/index/shikata.htm ／ 基礎控除はタックスアンサー No.1199 https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1199.htm ／ 速算表は No.2260 https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/2260.htm');
+lines.push('・社会保険料: 協会けんぽ「令和8年度の都道府県単位保険料率」 https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/rate_prefectures/r08/index.html ／ 日本年金機構「厚生年金保険の保険料」（料率18.3%） https://www.nenkin.go.jp/service/kounen/hokenryo/hoshu/20150515-01.html ／ 厚生労働省「令和8（2026）年度 雇用保険料率のご案内」 https://jsite.mhlw.go.jp/gunma-roudoukyoku/content/contents/002597764.pdf');
 } else {
 lines.push('・国民健康保険料: ' + i.cityLabel + 'の公式の料率・計算方式（国民健康保険料シミュレーターに一次ソースを明記）');
 lines.push('・国民年金保険料: 日本年金機構「国民年金保険料」 https://www.nenkin.go.jp/service/kokunen/hokenryo/20150313-02.html （令和8年度額。令和9年度額は市区町村の公式案内で確認）');
-lines.push('・所得税: 国税庁の税額表（速算表）と基礎控除');
+lines.push('・所得税: 国税庁タックスアンサー No.2260（所得税の税率・速算表） https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/2260.htm ／ No.1199（基礎控除） https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1199.htm');
 }
 lines.push('');
 lines.push('聞きたいこと: ①この見解と計算過程の前提で、見落としている負担や控除はないか ②来年の資金繰り（特に支払いが重なる月）で気をつけること ③収入見込みが変わった場合に、どの税目がどう動くか');
