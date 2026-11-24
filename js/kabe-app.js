@@ -349,8 +349,22 @@ if (r.recovery) lines.push('・106万円の壁の回復点: 年収約 ' + yen(r.
 }
 lines.push('・本人の手取り: ' + yen(r.worker.net) + '（所得税 ' + yen(r.worker.incomeTax.tax) + '／住民税 ' + yen(r.worker.residentTax.tax) + '）');
 lines.push('');
+lines.push('【計算過程】');
+var wk = r.worker;
+lines.push('・本人の所得税: 給与所得（年収 ' + yen(i.income) + ' − 給与所得控除）' + yen(wk.salaryTax) + ' から控除（社会保険料 ' + yen(wk.incomeTax.social) + '＋配偶者 ' + yen(wk.incomeTax.spouseAmount) + '＋扶養 ' + yen(wk.incomeTax.dependentAmount) + '＋基礎 ' + yen(wk.incomeTax.basic) + '）＝ ' + yen(wk.incomeTax.deductionsTotal) + ' を引き、課税所得 ' + yen(wk.incomeTax.taxable) + '（1,000円未満切り捨て）に速算表を適用し ×1.021（復興特別所得税）＝ ' + yen(wk.incomeTax.tax));
+lines.push('・本人の住民税: 課税所得 ' + yen(wk.residentTax.taxable) + ' × 10% − 調整控除 ' + yen(wk.residentTax.adjustment) + ' ＋ 均等割 ' + yen(wk.residentTax.perCapita) + ' ＋ 森林環境税 ' + yen(wk.residentTax.forest) + ' ＝ ' + yen(wk.residentTax.tax) + '（100円未満切り捨て）');
+lines.push('・壁の判定の根拠: 所得税の壁178万円 ＝ 基礎控除104万円 ＋ 給与所得控除の最低保障74万円。住民税の壁110万円は1級地・単身の非課税限度額（給与所得に換算して判定）。社会保険の壁は、被扶養者の収入要件130万円（19〜22歳は150万円）と、短時間労働者の加入要件（週の所定労働時間20時間・賃金月額8.8万円・従業員数51人以上・学生でないこと）で判定');
+r.walls.forEach(function (w) {
+var s = '・' + w.name + ': 線 ' + yen(w.line);
+if (w.id === 'K1' && w.detail && w.detail.residentIncome !== undefined) s += '（本人の給与所得換算 ' + yen(w.detail.residentIncome) + ' と非課税限度 ' + yen(w.detail.limit) + ' を比較）';
+if (w.id === 'K2' && w.detail) s += '（月の所定内賃金 ' + yen(w.detail.monthlyWage) + ' と賃金要件の線 ' + yen(w.detail.wageLine) + ' を比較）';
+s += ' → ' + stateText(w)[0];
+lines.push(s);
+});
+if (r.recovery) lines.push('・回復点: 社会保険に加入して手取りが下がったあと、加入前の手取り水準に戻る年収を試算 ＝ 約 ' + yen(r.recovery.income));
+lines.push('');
 lines.push('前提: 所得税は令和8年分、住民税は令和8年度の標準税率による年額の目安（実際は翌年度に課税）。106万円の壁は現行要件で判定し、2026年10月の賃金要件撤廃は予定として注記。被扶養者の判定は収入要件の線だけによる目安で、認定は保険者の判断。社会保険料は年収から導出した月給（目安）で標準報酬月額を当てはめた試算。扶養を外れて国民健康保険・国民年金になる場合の保険料は計算していない。');
-lines.push('根拠: 国税庁タックスアンサー No.1191（配偶者控除）・No.1195（配偶者特別控除）・No.1199（基礎控除）、国税庁「令和8年分 年末調整のしかた」、厚生労働省（短時間労働者の適用拡大・令和8年1月リーフレット）、日本年金機構（被扶養者の収入要件・19〜22歳の150万円）、政府広報オンライン（年収の壁・支援強化パッケージ）、自治体公式ページ（住民税の非課税限度額）');
+lines.push('根拠: 国税庁タックスアンサー No.1191（配偶者控除） https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1191.htm・No.1195（配偶者特別控除） https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1195.htm・No.1199（基礎控除） https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1199.htm、国税庁「令和8年分 年末調整のしかた」 https://www.nta.go.jp/users/gensen/nencho/index/shikata.htm、厚生労働省（短時間労働者の適用拡大・令和8年1月リーフレット）、日本年金機構（被扶養者の収入要件・19〜22歳の150万円） https://www.nenkin.go.jp/service/kounen/tekiyo/hihokensha1/20141202.html、政府広報オンライン（年収の壁・支援強化パッケージ）、自治体公式ページ（住民税の非課税限度額）');
 lines.push('');
 lines.push('聞きたいこと: ①この試算の前提で見落としはないか ②壁を超えて働く場合と、超えないように調整する場合、それぞれの注意点 ③私の状況で確認すべき制度や手続き');
 lines.push('');
