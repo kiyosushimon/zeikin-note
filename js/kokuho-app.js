@@ -118,8 +118,8 @@ row.innerHTML =
 '<div class="field"><label>金額（円）</label><input type="number" class="m-amount" value="' + (v.amount!== undefined? v.amount: '') + '" min="0" step="10000" inputmode="numeric"></div>' +
 '<div class="field"><label>未就学児</label><select class="m-preschool"><option value="0">いいえ</option><option value="1"' + (v.preschool? ' selected': '') + '>はい</option></select></div>' +
 '<div class="field nagoya-extra"><label>扶養家族の人数</label><input type="number" class="m-dep-nd" value="' + (v.depNd || 0) + '" min="0" step="1" inputmode="numeric"></div>' +
-'<div class="field nagoya-extra"><label>扶養家族（障害者控除の対象）の人数</label><input type="number" class="m-dep-d" value="' + (v.depD || 0) + '" min="0" step="1" inputmode="numeric"></div>' +
-'<div class="field nagoya-extra"><label>本人控除（障害者・寡婦・ひとり親）</label><select class="m-self"><option value="0">なし</option><option value="1"' + (v.selfCredit? ' selected': '') + '>あり</option></select></div>' +
+'<div class="field nagoya-extra kobe-extra"><label>扶養家族（障害者控除の対象）の人数</label><input type="number" class="m-dep-d" value="' + (v.depD || 0) + '" min="0" step="1" inputmode="numeric"></div>' +
+'<div class="field nagoya-extra kobe-extra"><label>本人控除（障害者・寡婦・ひとり親）</label><select class="m-self"><option value="0">なし</option><option value="1"' + (v.selfCredit? ' selected': '') + '>あり</option></select></div>' +
 '<button type="button" class="danger m-remove">このメンバーを削除</button>';
 row.querySelector('.m-remove').addEventListener('click', function () {
 row.remove();
@@ -129,9 +129,13 @@ refreshCityExtras();
 }
 
 function refreshCityExtras() {
-var showNagoya = cityKey === 'nagoya';
-var extras = document.querySelectorAll('.nagoya-extra');
-for (var i = 0; i < extras.length; i++) extras[i].style.display = showNagoya? '': 'none';
+/* 名古屋市は扶養家族数・障害者扶養・本人控除、神戸市は障害者扶養・本人控除の入力欄を表示する */
+var extras = document.querySelectorAll('.nagoya-extra, .kobe-extra');
+for (var i = 0; i < extras.length; i++) {
+var show = (extras[i].classList.contains('nagoya-extra') && cityKey === 'nagoya') ||
+(extras[i].classList.contains('kobe-extra') && cityKey === 'kobe');
+extras[i].style.display = show? '': 'none';
+}
 var sendai = document.querySelectorAll('.sendai-only');
 for (var j = 0; j < sendai.length; j++) sendai[j].style.display = (cityKey === 'sendai' || cityKey === 'osaka' || cityKey === 'sakai' || cityKey === 'kyoto' || cityKey === 'chiba' || cityKey === 'shizuoka' || cityKey === 'hamamatsu' || cityKey === 'okayama' || cityKey.indexOf('osaka-') === 0)? '': 'none';
 }
@@ -221,7 +225,7 @@ lines.push('');
 lines.push('【計算過程】');
 var rr = cityData.rate_record;
 var compLabels = { medical: '医療分', support: '後期高齢者支援金分', care: '介護分', child: '子ども・子育て支援金分' };
-lines.push('・賦課のもとになる判定所得の合計: ' + yen(result.judgementIncome) + '。区分ごとの所得割は、各被保険者の所得から基礎控除（' + yen((rr.base_deduction && rr.base_deduction.amount) || 430000) + '）を引いた額に所得割率を掛けて計算します（区分ごとの所得割・均等割の内訳はエンジンの結果に含まれないため、式の一般形で示します）。');
+lines.push('・賦課のもとになる判定所得の合計: ' + yen(result.judgementIncome) + '。区分ごとの所得割は、各被保険者の所得から基礎控除（原則 ' + yen((rr.base_deduction && rr.base_deduction.amount) || 430000) + '。ただし、合計所得金額が2,400万円を超えると段階的に減額され、2,500万円を超えると0円になります）を引いた額に所得割率を掛けて計算します（区分ごとの所得割・均等割の内訳はエンジンの結果に含まれないため、式の一般形で示します）。');
 ['medical', 'support', 'care', 'child'].forEach(function (key) {
 var c = rr.components[key];
 if (!c || result.components[key] === undefined) return;

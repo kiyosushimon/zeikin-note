@@ -147,6 +147,9 @@ notes.push('副業分の住民税は、申告のときに「自分で納付」�
 if (!r.social.fromInput && r.social.monthlyGross !== null) {
 notes.push('社会保険料は、本業の月給の目安 ' + yen(r.social.monthlyGross) + ' から当てはめた標準報酬月額で自動計算しています。源泉徴収票の「社会保険料等の金額」を入力すると、その額で計算し直します。');
 }
+if (input.sideWithholding !== null && !r.settlement) {
+notes.push('源泉徴収済みの額が入力されていますが、所得税の確定申告が不要なため、精算の目安は表示していません（申告しない場合、追加の所得税は課税されません）。');
+}
 notes.push('追加税額は、単身者・控除は社会保険料と基礎控除のみの標準ケースの目安です。配偶者控除・扶養控除・生命保険料控除・医療費控除等がある場合、実際の額はこの結果と異なります。住民税は標準税率（所得割10%）・1級地の計算です。精密な住民税額は住民税シミュレーター（対応6市）で確認できます。');
 $('resultNotes').innerHTML = notes.map(function (n) { return '<li>' + n + '</li>';}).join('');
 }
@@ -169,11 +172,20 @@ lines.push('・源泉徴収済みの額: ' + yen(r.settlement.withholding) + '�
 }
 lines.push('');
 lines.push('【計算過程】');
+/* 申告要否の行は、エンジンの判定分岐（filing.code）と結論が一致するよう出し分ける */
+var filingLine;
+if (r.filing.code === 'over-2000man') {
+filingLine = '・所得税の申告要否の判定: 本業の給与収入が2,000万円を超えるため、副業の金額にかかわらず確定申告が必要（年末調整の対象外のため）';
+} else if (r.filing.code === 'will-file') {
+filingLine = '・所得税の申告要否の判定: 医療費控除・寄附金控除などで確定申告をする場合は、20万円以下の副業所得も含めて申告する必要があるため、副業分も含めて申告する';
+} else if (i.sideType === 'nonsalary') {
+filingLine = '・所得税の申告要否の判定: 副業所得 ' + yen(r.sideIncome) + ' が20万円を' + (r.sideIncome > 200000 ? '超えるため、確定申告が必要' : '超えないため、所得税の確定申告は不要（20万円ルール。住民税の申告は別に必要）');
+} else {
+filingLine = '・所得税の申告要否の判定: 副業先の給与収入 ' + yen(i.sideSalaryIncome) + '（年末調整を' + (i.sideYearEndAdjusted ? '受けた' : '受けていない') + '）をもとに、国税庁タックスアンサー No.1900の基準（年末調整を受けていない給与の収入金額が20万円を超えるか等）で判定';
+}
+lines.push(filingLine);
 if (i.sideType === 'nonsalary') {
 lines.push('・副業所得: 収入 ' + yen(i.sideRevenue) + ' − 必要経費 ' + yen(i.sideExpenses) + ' ＝ ' + yen(r.sideIncome) + '（マイナスの場合は0）');
-lines.push('・所得税の申告要否の判定: 副業所得 ' + yen(r.sideIncome) + ' が20万円を' + (r.sideIncome > 200000 ? '超えるため、確定申告が必要' : '超えないため、所得税の確定申告は不要（20万円ルール。住民税の申告は別に必要）'));
-} else if (i.sideType === 'salary') {
-lines.push('・所得税の申告要否の判定: 副業先の給与収入 ' + yen(i.sideSalaryIncome) + '（年末調整を' + (i.sideYearEndAdjusted ? '受けた' : '受けていない') + '）をもとに、国税庁タックスアンサー No.1900の基準（年末調整を受けていない給与の収入金額が20万円を超えるか等）で判定');
 }
 lines.push('・追加の所得税（差分方式）: 副業なしの年税額 ' + yen(r.incomeTax.without.annualTax) + ' → 副業あり ' + yen(r.incomeTax.with.annualTax) + '、差額 ' + yen(r.incomeTax.diff) + '。各ケースとも、給与所得から社会保険料控除と基礎控除（副業なし ' + yen(r.incomeTax.without.basic) + '／副業あり ' + yen(r.incomeTax.with.basic) + '）を引き、課税所得（副業あり ' + yen(r.incomeTax.with.taxable) + '、1,000円未満切り捨て）に速算表を適用し ×1.021（復興特別所得税）で計算');
 lines.push('・追加の住民税（差分方式）: 副業なし ' + yen(r.residentTax.without.tax) + ' → 副業あり ' + yen(r.residentTax.with.tax) + '、差額 ' + yen(r.residentTax.diff) + '（所得割10%＋均等割＋森林環境税、100円未満切り捨て）');

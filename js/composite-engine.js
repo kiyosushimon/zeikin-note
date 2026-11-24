@@ -225,7 +225,7 @@ function buildGantt(course, r, input) {
 
   if (course === 'employee') {
     var shRow = newRow('social', '社会保険料', '現年型', r.socialNext.total,
-      '毎月の給与から天引き。賞与分は賞与の支給月に上乗せしています');
+      '毎月の給与から天引き。賞与分は支給月に上乗せしています（支給月は回数から機械的に割り当てています: 年1回は12月、年2回は6月・12月、年3回は6月・7月・12月。実際の支給月とは異なる場合があります）');
     var bonusMonths = { 1: [11], 2: [5, 11], 3: [5, 6, 11] };
     var bm = bonusMonths[r.socialNext.bonusCountApplied] || [];
     for (i = 0; i < 12; i++) {

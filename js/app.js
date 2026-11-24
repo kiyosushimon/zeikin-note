@@ -233,23 +233,32 @@
     lines.push('あなたは税金の仕組みに詳しい相談相手です。以下は、税金計算サイト「ぜいきんノート」の「退職金 × iDeCo/DC 受け取り順序シミュレーター」で計算した私の試算結果です。この結果について、意味の解説と注意点を教えてください。');
     lines.push('');
     lines.push('【入力した条件】');
-    lines.push('・勤続期間: ' + inp.serviceStart + ' 〜 ' + inp.serviceEnd);
+    function monthLabel(idx) { return Math.floor(idx / 12) + '年' + (idx % 12 + 1) + '月'; }
+    lines.push('・勤続期間: ' + monthLabel(inp.serviceInterval[0]) + ' 〜 ' + monthLabel(inp.serviceInterval[1]) + '（勤続年数 ' + inp.serviceYears + '年）');
+    lines.push('・DC加入者期間: ' + inp.dcYears + '年');
     lines.push('・退職金の額: ' + yen(inp.retirementIncome) + '（' + inp.retirementYear + '年に受け取り予定）');
     lines.push('・iDeCo/DCの見込み額: ' + yen(inp.dcIncome));
     lines.push('');
     lines.push('【計算結果】');
     lines.push('・最も税額が小さい受け取り方: DCを ' + best.dcYear + ' 年に受け取る（' + patternLabel(best) + '）');
     lines.push('・その場合の合計税額: ' + yen(best.totalTax) + ' ／ 手取り合計: ' + yen(best.netTotal));
+    if (best.reference) {
+      lines.push('・注意: この受け取り方は「参考計算」です。短期退職手当等が絡む場合の正確な計算は、国税庁タックスアンサー No.2741 の区分ごとの算式によります。また、収入金額が控除額に満たない場合に必要となる調整計算（所得税法施行令71条の2）の算式は一次ソースで確定できていないため、実際の税額はこの試算（合計税額・手取り合計）と異なる場合があります。');
+    }
     lines.push('');
     lines.push('【計算過程】');
-    lines.push('・退職所得控除額の式: 勤続20年以下は40万円×勤続年数（最低80万円）、20年超は800万円＋70万円×（勤続年数−20年）。受け取り間隔が調整期間（DC先行9年／退職金先行19年）内の場合は、後に受け取る分の控除額から重複期間の相当額を差し引く。');
+    lines.push('・退職所得控除額の式: 勤続20年以下は40万円×勤続年数（最低80万円）、20年超は800万円＋70万円×（勤続年数−20年）。受け取り間隔が調整期間内の場合は、後に受け取る分の控除額から重複期間の相当額を差し引く。調整期間は、DCを先に受け取った場合はDCの受取が2026年1月1日以後なら9年・同日前なら4年、退職金を先に受け取った場合は19年。');
     function receiptProcess(label, receipt) {
       if (receipt.deductionBefore !== undefined && receipt.deductionBefore !== null) {
         lines.push('・' + label + ': 控除額は調整前 ' + yen(receipt.deductionBefore) + ' − 重複相当額 ' + yen(receipt.overlapEquivalent) + ' ＝ ' + yen(receipt.deduction) + (receipt.floorApplied ? '（80万円の最低額を適用）' : ''));
       } else {
         lines.push('・' + label + ': 控除額 ' + yen(receipt.deduction) + (receipt.floorApplied ? '（80万円の最低額を適用）' : ''));
       }
-      lines.push('　課税退職所得金額: （' + yen(receipt.income) + ' − ' + yen(receipt.deduction) + '）に1/2課税を適用 ＝ ' + yen(receipt.taxable) + '（1,000円未満切り捨て）');
+      if (receipt.category === 'short') {
+        lines.push('　課税退職所得金額: 短期退職手当等として、（' + yen(receipt.income) + ' − ' + yen(receipt.deduction) + '）のうち300万円以下の部分にのみ1/2課税を適用し、300万円を超える部分は全額を課税対象にして ＝ ' + yen(receipt.taxable) + '（1,000円未満切り捨て）');
+      } else {
+        lines.push('　課税退職所得金額: （' + yen(receipt.income) + ' − ' + yen(receipt.deduction) + '）に1/2課税を適用 ＝ ' + yen(receipt.taxable) + '（1,000円未満切り捨て）');
+      }
       lines.push('　所得税額: 課税退職所得金額に退職所得の源泉徴収税額の速算表（税率・控除額）を適用し、×1.021（復興特別所得税）＝ ' + yen(receipt.incomeTax));
       lines.push('　住民税額: ' + yen(receipt.taxable) + ' × 6% ＝ ' + yen(receipt.residentMunicipal) + '（市町村民税）／ × 4% ＝ ' + yen(receipt.residentPrefectural) + '（道府県民税）。各々100円未満切り捨て');
     }
@@ -261,7 +270,7 @@
     }
     lines.push('');
     lines.push('【計算の前提】');
-    lines.push('・退職所得控除は勤続年数で計算し、退職金とDCの受け取り間隔によって重なり調整がかかります（DCを先に受け取った場合は9年、退職金を先に受け取った場合は19年の調整期間。2026年1月1日以後の受給分）。');
+    lines.push('・退職所得控除は勤続年数で計算し、退職金とDCの受け取り間隔によって重なり調整がかかります。調整期間は、DCを先に受け取った場合はDCの受取が2026年1月1日以後なら9年・同日前なら4年、退職金を先に受け取った場合は19年です。');
     lines.push('・根拠: 国税庁タックスアンサー No.1420（退職金を受け取ったとき）' + SOURCES.no1420 + '、No.2732（確定拠出年金と退職手当等の重なり調整）' + SOURCES.no2732 + '、退職所得の源泉徴収税額の速算表 ' + SOURCES.besshi);
     lines.push('');
     lines.push('【聞きたいこと】');

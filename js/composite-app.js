@@ -251,6 +251,7 @@ if (r.errors.indexOf('kokuho-unavailable') >= 0) {
 $('formError').innerHTML = '<div class="error">自営業コースは、国民健康保険料のデータがある自治体（対応83自治体）でのみ計算できます。お住まいの自治体が「その他」の場合は、会社員コースか、<a href="../kokuho/">国民健康保険料シミュレーター</a>の対応状況をご確認ください。</div>';
 $('totalBig').textContent = '— 円';
 $('resultRows').innerHTML = '';
+$('selfIncomeTaxNote').textContent = '';
 $('assessBox').innerHTML = '';
 $('ganttArea').innerHTML = '';
 $('resultNotes').innerHTML = '';
@@ -277,6 +278,9 @@ rows.push(['今年の手取り（帰属ベース・参考）', yen(r.thisYear.ne
 $('resultRows').innerHTML = rows.map(function (row, i) {
 return '<tr' + (i === rows.length - 5? ' class="total-row"': '') + '><td>' + row[0] + '</td><td>' + row[1] + '</td></tr>';
 }).join('');
+$('selfIncomeTaxNote').textContent = input.course === 'self'
+? '※ 自営業コースの所得税は、配偶者控除・扶養控除を反映していない概算です（住民税には反映しています）。配偶者や扶養家族がいる場合、実際の所得税はこの金額より低くなります。'
+: '';
 $('totalBig').textContent = yen(r.totalNext);
 
 var assess = buildAssessment(input, r);
