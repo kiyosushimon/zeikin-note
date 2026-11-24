@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ふるさと納税 上限シミュレーター（住宅ローン・医療費控除の併用対応）｜ぜいきんノート</title>
+<meta name="description" content="ふるさと納税で自己負担2,000円に収まる寄附上限の目安を計算します。住宅ローン控除・医療費控除との併用にも対応。簡易計算は総務省の目安表と照合済み（年収300万〜700万円）。無料・登録不要・入力は送信されません。">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3785696031006214" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NYC15XQ95K"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-NYC15XQ95K');
+  </script>
+</head>
+<body>
+<header class="site-header">
+  <a class="logo" href="../"><span class="logo-mark"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><line x1="8.5" y1="7.5" x2="15.5" y2="7.5"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15.5" r="1" fill="currentColor" stroke="none"/></svg></span>ぜいきんノート</a>
+  <nav class="site-nav"><a href="../#tools">ツール一覧</a><a href="../#about">このサイトについて</a>｜<a href="../privacy/">プライバシーポリシー</a></nav>
+  <details class="menu"><summary class="menu-btn" aria-label="メニュー"><span class="burger"></span></summary><nav class="menu-panel"><a href="../taishoku-dc/">退職金 × iDeCo/DC</a><a href="../kokuho/">国民健康保険料</a><a href="../taishoku-hoken/">退職後の健康保険 比較</a><a href="../juminzei/">住民税</a><a href="../furusato/">ふるさと納税</a><a href="../privacy/">プライバシーポリシー</a></nav></details>
+</header>
+<main class="wrap">
+<nav class="crumbs"><a href="../">トップ</a> ＞ ふるさと納税 上限シミュレーター</nav>
+<h1><span class="h1-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.3-9.2C1.4 8.4 3.6 5 6.9 5c2 0 3.7 1.1 5.1 3 1.4-1.9 3.1-3 5.1-3 3.3 0 5.5 3.4 4.2 6.8C19.5 16.4 12 21 12 21z"/></svg></span>ふるさと納税 上限シミュレーター</h1>
+<p class="lead">自己負担2,000円で収まる寄附額の上限（目安）を計算します。住宅ローン控除・医療費控除との併用にも対応。簡易計算は総務省の目安表と同じ前提で計算し、目安表と照合済みです（給与収入300万〜700万円の範囲）。</p>
+
+<div class="scope-box">
+  <p class="scope-title">このツールで計算できないケース</p>
+  <ul>
+    <li>事業所得者・年金のみの方の簡易計算（下の「くわしい試算」なら計算できます）</li>
+    <li>分離課税の所得（株式の譲渡・配当、土地建物の譲渡など）がある場合</li>
+    <li>住宅ローン控除の「控除可能額」そのものの計算（年末残高からの計算はしません。金額を入力してください）</li>
+    <li>医療費控除の対象になるかどうかの判定（控除額を入力してください）</li>
+  </ul>
+  <p class="small">詳しい前提条件は、ページ下部の「前提条件・対象外のもの」にまとめています。</p>
+</div>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 20l1.2-4.2L16.7 4.3a2.15 2.15 0 0 1 3 3L8.2 18.8 4 20z"/><line x1="14.8" y1="6.2" x2="17.8" y2="9.2"/></svg></span>入力（年収から計算）</span></h2>
+<div class="grid2">
+<div class="field">
+<label for="revenue">給与収入（年収）<span class="hint">源泉徴収票の「支払金額」です</span></label>
+<div class="yen-wrap"><input type="number" id="revenue" min="0" step="100000" value="5000000"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="hasSpouse">配偶者</label>
+<select id="hasSpouse">
+<option value="no" selected>いない／控除の対象でない</option>
+<option value="yes">いる（配偶者控除の対象）</option>
+</select>
+</div>
+<div class="field"><label for="depGeneral">扶養親族（16〜18歳・23歳〜）</label><div class="yen-wrap"><input type="number" id="depGeneral" min="0" max="10" value="0"><span class="unit">人</span></div></div>
+<div class="field"><label for="depSpecific">扶養親族（19〜22歳）</label><div class="yen-wrap"><input type="number" id="depSpecific" min="0" max="10" value="0"><span class="unit">人</span></div></div>
+<div class="field">
+<label for="socialMode">社会保険料</label>
+<select id="socialMode">
+<option value="estimate" selected>年収の15％と仮定（目安表と同じ前提）</option>
+<option value="actual">実額を入力する</option>
+</select>
+</div>
+<div class="field" id="socialActualWrap" hidden>
+<label for="socialActual">社会保険料（前年に払った分）<span class="hint">源泉徴収票の「社会保険料等の金額」です</span></label>
+<div class="yen-wrap"><input type="number" id="socialActual" min="0" step="10000" value="750000"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="method">手続き方法</label>
+<select id="method">
+<option value="kakutei" selected>確定申告</option>
+<option value="onestop">ワンストップ特例</option>
+</select>
+</div>
+</div>
+<h3 class="subhead">併用する控除（任意）</h3>
+<div class="grid2">
+<div class="field">
+<label for="medical">医療費控除額<span class="hint">支払った医療費から補てん額と10万円（所得200万円未満は所得の5％）を引いた額</span></label>
+<div class="yen-wrap"><input type="number" id="medical" min="0" step="10000" value="0"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="housingAmount">住宅ローン控除の可能額（年間）<span class="hint">年末残高×控除率で決まる額。分からなければ0のままにしてください</span></label>
+<div class="yen-wrap"><input type="number" id="housingAmount" min="0" step="10000" value="0"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="housingEra">住宅の居住開始時期</label>
+<select id="housingEra">
+<option value="" selected>（住宅ローン控除なし）</option>
+<option value="h21">平成21年1月〜平成26年3月</option>
+<option value="h26">平成26年4月〜令和3年12月（消費税8％・10％の住宅）</option>
+<option value="r4">令和4年1月〜令和7年12月</option>
+</select>
+</div>
+<div class="field">
+<label for="otherDonations">ふるさと納税以外の寄附金額（任意）<span class="hint">認定NPO等への寄附など。控除の対象枠の確認に使います</span></label>
+<div class="yen-wrap"><input type="number" id="otherDonations" min="0" step="10000" value="0"><span class="unit">円</span></div>
+</div>
+</div>
+</section>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><line x1="8.5" y1="7.5" x2="15.5" y2="7.5"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15.5" r="1" fill="currentColor" stroke="none"/></svg></span>上限額の目安</span></h2>
+<div class="big-result"><span class="big-label">自己負担2,000円で収まる寄附額</span> <span id="limit">— 円</span></div>
+<div class="table-wrap">
+<table class="result-table">
+<tr><th>住民税の所得割額（調整控除後・推定）</th><th>適用する所得税率</th></tr>
+<tr><td id="levy">–</td><td id="rate">–</td></tr>
+</table>
+</div>
+<p class="note" id="formula"></p>
+<ul class="note" id="simpleNotes"></ul>
+<h3 class="subhead">寄附予定額で計算する</h3>
+<div class="grid2">
+<div class="field">
+<label for="donation">寄附予定額（合計）</label>
+<div class="yen-wrap"><input type="number" id="donation" min="0" step="1000" value="0"><span class="unit">円</span></div>
+</div>
+</div>
+<div id="breakWrap" hidden>
+<div class="table-wrap">
+<table class="result-table">
+<tr><th>控除の内訳</th><th>金額</th></tr>
+<tr id="bdIncomeTaxRow"><td>所得税からの控除</td><td id="bdIncomeTax">–</td></tr>
+<tr><td>住民税（基本分）</td><td id="bdBasic">–</td></tr>
+<tr><td>住民税（特例分）</td><td id="bdTokurei">–</td></tr>
+<tr id="bdShinseiRow" hidden><td>住民税（申告特例控除）</td><td id="bdShinsei">–</td></tr>
+<tr><td><strong>実質自己負担</strong></td><td id="bdSelfPay">–</td></tr>
+</table>
+</div>
+<p class="note" id="bdWarn" hidden></p>
+</div>
+</section>
+
+<details class="card accordion detail-mode">
+<summary>くわしい試算（住民税の決定通知書の実数から計算）</summary>
+<p class="note">事業所得者・年金所得の方や、正確な数字で計算したい方はこちらです。住民税の「税額決定通知書」にある所得割額（調整控除後）を入れてください。住宅ローン控除などを引く「前」の額です。</p>
+<div class="grid2">
+<div class="field">
+<label for="dLevy">住民税所得割額（調整控除後）</label>
+<div class="yen-wrap"><input type="number" id="dLevy" min="0" step="1000" value="0"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="dRate">所得税の限界税率<span class="hint">住民税の課税総所得金額から人的控除差調整額を引いた金額で判定した税率</span></label>
+<select id="dRate">
+<option value="0.05" selected>5％（195万円以下）</option>
+<option value="0.10">10％（195万円超〜330万円）</option>
+<option value="0.20">20％（330万円超〜695万円）</option>
+<option value="0.23">23％（695万円超〜900万円）</option>
+<option value="0.33">33％（900万円超〜1,800万円）</option>
+<option value="0.40">40％（1,800万円超〜4,000万円）</option>
+<option value="0.45">45％（4,000万円超）</option>
+</select>
+</div>
+<div class="field">
+<label for="dHousing">住宅ローン控除の住民税控除額（任意）<span class="hint">控除しきれるかの判定だけに使います</span></label>
+<div class="yen-wrap"><input type="number" id="dHousing" min="0" step="1000" value="0"><span class="unit">円</span></div>
+</div>
+</div>
+<div class="big-result"><span class="big-label">上限額の目安</span> <span id="dLimit">— 円</span></div>
+</details>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 13.5v-8A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v8a1.5 1.5 0 0 1-1.5 1.5H13l-4.5 4.2v-4.2H5.5A1.5 1.5 0 0 1 4 13.5z"/></svg></span>自分のAIに相談する</span></h2>
+<p>計算の内容をまとめた文をコピーできます。ChatGPTやClaudeなど、お使いのAIに貼ると、そのまま相談できます。貼る前に、個人が特定できる情報が含まれていないか確認してください。</p>
+<button type="button" id="copyPrompt" class="btn-ai">AIに相談する用の文をコピー</button>
+</section>
+
+<details class="card accordion">
+<summary>前提条件・対象外のもの</summary>
+<ul>
+<li>上限額は、翌年度の住民税所得割額に基づいて決まるため、寄附の時点では確定していません。この計算は目安です。</li>
+<li>簡易計算の前提は総務省の目安表と同じです（給与所得のみ、社会保険料は収入の15％と仮定、変更可）。目安表と照合して一致を確認した範囲は給与収入300万〜700万円で、750万円以上では目安表と一致しない場合があるため、その旨を表示します。</li>
+<li>住民税の税率は標準税率（所得割10％）を前提としています。標準と異なる税率の自治体では結果が異なる場合があります。</li>
+<li>住宅ローン控除は、上限額そのものには影響しません（上限は住宅ローン控除を引く前の所得割額で計算します）。ただし、住民税から控除しきれなくなる場合があり、その場合は警告を表示します。</li>
+<li>退職所得は現年分離課税のため、上限額の計算には影響しません。</li>
+<li>ワンストップ特例の申請後に確定申告をすると、特例の申請は無効になります（医療費控除を使う場合など）。</li>
+<li>この試算は一般的な税制の仕組みに基づく目安であり、個別の税務相談ではありません。実際の控除額は、確定申告の内容やお住まいの市区町村の賦課決定により確定します。</li>
+</ul>
+</details>
+
+<details class="card accordion">
+<summary>出典・計算の根拠</summary>
+<ul>
+<li>総務省ふるさと納税ポータルサイト「税金の控除について」: 控除の仕組み・全額控除される寄附金額の目安（本ツールの簡易計算と照合済み）<br><a href="https://www.soumu.go.jp/main_sosiki/jichi_zeisei/czaisei/czaisei_seido/furusato/mechanism/deduction.html" target="_blank" rel="noopener">https://www.soumu.go.jp/main_sosiki/jichi_zeisei/czaisei/czaisei_seido/furusato/mechanism/deduction.html</a></li>
+<li>国税庁タックスアンサー No.1155「ふるさと納税（寄附金控除）」: 所得税の寄附金控除・総所得金額等の40％上限・ワンストップ特例<br><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1155.htm" target="_blank" rel="noopener">https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1155.htm</a></li>
+<li>国税庁タックスアンサー No.1120「医療費を支払ったとき（医療費控除）」: 医療費控除額の計算<br><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1120.htm" target="_blank" rel="noopener">https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1120.htm</a></li>
+<li>練馬区公式「寄附金税額控除～ふるさと納税の仕組みなど～」: 上限額の算出式、住宅ローン控除が上限に影響しないこと、税額控除の適用順序</li>
+<li>自治体公式ページ（山口市・富士見市・鎌ケ谷市ほか）: 特例控除の割合表、申告特例控除額の算式、住宅ローン控除の住民税繰越額の計算</li>
+</ul>
+</details>
+</main>
+<footer class="site-footer">
+<p class="disclaimer">このサイトの計算は一般的な税制の仕組みに基づく試算であり、個別の税務相談ではありません。実際の控除額は、確定申告の内容やお住まいの市区町村の賦課決定により確定します。個別の事情がある場合は、税理士等の専門家またはお住まいの市区町村の住民税担当窓口にご確認ください。</p>
+<nav class="footer-nav">
+<a href="../taishoku-dc/">退職金×iDeCo/DC</a>
+<a href="../kokuho/">国民健康保険料</a>
+<a href="../taishoku-hoken/">退職後の健康保険 比較</a>
+<a href="../juminzei/">住民税</a>
+<a href="../furusato/">ふるさと納税</a>
+<a href="../privacy/">プライバシーポリシー</a>
+</nav>
+<p class="copy">© 2026 ぜいきんノート（zeikin-note.com）</p>
+</footer>
+<div class="toast" id="toast" role="status"></div>
+<script src="../js/furusato-engine.js"></script>
+<script src="../js/furusato-app.js"></script>
+</body>
+</html>
