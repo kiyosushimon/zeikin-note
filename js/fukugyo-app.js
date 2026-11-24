@@ -168,6 +168,17 @@ if (r.settlement) {
 lines.push('・源泉徴収済みの額: ' + yen(r.settlement.withholding) + '／精算の目安: ' + (r.settlement.isRefund ? '約 ' + yen(-r.settlement.amount) + ' の還付' : '約 ' + yen(r.settlement.amount) + ' の納付'));
 }
 lines.push('');
+lines.push('【計算過程】');
+if (i.sideType === 'nonsalary') {
+lines.push('・副業所得: 収入 ' + yen(i.sideRevenue) + ' − 必要経費 ' + yen(i.sideExpenses) + ' ＝ ' + yen(r.sideIncome) + '（マイナスの場合は0）');
+lines.push('・所得税の申告要否の判定: 副業所得 ' + yen(r.sideIncome) + ' が20万円を' + (r.sideIncome > 200000 ? '超えるため、確定申告が必要' : '超えないため、所得税の確定申告は不要（20万円ルール。住民税の申告は別に必要）'));
+} else if (i.sideType === 'salary') {
+lines.push('・所得税の申告要否の判定: 副業先の給与収入 ' + yen(i.sideSalaryIncome) + '（年末調整を' + (i.sideYearEndAdjusted ? '受けた' : '受けていない') + '）をもとに、国税庁タックスアンサー No.1900の基準（年末調整を受けていない給与の収入金額が20万円を超えるか等）で判定');
+}
+lines.push('・追加の所得税（差分方式）: 副業なしの年税額 ' + yen(r.incomeTax.without.annualTax) + ' → 副業あり ' + yen(r.incomeTax.with.annualTax) + '、差額 ' + yen(r.incomeTax.diff) + '。各ケースとも、給与所得から社会保険料控除と基礎控除（副業なし ' + yen(r.incomeTax.without.basic) + '／副業あり ' + yen(r.incomeTax.with.basic) + '）を引き、課税所得（副業あり ' + yen(r.incomeTax.with.taxable) + '、1,000円未満切り捨て）に速算表を適用し ×1.021（復興特別所得税）で計算');
+lines.push('・追加の住民税（差分方式）: 副業なし ' + yen(r.residentTax.without.tax) + ' → 副業あり ' + yen(r.residentTax.with.tax) + '、差額 ' + yen(r.residentTax.diff) + '（所得割10%＋均等割＋森林環境税、100円未満切り捨て）');
+if (r.settlement) lines.push('・精算の目安: 追加の所得税 ' + yen(r.incomeTax.diff) + ' − 源泉徴収済み ' + yen(r.settlement.withholding) + ' ＝ ' + (r.settlement.isRefund ? '還付の目安 ' + yen(-r.settlement.amount) : '納付の目安 ' + yen(r.settlement.amount)));
+lines.push('');
 lines.push('前提: 判定は所得税法第121条と国税庁タックスアンサー No.1900（令和8年分）による。20万円ルールは所得税だけの制度で住民税にはない。追加税額は副業なし／ありの差分方式で、単身者・控除は社会保険料と基礎控除のみの標準ケースの目安。住民税は標準税率（所得割10%）・1級地。所得区分（雑所得か事業所得か）の判定は行っていない。');
 lines.push('根拠: 国税庁タックスアンサー No.1900「給与所得者で確定申告が必要な人」https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1900.htm ／ 川崎市・さいたま市等の公式案内（住民税の申告要否）');
 lines.push('');
