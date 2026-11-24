@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>副業の税金・申告要否チェッカー（20万円ルールと住民税を分けて判定）｜ぜいきんノート</title>
+<meta name="description" content="本業の給与で年末調整を受けている会社員向けに、副業の確定申告（所得税）が要るか・住民税の申告が要るか・追加でいくら税金がかかるかを判定します。20万円ルールは所得税だけの制度であること、住民税は別に申告が要ることを分けて表示。無料・登録不要・入力は送信されません。">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3785696031006214" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NYC15XQ95K"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-NYC15XQ95K');
+  </script>
+</head>
+<body>
+<header class="site-header">
+  <a class="logo" href="../"><span class="logo-mark"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><line x1="8.5" y1="7.5" x2="15.5" y2="7.5"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15.5" r="1" fill="currentColor" stroke="none"/></svg></span>ぜいきんノート</a>
+  <nav class="site-nav"><a href="../#tools">ツール一覧</a><a href="../#about">このサイトについて</a>｜<a href="../privacy/">プライバシーポリシー</a></nav>
+  <details class="menu"><summary class="menu-btn" aria-label="メニュー"><span class="burger"></span></summary><nav class="menu-panel"><a href="../taishoku-dc/">退職金 × iDeCo/DC</a><a href="../kokuho/">国民健康保険料</a><a href="../taishoku-hoken/">退職後の健康保険 比較</a><a href="../juminzei/">住民税</a><a href="../furusato/">ふるさと納税</a><a href="../bonus/">賞与の手取り計算</a><a href="../setai/">世帯年収の手取り</a><a href="../kabe/">年収の壁チェッカー</a><a href="../zangyo/">残業代計算・未払いチェック</a><a href="../gensen/">源泉徴収税額チェッカー</a><a href="../jikyu/">実質時給チェッカー</a><a href="../fukugyo/">副業の税金・申告要否チェッカー</a><a href="../privacy/">プライバシーポリシー</a></nav></details>
+</header>
+<main class="wrap">
+<nav class="crumbs"><a href="../">トップ</a> ＞ 副業の税金・申告要否チェッカー</nav>
+<h1><span class="h1-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 20l1.2-4.2L16.7 4.3a2.15 2.15 0 0 1 3 3L8.2 18.8 4 20z"/><line x1="14.8" y1="6.2" x2="17.8" y2="9.2"/></svg></span>副業の税金・申告要否チェッカー</h1>
+<p class="lead">「副業が20万円以下なら申告は要らない」は、所得税だけの話です。住民税にはこの制度がなく、別に申告が要る場合があります。このツールは、所得税の確定申告と住民税の申告の要否を分けて判定し、副業で追加になる税金の目安もあわせて計算します。20万円の判定は売上ではなく、経費を引いた「所得」で行います。</p>
+
+<div class="scope-box">
+  <p class="scope-title">このツールで計算できないケース</p>
+  <ul>
+    <li>副業が不動産所得・譲渡所得・配当所得・一時所得、暗号資産・FX の場合（所得の種類ごとに申告の扱いが異なるため）</li>
+    <li>事業所得の青色申告特別控除・損益通算・損失の繰越控除と、消費税・個人事業税</li>
+    <li>公的年金を受けている方と、退職した年（退職所得がある年）の副業</li>
+    <li>配偶者控除・扶養控除・生命保険料控除等を入れた精密な追加税額（単身・標準ケースの目安のみ計算します）</li>
+    <li>副業先での社会保険の加入判定と、勤務先の副業禁止規定・就業規則との関係</li>
+  </ul>
+  <p class="small">詳しい前提条件は、ページ下部の「前提条件・対象外のもの」にまとめています。</p>
+</div>
+
+<div id="formError"></div>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 20l1.2-4.2L16.7 4.3a2.15 2.15 0 0 1 3 3L8.2 18.8 4 20z"/><line x1="14.8" y1="6.2" x2="17.8" y2="9.2"/></svg></span>入力（本業の給与）</span></h2>
+<div class="grid2">
+<div class="field">
+<label for="mainIncome">本業の年収（総支給額）<span class="hint">源泉徴収票の「支払金額」欄の金額です</span></label>
+<div class="yen-wrap"><input type="number" id="mainIncome" min="0" step="10000" value="5000000"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="prefecture">勤務地の都道府県<span class="hint">社会保険料（協会けんぽの料率）に使います</span></label>
+<select id="prefecture"></select>
+</div>
+<div class="field">
+<label for="ageBand">年齢区分<span class="hint">介護保険料がかかるかどうかが変わります</span></label>
+<select id="ageBand">
+<option value="under40" selected>40歳未満</option>
+<option value="40to64">40〜64歳（介護保険料がかかります）</option>
+<option value="65to69">65〜69歳</option>
+</select>
+</div>
+<div class="field">
+<label for="industry">雇用保険の事業の種類<span class="hint">雇用保険料率が変わります</span></label>
+<select id="industry">
+<option value="general" selected>一般の事業</option>
+<option value="nourin">農林水産・清酒製造の事業</option>
+<option value="kensetsu">建設の事業</option>
+</select>
+</div>
+<div class="field">
+<label for="bonusPer">賞与（1回分の額）<span class="hint">社会保険料の自動計算に使います。賞与がない場合は0にします</span></label>
+<div class="yen-wrap"><input type="number" id="bonusPer" min="0" step="1000" value="0"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="bonusCount">賞与の回数（年）<span class="hint">年2回なら2、なければ0にします</span></label>
+<div class="yen-wrap"><input type="number" id="bonusCount" min="0" step="1" value="0"><span class="unit">回</span></div>
+</div>
+<div class="field">
+<label for="socialOverride">社会保険料の年額（任意）<span class="hint">源泉徴収票の「社会保険料等の金額」欄です。入力した場合は自動計算より優先します</span></label>
+<div class="yen-wrap"><input type="number" id="socialOverride" min="0" step="1000" value=""><span class="unit">円</span></div>
+</div>
+</div>
+</section>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span>入力（副業と申告の予定）</span></h2>
+<div class="field">
+<label for="sideType">副業のタイプ<span class="hint">判定と計算の方法が変わります</span></label>
+<select id="sideType">
+<option value="nonsalary" selected>業務委託・フリーランス・内職など（給与以外）</option>
+<option value="salary">アルバイト・パート（給与）</option>
+<option value="other">その他（不動産・株・暗号資産など）</option>
+</select>
+</div>
+<div id="scopeGuide"></div>
+<div id="nonsalaryGroup">
+<div class="grid2">
+<div class="field">
+<label for="sideRevenue">副業の収入金額（年額）<span class="hint">副業で受け取った金額の合計です。源泉徴収された分も含めた、引かれる前の金額を入れます</span></label>
+<div class="yen-wrap"><input type="number" id="sideRevenue" min="0" step="10000" value="500000"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="sideExpenses">必要経費（年額）<span class="hint">副業のために使った費用です。20万円の判定も追加税額も「収入 − 経費 ＝ 所得」で計算します</span></label>
+<div class="yen-wrap"><input type="number" id="sideExpenses" min="0" step="10000" value="200000"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="sideCategory">所得区分（自己選択）<span class="hint">このツールでは区分の判定はしません。金額の計算は雑所得でも事業所得でも同じです</span></label>
+<select id="sideCategory">
+<option value="misc" selected>雑所得</option>
+<option value="business">事業所得</option>
+<option value="unknown">分からない</option>
+</select>
+</div>
+<div class="field">
+<label for="sideWithholding">副業の報酬から源泉徴収された所得税額（任意）<span class="hint">支払調書の写し・支払明細・請求書で確認した額です。入力すると、確定申告での精算（納付／還付）の目安を表示します</span></label>
+<div class="yen-wrap"><input type="number" id="sideWithholding" min="0" step="1000" value=""><span class="unit">円</span></div>
+</div>
+</div>
+<div id="categoryGuide" style="display:none">
+<p class="note">所得区分の目安: 事業所得か雑所得かは、その活動が社会通念上「事業」と言える程度の規模・継続性かで判断されます。所得税基本通達では、その所得に係る取引を記録した帳簿書類の保存がない場合（収入金額が300万円を超え、かつ事業所得と認められる事実がある場合を除く）は、業務に係る雑所得に該当することに留意するとされています。最終的な判定は個別の実態によるため、このツールでは行いません。</p>
+</div>
+</div>
+<div id="salaryGroup" style="display:none">
+<div class="grid2">
+<div class="field">
+<label for="sideSalaryIncome">副業先の給与収入金額（年額）<span class="hint">副業先の源泉徴収票の「支払金額」欄の金額です。2か所給与の判定は、この「収入金額」で行います（所得ではありません）</span></label>
+<div class="yen-wrap"><input type="number" id="sideSalaryIncome" min="0" step="10000" value="250000"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="sideYearEndAdjusted">副業先で年末調整を受けたか<span class="hint">通常、年末調整は本業の勤務先でだけ行われます</span></label>
+<select id="sideYearEndAdjusted">
+<option value="no" selected>受けていない</option>
+<option value="yes">受けた</option>
+</select>
+</div>
+</div>
+</div>
+<div class="field">
+<label for="willFile">医療費控除・寄附金控除・住宅ローン控除（初年度）などで確定申告をする予定<span class="hint">「ある」場合、20万円以下の副業所得も含めて申告する必要があるため、表示が切り替わります</span></label>
+<select id="willFile">
+<option value="no" selected>ない</option>
+<option value="yes">ある</option>
+</select>
+</div>
+</section>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><line x1="8.5" y1="7.5" x2="15.5" y2="7.5"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15.5" r="1" fill="currentColor" stroke="none"/></svg></span>判定と計算結果</span></h2>
+<p class="note">本ツールの判定と金額は、一般的な仕組みに基づく目安であり、個別の税務相談ではありません。所得区分の判定や申告の要否は個別の事情により異なる場合があります。正確な取扱いは、税務署・お住まいの市区町村の税務担当窓口、または税理士にご確認ください。</p>
+<div id="verdicts"></div>
+<div class="big-result"><span class="big-label" id="bigLabel">副業による追加税額の目安（所得税＋住民税）</span> <span id="totalBig">— 円</span></div>
+<div class="table-wrap">
+<table class="result-table">
+<tr><th>項目</th><th>金額</th></tr>
+<tbody id="resultRows"></tbody>
+</table>
+</div>
+<div id="settlementResult"></div>
+<ul class="note" id="resultNotes"></ul>
+</section>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 13.5v-8A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v8a1.5 1.5 0 0 1-1.5 1.5H13l-4.5 4.2v-4.2H5.5A1.5 1.5 0 0 1 4 13.5z"/></svg></span>自分のAIに相談する</span></h2>
+<p>計算の内容をまとめた文をコピーできます。ChatGPTやClaudeなど、お使いのAIに貼ると、そのまま相談できます。貼る前に、個人が特定できる情報が含まれていないか確認してください。</p>
+<button type="button" id="copyPrompt" class="btn-ai">AIに相談する用の文をコピー</button>
+</section>
+
+<details class="card accordion">
+<summary>前提条件・対象外のもの</summary>
+<ul>
+<li>対象は、本業は1か所からの給与で年末調整を受けている会社員であり、副業の所得は雑所得・事業所得・2か所目の給与所得のいずれかである場合です。対象とするのは令和8年分の所得税と、それに対して翌年度に課税される住民税です。</li>
+<li>20万円の判定は、副業所得（収入 − 必要経費。青色申告特別控除の適用前の金額）で行います。副業が赤字の場合は所得を0として扱います（雑所得の損失は他の所得と損益通算できません。事業所得の損失の損益通算は対象外です）。</li>
+<li>所得区分（雑所得か事業所得か）の判定は行いません。区分で変わる青色申告特別控除・損益通算・損失の繰越控除などは対象外です。金額の計算はどちらの区分でも同じ（総合課税）です。</li>
+<li>追加税額は、単身者・控除は社会保険料と基礎控除のみの標準ケースの目安です。配偶者控除・扶養控除・生命保険料控除・医療費控除等がある人の実際の追加税額は、本ツールの結果と異なる場合があります（とくに控除の追加で確定申告をする人の精算額は、控除分の還付と相殺されます）。</li>
+<li>住民税は標準税率（所得割10%）・均等割4,000円・森林環境税1,000円・1級地の計算であり、自治体ごとの税率・非課税限度（級地）により実際の額と異なる場合があります。精密な住民税額は<a href="../juminzei/">住民税シミュレーター</a>（対応6市）で確認できます。住民税の追加分は翌年度に課税される金額です。</li>
+<li>副業が給与の場合の社会保険料は、本業分のみで固定する近似です（副業先で社会保険に加入する場合は対象外です）。社会保険料の自動計算は（年収 − 賞与）÷ 12 の月額基礎による近似です。</li>
+<li>申告要否の判定は、入力された副業所得以外の所得がないことを前提とします。他の所得（配当・一時所得など）がある場合は判定が変わることがあります。住民税の申告が不要になる基準は市区町村の条例ごとに異なるため、本ツールでは「原則必要」とし、自治体の基準で不要になる場合がある旨を注記しています。</li>
+<li>住民税の徴収方法（普通徴収の選択）については、制度の説明に留めています。給与以外の所得分の普通徴収の選択の可否を含め、自治体の運用は変わっている最中であり、全国一律の取扱いは確認できていません。「会社に知られるかどうか」の判定は表示しません。</li>
+<li>対象外: 不動産所得・譲渡所得・配当所得・一時所得・山林所得・退職所得、暗号資産・FX の所得／事業所得の青色申告特別控除・損益通算・損失の繰越控除と開業・青色申告の手続き／法人化の判定／消費税・個人事業税／副業先での社会保険の加入判定・雇用保険の手続き／公的年金を受けている人の副業／退職した年の副業／配偶者・扶養に入っている人の副業（<a href="../kabe/">年収の壁チェッカー</a>の領分）／勤務先の副業禁止規定・就業規則との関係。</li>
+<li>計算はすべてブラウザの中で行い、入力した内容をサーバーへ送信することはありません。</li>
+</ul>
+</details>
+
+<details class="card accordion">
+<summary>出典・計算の根拠</summary>
+<ul>
+<li>国税庁タックスアンサー No.1900「給与所得者で確定申告が必要な人」（令和8年4月1日現在法令等）: 確定申告が必要な範囲（給与収入2,000万円超／1か所給与で給与・退職以外の所得が20万円超／2か所以上で未調整給与収入と同所得の合計が20万円超、150万円の注記）。本ツールの所得税の判定はこの文面と照合しています<br><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1900.htm" target="_blank" rel="noopener">https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1900.htm</a></li>
+<li>国税庁パンフレット「忘れていませんか、その所得！」: 医療費控除やふるさと納税（寄附金控除）の適用を受ける場合は、給与以外の所得が20万円以下でも確定申告が必要であること<br><a href="https://www.nta.go.jp/information/release/kokuzeicho/2018/shinkoku/pdf/05.pdf" target="_blank" rel="noopener">https://www.nta.go.jp/information/release/kokuzeicho/2018/shinkoku/pdf/05.pdf</a></li>
+<li>川崎市 公式FAQ「給与以外に副収入がある場合の個人住民税の申告について知りたい。」: 住民税には20万円以下の申告不要の制度がなく、給与以外の所得は金額の多寡にかかわらず申告が必要なこと<br><a href="https://www.city.kawasaki.jp/templates/faq/230/0000056666.html" target="_blank" rel="noopener">https://www.city.kawasaki.jp/templates/faq/230/0000056666.html</a></li>
+<li>さいたま市 公式ページ「副業の所得が20万円以下の場合でも申告は必要ですか？」: 副業の所得が20万円以下でも原則として住民税の申告が必要なこと、副業先が給与支払報告書を提出している場合は申告が不要なこと<br><a href="https://www.city.saitama.lg.jp/001/153/004/002/001/002/p094059.html" target="_blank" rel="noopener">https://www.city.saitama.lg.jp/001/153/004/002/001/002/p094059.html</a></li>
+<li>国税庁タックスアンサー No.2792「源泉徴収が必要な報酬・料金等とは」: 報酬・料金等から源泉徴収される所得税の税率（原則10.21%。100万円を超える部分は20.42%）。精算の目安の表示に使っています<br><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/gensen/2792_qa.htm" target="_blank" rel="noopener">https://www.nta.go.jp/taxes/shiraberu/taxanswer/gensen/2792_qa.htm</a></li>
+<li>所得税基本通達 35-2（国税庁「法第35条《雑所得》関係」）: 事業所得と業務に係る雑所得の区分の考え方と、帳簿書類の保存がない場合の留意点。所得区分の目安ガイドの根拠です<br><a href="https://www.nta.go.jp/law/tsutatsu/kihon/shotoku/04/09.htm" target="_blank" rel="noopener">https://www.nta.go.jp/law/tsutatsu/kihon/shotoku/04/09.htm</a></li>
+<li>渋谷区 公式リーフレット「副業をしている人はご確認ください（令和8年度より住民税徴収方法の対応が変更となります）」: 給与・公的年金等以外の所得に係る住民税は「自分で納付」を選択すると普通徴収になること、自治体により取扱いが変更されていること。徴収方法の案内文の根拠です<br><a href="https://files.city.shibuya.tokyo.jp/assets/12995aba8b194961be709ba879857f70/3bdd59af39224770b323cf1eeffe4c79/tyousyuu_henkou_leaflet.pdf" target="_blank" rel="noopener">https://files.city.shibuya.tokyo.jp/assets/12995aba8b194961be709ba879857f70/3bdd59af39224770b323cf1eeffe4c79/tyousyuu_henkou_leaflet.pdf</a></li>
+<li>所得税・住民税・社会保険料の計算方式とデータは、年末調整（所得税の表）・住民税（全国共通ルール）・社会保険料計算（協会けんぽ料率・等級表）の各ツールと共用しています。各ツールのページに一次ソースを明記しています。</li>
+</ul>
+</details>
+</main>
+<footer class="site-footer">
+<p class="disclaimer">このサイトの計算は一般的な仕組みに基づく試算であり、個別の税務相談ではありません。所得区分の判定や申告の要否は個別の事情により異なる場合があります。正確な取扱いは、税務署・お住まいの市区町村の税務担当窓口、または税理士にご確認ください。</p>
+<nav class="footer-nav">
+<a href="../taishoku-dc/">退職金×iDeCo/DC</a>
+<a href="../kokuho/">国民健康保険料</a>
+<a href="../taishoku-hoken/">退職後の健康保険 比較</a>
+<a href="../juminzei/">住民税</a>
+<a href="../furusato/">ふるさと納税</a>
+<a href="../bonus/">賞与の手取り計算</a>
+<a href="../setai/">世帯年収の手取り</a>
+<a href="../kabe/">年収の壁チェッカー</a>
+<a href="../zangyo/">残業代計算・未払いチェック</a>
+<a href="../gensen/">源泉徴収税額チェッカー</a>
+<a href="../jikyu/">実質時給チェッカー</a>
+<a href="../fukugyo/">副業の税金・申告要否チェッカー</a>
+<a href="../privacy/">プライバシーポリシー</a>
+</nav>
+<p class="copy">© 2026 ぜいきんノート（zeikin-note.com）</p>
+</footer>
+<div class="toast" id="toast" role="status"></div>
+<script src="../js/nencho-engine.js"></script>
+<script src="../js/shaho-engine.js"></script>
+<script src="../js/setai-engine.js"></script>
+<script src="../js/fukugyo-engine.js"></script>
+<script src="../js/fukugyo-app.js"></script>
+</body>
+</html>
