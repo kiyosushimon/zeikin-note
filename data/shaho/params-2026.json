@@ -1,0 +1,248 @@
+{
+  "fiscal_year": 2026,
+  "pension_rate": 0.183,
+  "pension_rate_note": "厚生年金保険料率18.3%（平成29年9月を最後に引上げ終了し固定。労使折半）。日本年金機構「厚生年金保険の保険料」で確認。",
+  "pension_grade_table": [
+    {
+      "grade": 1,
+      "standard": 88000,
+      "range_min": 0,
+      "range_max": 93000
+    },
+    {
+      "grade": 2,
+      "standard": 98000,
+      "range_min": 93000,
+      "range_max": 101000
+    },
+    {
+      "grade": 3,
+      "standard": 104000,
+      "range_min": 101000,
+      "range_max": 107000
+    },
+    {
+      "grade": 4,
+      "standard": 110000,
+      "range_min": 107000,
+      "range_max": 114000
+    },
+    {
+      "grade": 5,
+      "standard": 118000,
+      "range_min": 114000,
+      "range_max": 122000
+    },
+    {
+      "grade": 6,
+      "standard": 126000,
+      "range_min": 122000,
+      "range_max": 130000
+    },
+    {
+      "grade": 7,
+      "standard": 134000,
+      "range_min": 130000,
+      "range_max": 138000
+    },
+    {
+      "grade": 8,
+      "standard": 142000,
+      "range_min": 138000,
+      "range_max": 146000
+    },
+    {
+      "grade": 9,
+      "standard": 150000,
+      "range_min": 146000,
+      "range_max": 155000
+    },
+    {
+      "grade": 10,
+      "standard": 160000,
+      "range_min": 155000,
+      "range_max": 165000
+    },
+    {
+      "grade": 11,
+      "standard": 170000,
+      "range_min": 165000,
+      "range_max": 175000
+    },
+    {
+      "grade": 12,
+      "standard": 180000,
+      "range_min": 175000,
+      "range_max": 185000
+    },
+    {
+      "grade": 13,
+      "standard": 190000,
+      "range_min": 185000,
+      "range_max": 195000
+    },
+    {
+      "grade": 14,
+      "standard": 200000,
+      "range_min": 195000,
+      "range_max": 210000
+    },
+    {
+      "grade": 15,
+      "standard": 220000,
+      "range_min": 210000,
+      "range_max": 230000
+    },
+    {
+      "grade": 16,
+      "standard": 240000,
+      "range_min": 230000,
+      "range_max": 250000
+    },
+    {
+      "grade": 17,
+      "standard": 260000,
+      "range_min": 250000,
+      "range_max": 270000
+    },
+    {
+      "grade": 18,
+      "standard": 280000,
+      "range_min": 270000,
+      "range_max": 290000
+    },
+    {
+      "grade": 19,
+      "standard": 300000,
+      "range_min": 290000,
+      "range_max": 310000
+    },
+    {
+      "grade": 20,
+      "standard": 320000,
+      "range_min": 310000,
+      "range_max": 330000
+    },
+    {
+      "grade": 21,
+      "standard": 340000,
+      "range_min": 330000,
+      "range_max": 350000
+    },
+    {
+      "grade": 22,
+      "standard": 360000,
+      "range_min": 350000,
+      "range_max": 370000
+    },
+    {
+      "grade": 23,
+      "standard": 380000,
+      "range_min": 370000,
+      "range_max": 395000
+    },
+    {
+      "grade": 24,
+      "standard": 410000,
+      "range_min": 395000,
+      "range_max": 425000
+    },
+    {
+      "grade": 25,
+      "standard": 440000,
+      "range_min": 425000,
+      "range_max": 455000
+    },
+    {
+      "grade": 26,
+      "standard": 470000,
+      "range_min": 455000,
+      "range_max": 485000
+    },
+    {
+      "grade": 27,
+      "standard": 500000,
+      "range_min": 485000,
+      "range_max": 515000
+    },
+    {
+      "grade": 28,
+      "standard": 530000,
+      "range_min": 515000,
+      "range_max": 545000
+    },
+    {
+      "grade": 29,
+      "standard": 560000,
+      "range_min": 545000,
+      "range_max": 575000
+    },
+    {
+      "grade": 30,
+      "standard": 590000,
+      "range_min": 575000,
+      "range_max": 605000
+    },
+    {
+      "grade": 31,
+      "standard": 620000,
+      "range_min": 605000,
+      "range_max": 635000
+    },
+    {
+      "grade": 32,
+      "standard": 650000,
+      "range_min": 635000,
+      "range_max": null
+    }
+  ],
+  "pension_grade_table_note": "厚生年金の標準報酬月額等級表（全32等級）。標準報酬月額の並びは健康保険の第4級〜第35級と共通。第1級の報酬月額欄は「93,000円未満」、第32級は「635,000円以上」と読み替える（協会けんぽ保険料額表の注記）。",
+  "employment_rates": {
+    "general": {
+      "label": "一般の事業",
+      "worker_rate": 0.005,
+      "employer_rate": 0.0085,
+      "nibiji_rate": 0.0035
+    },
+    "nourin": {
+      "label": "農林水産・清酒製造の事業",
+      "worker_rate": 0.006,
+      "employer_rate": 0.0095,
+      "nibiji_rate": 0.0035
+    },
+    "kensetsu": {
+      "label": "建設の事業",
+      "worker_rate": 0.006,
+      "employer_rate": 0.0105,
+      "nibiji_rate": 0.0045
+    }
+  },
+  "employment_rates_note": "令和8年度（2026年4月1日〜2027年3月31日）の雇用保険料率。事業主負担には雇用保険二事業の保険料率（nibiji_rate）が含まれる。厚生労働省「令和8（2026）年度 雇用保険料率のご案内」で確認。",
+  "bonus_caps": {
+    "health_annual": 5730000,
+    "pension_per_month": 1500000
+  },
+  "bonus_caps_note": "標準賞与額の上限。健康保険は年度（4月1日〜翌年3月31日）の累計573万円、厚生年金は1か月あたり150万円（同月内に2回以上支給される場合は合算した額に適用）。",
+  "provenance": {
+    "pension_grade_table": {
+      "source": "協会けんぽ「令和8年度保険料額表（東京支部）」等級欄（厚生年金の等級は括弧内に併記）・日本年金機構「厚生年金保険の保険料」",
+      "url": "https://www.kyoukaikenpo.or.jp/assets/R8_13tokyo.pdf",
+      "checked": "2026-11-24"
+    },
+    "pension_rate": {
+      "source": "日本年金機構「厚生年金保険の保険料」",
+      "url": "https://www.nenkin.go.jp/service/kounen/hokenryo/hoshu/20150515-01.html",
+      "checked": "2026-11-24"
+    },
+    "employment_rates": {
+      "source": "厚生労働省「令和8（2026）年度 雇用保険料率のご案内」",
+      "url": "https://jsite.mhlw.go.jp/gunma-roudoukyoku/content/contents/002597764.pdf",
+      "checked": "2026-11-24"
+    },
+    "bonus_caps": {
+      "source": "日本年金機構「従業員に賞与を支給したときの手続き」",
+      "url": "https://www.nenkin.go.jp/service/kounen/hokenryo/hoshu/20141203.html",
+      "checked": "2026-11-24"
+    }
+  }
+}
