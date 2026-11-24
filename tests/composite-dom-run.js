@@ -10,6 +10,9 @@
  *     表示もその場で初期値に戻ること（リロード時のブラウザのフォーム値復元に頼ると、
  *     入力した値が復元されて表示が残るため、アプリ側で初期値へ戻すことを要求する）。
  *     世帯・実質時給・副業も同じ消去フローで検証する
+ *  3. NEW-01: 旧年齢区分 '40to64' の保存値（ツール保存・共通プロファイルのどちら経由でも）を
+ *     復元したら、決め打ちで読み替えず再選択を求め、金額を出さないこと。
+ *     選び直すと新しい区分で計算され、保存も新しい区分値になること
  */
 'use strict';
 const fs = require('fs');
@@ -257,6 +260,43 @@ async function visit(pageDir, storage, opts) {
     eq(t.dir + ': 再読み込み後も初期値のまま', b.$(t.field).value, defVal);
     eq(t.dir + ': 再読み込み後に書き戻されない', st.getItem('zn.profile.v1'), null);
   }
+
+  /* ============ 事象3: NEW-01 旧年齢区分の保存値では再選択を求める ============ */
+  section('事象3 NEW-01 旧年齢区分（40to64）の復元では金額を出さず、再選択を求めること');
+  const storage3 = makeStorage();
+  storage3.setItem('zn.tool.composite.v1', JSON.stringify({
+    course: 'self', cityKey: 'nagoya', ageBand: '40to64'
+  }));
+  const u1 = await visit('composite', storage3);
+  eq('年齢区分が再選択待ちになる', u1.$('ageBand').value, 'reselect');
+  eq('総負担は金額を出さない（— 円）', u1.$('totalBig').textContent, '— 円');
+  eq('内訳表は空', u1.$('resultRows').innerHTML, '');
+  eq('ガントは空', u1.$('ganttArea').innerHTML, '');
+  ok('結果エリアに再選択の案内が出る', u1.$('assessBox').innerHTML.indexOf('選び直してください') >= 0, 'assessBox: ' + u1.$('assessBox').innerHTML);
+  ok('入力側にも案内が出る', u1.$('formError').innerHTML.indexOf('選び直してください') >= 0, 'formError が空');
+
+  section('事象3b NEW-01 共通プロファイル経由の旧年齢区分でも再選択を求めること');
+  const storage3b = makeStorage();
+  storage3b.setItem('zn.profile.v1', JSON.stringify({
+    workStyle: 'self', kokuhoCityKey: 'nagoya', ageBand: '40to64'
+  }));
+  const u2 = await visit('composite', storage3b);
+  eq('プロファイル経由でも再選択待ちになる', u2.$('ageBand').value, 'reselect');
+  eq('プロファイル経由でも金額を出さない', u2.$('totalBig').textContent, '— 円');
+  eq('プロファイルの年齢区分は書き換えられない', JSON.parse(storage3b.getItem('zn.profile.v1')).ageBand, '40to64');
+
+  section('事象3c NEW-01 選び直すと新しい区分で計算され、保存されること');
+  u1.$('ageBand').value = '60to64';
+  u1.$('ageBand').dispatch('change');
+  for (let i = 0; i < 10; i++) await new Promise((r) => setTimeout(r, 20));
+  eq('60〜64歳を選び直すと総負担が出る（名古屋・自営業・所得300万円）', u1.$('totalBig').textContent, '730,600円');
+  ok('国民年金保険料0円の行が出る', u1.$('resultRows').innerHTML.indexOf('国民年金保険料') >= 0 && u1.$('resultRows').innerHTML.indexOf('0円') >= 0, 'resultRows: ' + u1.$('resultRows').innerHTML.slice(0, 200));
+  eq('案内が消える', u1.$('formError').innerHTML, '');
+  const savedTool3 = JSON.parse(storage3.getItem('zn.tool.composite.v1') || '{}');
+  eq('選び直した区分がツール保存される', savedTool3.ageBand, '60to64');
+  const u3 = await visit('composite', storage3);
+  eq('再訪問では再選択待ちにならない', u3.$('ageBand').value, '60to64');
+  eq('再訪問でも同じ総負担', u3.$('totalBig').textContent, '730,600円');
 
   console.log(`\n${pass} passed, ${fail} failed`);
   process.exit(fail ? 1 : 0);
