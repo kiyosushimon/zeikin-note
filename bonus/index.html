@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>賞与の手取り計算シミュレーター（社会保険料・所得税を実務どおりに計算）｜ぜいきんノート</title>
+<meta name="description" content="賞与から引かれる健康保険料・厚生年金保険料・雇用保険料と所得税を計算し、手取り額を表示します。所得税は国税庁の算出率の表（令和8年分）で実務どおりに計算。前月に給与がない場合や賞与が前月給与の10倍を超える場合の特例計算にも対応。無料・登録不要・入力は送信されません。">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3785696031006214" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NYC15XQ95K"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-NYC15XQ95K');
+  </script>
+</head>
+<body>
+<header class="site-header">
+  <a class="logo" href="../"><span class="logo-mark"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><line x1="8.5" y1="7.5" x2="15.5" y2="7.5"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15.5" r="1" fill="currentColor" stroke="none"/></svg></span>ぜいきんノート</a>
+  <nav class="site-nav"><a href="../#tools">ツール一覧</a><a href="../#about">このサイトについて</a>｜<a href="../privacy/">プライバシーポリシー</a></nav>
+  <details class="menu"><summary class="menu-btn" aria-label="メニュー"><span class="burger"></span></summary><nav class="menu-panel"><a href="../taishoku-dc/">退職金 × iDeCo/DC</a><a href="../kokuho/">国民健康保険料</a><a href="../taishoku-hoken/">退職後の健康保険 比較</a><a href="../juminzei/">住民税</a><a href="../furusato/">ふるさと納税</a><a href="../bonus/">賞与の手取り計算</a><a href="../privacy/">プライバシーポリシー</a></nav></details>
+</header>
+<main class="wrap">
+<nav class="crumbs"><a href="../">トップ</a> ＞ 賞与の手取り計算シミュレーター</nav>
+<h1><span class="h1-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="11" rx="2"/><circle cx="12" cy="12.5" r="2.6"/><path d="M6.5 10.5h.01M17.5 15h.01"/></svg></span>賞与の手取り計算シミュレーター</h1>
+<p class="lead">賞与から引かれる社会保険料と所得税を計算して、手取り額を表示します。所得税は、実際の源泉徴収と同じ「賞与に対する源泉徴収税額の算出率の表」（令和8年分）で計算します。住民税は賞与からは引かれません。</p>
+
+<div class="scope-box">
+  <p class="scope-title">このツールで計算できないケース</p>
+  <ul>
+    <li>健康保険組合・共済組合に加入している方（このツールは協会けんぽ前提です）</li>
+    <li>年4回以上支払われる賞与（標準報酬月額の対象になるため、計算の仕組みが異なります）</li>
+    <li>退職月に支払われる賞与、育児休業・産前産後の保険料免除期間中の賞与</li>
+    <li>70歳以上の方の厚生年金保険料、75歳以上の方の健康保険料</li>
+    <li>令和9年分以後（2027年4月以降）に支払われる賞与（税額表が改正されます）</li>
+    <li>前月の給与が月払い以外（週払い・日払いなど）の場合</li>
+  </ul>
+  <p class="small">詳しい前提条件は、ページ下部の「前提条件・対象外のもの」にまとめています。</p>
+</div>
+
+<div id="formError"></div>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 20l1.2-4.2L16.7 4.3a2.15 2.15 0 0 1 3 3L8.2 18.8 4 20z"/><line x1="14.8" y1="6.2" x2="17.8" y2="9.2"/></svg></span>入力</span></h2>
+<div class="grid2">
+<div class="field">
+<label for="gross">賞与の総支給額<span class="hint">給与明細の「総支給額」（税金・保険料を引く前の額）です</span></label>
+<div class="yen-wrap"><input type="number" id="gross" min="0" step="10000" value="600000"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="prefecture">勤務先の都道府県<span class="hint">協会けんぽの料率は事業所の所在地で決まります</span></label>
+<select id="prefecture"></select>
+</div>
+<div class="field">
+<label for="ageBand">年齢（賞与の支給月時点）</label>
+<select id="ageBand">
+<option value="under40" selected>40歳未満</option>
+<option value="40to64">40〜64歳（介護保険料がかかります）</option>
+<option value="65over">65歳以上</option>
+</select>
+</div>
+<div class="field">
+<label for="industry">雇用保険の事業の種類</label>
+<select id="industry">
+<option value="general" selected>一般の事業</option>
+<option value="nourin">農林水産・清酒製造の事業</option>
+<option value="kensetsu">建設の事業</option>
+</select>
+</div>
+</div>
+<label class="check"><input type="checkbox" id="employmentInsured" checked> 雇用保険の被保険者である</label>
+<h3 class="subhead">所得税の計算に使う情報</h3>
+<div class="grid2">
+<div class="field">
+<label for="column">扶養控除等申告書の提出</label>
+<select id="column">
+<option value="kou" selected>提出している（甲欄）</option>
+<option value="otsu">提出していない（乙欄）</option>
+</select>
+</div>
+<div class="field" id="depWrap">
+<label for="dependents">扶養親族等の数<span class="hint">源泉控除対象配偶者と源泉控除対象親族の数。本人や扶養親族に障害者・寡婦・ひとり親・勤労学生などの該当がある場合は、該当ごとに1人加えた数を入力してください</span></label>
+<div class="yen-wrap"><input type="number" id="dependents" min="0" max="20" value="0"><span class="unit">人</span></div>
+</div>
+<div class="field">
+<label for="period">賞与の計算期間</label>
+<select id="period">
+<option value="within6" selected>6か月以内</option>
+<option value="over6">6か月を超える</option>
+</select>
+</div>
+<div class="field">
+<label for="cumulative">今年度すでに支払われた賞与の標準賞与額（任意）<span class="hint">夏の賞与など、今年度（4月以降）に支払われた賞与の標準賞与額の合計。健康保険の年度累計上限573万円の判定に使います</span></label>
+<div class="yen-wrap"><input type="number" id="cumulative" min="0" step="10000" value="0"><span class="unit">円</span></div>
+</div>
+</div>
+<h3 class="subhead">前月の給与（所得税の率を決めるのに使います）</h3>
+<div class="field">
+<label for="prevMode">前月の給与の入力方法</label>
+<select id="prevMode">
+<option value="after" selected>社会保険料等を引いた後の金額を入力する</option>
+<option value="grossAndInsurance">総支給額と社会保険料等を入力する</option>
+<option value="grossOnly">総支給額だけ入力する（社会保険料等は自動で計算）</option>
+<option value="none">前月に給与の支払がなかった</option>
+</select>
+</div>
+<div class="field" id="prevAfterWrap">
+<label for="prevAfter">前月の給与（社会保険料等を引いた後）<span class="hint">給与明細の課税対象額から社会保険料等の合計を引いた額です。差引支給額（手取り）は所得税・住民税も引かれているため使えません</span></label>
+<div class="yen-wrap"><input type="number" id="prevAfter" min="0" step="1000" value="309000"><span class="unit">円</span></div>
+</div>
+<div id="prevGrossInsWrap" hidden>
+<div class="grid2">
+<div class="field">
+<label for="prevGross">前月の給与の総支給額<span class="hint">給与明細の「総支給額」です</span></label>
+<div class="yen-wrap"><input type="number" id="prevGross" min="0" step="10000" value="0"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="prevInsurance">前月の社会保険料等の合計<span class="hint">給与明細の健康保険料・介護保険料・厚生年金保険料・雇用保険料などの合計です</span></label>
+<div class="yen-wrap"><input type="number" id="prevInsurance" min="0" step="1000" value="0"><span class="unit">円</span></div>
+</div>
+</div>
+</div>
+<div class="field" id="prevGrossOnlyWrap" hidden>
+<label for="prevGrossOnly">前月の給与の総支給額<span class="hint">社会保険料等は、標準報酬月額の等級表から自動で計算します（協会けんぽ前提）</span></label>
+<div class="yen-wrap"><input type="number" id="prevGrossOnly" min="0" step="10000" value="0"><span class="unit">円</span></div>
+</div>
+</section>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><line x1="8.5" y1="7.5" x2="15.5" y2="7.5"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15.5" r="1" fill="currentColor" stroke="none"/></svg></span>手取り額と控除の内訳</span></h2>
+<div class="big-result"><span class="big-label">手取り額</span> <span id="net">— 円</span></div>
+<div class="table-wrap">
+<table class="result-table">
+<tr><th>項目</th><th>金額</th></tr>
+<tr><td>賞与の総支給額</td><td id="dGross">–</td></tr>
+<tr><td>健康保険料</td><td id="dHealth">–</td></tr>
+<tr id="careRow" hidden><td>介護保険料</td><td id="dCare">–</td></tr>
+<tr><td>子ども・子育て支援金</td><td id="dChild">–</td></tr>
+<tr><td>厚生年金保険料</td><td id="dPension">–</td></tr>
+<tr><td>雇用保険料</td><td id="dEmployment">–</td></tr>
+<tr><td><strong>社会保険料等 合計</strong></td><td id="dSocial">–</td></tr>
+<tr><td>所得税（源泉徴収）</td><td id="dTax">–</td></tr>
+</table>
+</div>
+<p class="note" id="taxExplain"></p>
+<ul class="note" id="detailNotes"></ul>
+</section>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 13.5v-8A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v8a1.5 1.5 0 0 1-1.5 1.5H13l-4.5 4.2v-4.2H5.5A1.5 1.5 0 0 1 4 13.5z"/></svg></span>自分のAIに相談する</span></h2>
+<p>計算の内容をまとめた文をコピーできます。ChatGPTやClaudeなど、お使いのAIに貼ると、そのまま相談できます。貼る前に、個人が特定できる情報が含まれていないか確認してください。</p>
+<button type="button" id="copyPrompt" class="btn-ai">AIに相談する用の文をコピー</button>
+</section>
+
+<details class="card accordion">
+<summary>前提条件・対象外のもの</summary>
+<ul>
+<li>対象は令和8年度（2026年4月1日〜2027年3月31日）に支払われる賞与です。所得税は令和8年分の算出率の表・月額表を使います。</li>
+<li>健康保険は協会けんぽ加入者を前提とし、勤務先（事業所）の所在地の都道府県の料率を使います。健康保険組合・共済組合の方は料率が異なるため対象外です。</li>
+<li>前月の給与は月払いであることを前提とします。賞与は年3回以下の支給であることが前提です。</li>
+<li>支給月に健康保険・厚生年金の被保険者資格があることを前提とします。退職月の賞与、保険料免除期間中の賞与は対象外です。</li>
+<li>保険料の本人負担分は、項目ごとに端数処理をしています（端数が50銭以下の場合は切り捨て、50銭を超える場合は切り上げ）。会社の給与計算や特約により、1円程度異なる場合があります。</li>
+<li>前月の給与を「総支給額だけ入力する」方法では、前月の社会保険料等を標準報酬月額の等級表から計算します。前月の標準報酬月額が等級表どおりでない場合は、実際の金額とずれることがあります。</li>
+<li>本ツールは一般的な仕組みに基づく試算であり、個別の税務・労務相談ではありません。実際の控除額は勤務先の給与計算（加入している健康保険組合の料率や会社の端数処理の特約など）により異なる場合があります。個別の事情がある場合は、勤務先の給与担当・税理士・社会保険労務士にご確認ください。</li>
+<li>計算はすべてブラウザの中で行い、入力した内容をサーバーへ送信することはありません。</li>
+</ul>
+</details>
+
+<details class="card accordion">
+<summary>出典・計算の根拠</summary>
+<ul>
+<li>国税庁タックスアンサー No.2523「賞与に対する源泉徴収」: 所得税の計算手順・特例計算・公式の計算例<br><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/gensen/2523.htm" target="_blank" rel="noopener">https://www.nta.go.jp/taxes/shiraberu/taxanswer/gensen/2523.htm</a></li>
+<li>国税庁「令和8年分 源泉徴収税額表」: 賞与に対する源泉徴収税額の算出率の表（15〜16ページ）・給与所得の源泉徴収税額表（月額表）<br><a href="https://www.nta.go.jp/publication/pamph/gensen/zeigakuhyo2026/data/15-16.pdf" target="_blank" rel="noopener">https://www.nta.go.jp/publication/pamph/gensen/zeigakuhyo2026/data/15-16.pdf</a><br><a href="https://www.nta.go.jp/publication/pamph/gensen/zeigakuhyo2026/data/01-07.xls" target="_blank" rel="noopener">https://www.nta.go.jp/publication/pamph/gensen/zeigakuhyo2026/data/01-07.xls</a></li>
+<li>日本年金機構「従業員に賞与を支給したときの手続き」: 標準賞与額の決め方と上限（健康保険は年度累計573万円、厚生年金は1か月150万円）<br><a href="https://www.nenkin.go.jp/service/kounen/hokenryo/hoshu/20141203.html" target="_blank" rel="noopener">https://www.nenkin.go.jp/service/kounen/hokenryo/hoshu/20141203.html</a></li>
+<li>日本年金機構「厚生年金保険の保険料」: 厚生年金保険料率18.3％<br><a href="https://www.nenkin.go.jp/service/kounen/hokenryo/hoshu/20150515-01.html" target="_blank" rel="noopener">https://www.nenkin.go.jp/service/kounen/hokenryo/hoshu/20150515-01.html</a></li>
+<li>協会けんぽ「令和8年度の都道府県単位保険料率」: 都道府県別の健康保険料率、介護保険料率1.62％、子ども・子育て支援金率0.23％<br><a href="https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/rate_prefectures/r08/index.html" target="_blank" rel="noopener">https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/rate_prefectures/r08/index.html</a></li>
+<li>厚生労働省「令和8（2026）年度 雇用保険料率のご案内」: 雇用保険の労働者負担率（一般の事業 5/1,000 ほか）<br><a href="https://jsite.mhlw.go.jp/gunma-roudoukyoku/content/contents/002597764.pdf" target="_blank" rel="noopener">https://jsite.mhlw.go.jp/gunma-roudoukyoku/content/contents/002597764.pdf</a></li>
+<li>厚生労働省「雇用保険被保険者からの雇用保険料の控除方法」: 雇用保険料の計算方法と控除時の端数処理<br><a href="https://www.mhlw.go.jp/new-info/kobetu/roudou/gyousei/hoken/kakikata/dl/keizoku-21.pdf" target="_blank" rel="noopener">https://www.mhlw.go.jp/new-info/kobetu/roudou/gyousei/hoken/kakikata/dl/keizoku-21.pdf</a></li>
+</ul>
+</details>
+</main>
+<footer class="site-footer">
+<p class="disclaimer">このサイトの計算は一般的な税制の仕組みに基づく試算であり、個別の税務相談ではありません。実際の控除額は、確定申告の内容や勤務先の給与計算により確定します。個別の事情がある場合は、税理士等の専門家または勤務先の給与担当にご確認ください。</p>
+<nav class="footer-nav">
+<a href="../taishoku-dc/">退職金×iDeCo/DC</a>
+<a href="../kokuho/">国民健康保険料</a>
+<a href="../taishoku-hoken/">退職後の健康保険 比較</a>
+<a href="../juminzei/">住民税</a>
+<a href="../furusato/">ふるさと納税</a>
+<a href="../bonus/">賞与の手取り計算</a>
+<a href="../privacy/">プライバシーポリシー</a>
+</nav>
+<p class="copy">© 2026 ぜいきんノート（zeikin-note.com）</p>
+</footer>
+<div class="toast" id="toast" role="status"></div>
+<script src="../js/bonus-engine.js"></script>
+<script src="../js/bonus-app.js"></script>
+</body>
+</html>
