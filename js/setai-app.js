@@ -198,6 +198,57 @@ var ids = ['selfIncome', 'selfAge', 'selfBonusPer', 'selfBonusCount',
 'spouseIncome', 'spouseAge', 'spouseBonusPer', 'spouseBonusCount', 'spouseSocial',
 'prefecture', 'industry', 'childUnder16', 'childGeneral', 'childSpecific', 'childParent'];
 ids.forEach(function (id) { $(id).addEventListener('input', compute); $(id).addEventListener('change', compute);});
+/* 共通プロファイル連携（js/profile.js）: 初期値の読み書きだけを行い、計算には触らない */
+if (window.ZnProfile) {
+var savedTool = ZnProfile.loadTool('setai');
+if (savedTool) {
+ids.forEach(function (id) { if (savedTool[id] !== undefined && $(id)) $(id).value = savedTool[id];});
+} else {
+var prof = ZnProfile.loadProfile();
+if (prof.incomeThisYearSalary !== undefined) $('selfIncome').value = prof.incomeThisYearSalary;
+if (prof.spouse && prof.spouse.income !== undefined) $('spouseIncome').value = prof.spouse.income;
+if (prof.prefecture) $('prefecture').value = prof.prefecture;
+if (prof.industry) $('industry').value = prof.industry;
+if (prof.ageBand) $('selfAge').value = prof.ageBand === '65plus' ? '65to69' : prof.ageBand;
+if (prof.spouseAgeBand) $('spouseAge').value = prof.spouseAgeBand === '65plus' ? '65to69' : prof.spouseAgeBand;
+if (prof.bonusPer !== undefined) $('selfBonusPer').value = prof.bonusPer;
+if (prof.bonusCount !== undefined) $('selfBonusCount').value = prof.bonusCount;
+if (prof.dependents) {
+if (prof.dependents.under16 !== undefined) $('childUnder16').value = prof.dependents.under16;
+if (prof.dependents.age19to22 !== undefined) $('childSpecific').value = prof.dependents.age19to22;
+if (prof.dependents.age16to18 !== undefined || prof.dependents.age23plus !== undefined) {
+$('childGeneral').value = (prof.dependents.age16to18 || 0) + (prof.dependents.age23plus || 0);
+}
+}
+}
+var persistSetai = function () {
+var st = {};
+ids.forEach(function (id) { st[id] = $(id).value;});
+ZnProfile.saveTool('setai', st);
+var depsPrev = ZnProfile.loadProfile().dependents || {};
+ZnProfile.saveProfile({
+incomeThisYearSalary: num('selfIncome'),
+spouse: { has: true, income: num('spouseIncome'), inKokuho: false },
+prefecture: $('prefecture').value,
+industry: $('industry').value,
+ageBand: $('selfAge').value === '65to69' ? '65plus' : $('selfAge').value,
+spouseAgeBand: $('spouseAge').value === '65to69' ? '65plus' : $('spouseAge').value,
+bonusPer: num('selfBonusPer'),
+bonusCount: Math.floor(num('selfBonusCount')),
+/* 世帯ツールの「一般」は16〜18歳と23歳以上を一括する。書き戻しは16〜18歳側へ寄せ、23歳以上は既存値を保持する */
+dependents: {
+under16: Math.floor(num('childUnder16')),
+age16to18: Math.floor(num('childGeneral')),
+age19to22: Math.floor(num('childSpecific')),
+age23plus: depsPrev.age23plus || 0
+}
+});
+};
+ids.forEach(function (id) { $(id).addEventListener('input', persistSetai); $(id).addEventListener('change', persistSetai);});
+if ($('clearSaved')) $('clearSaved').addEventListener('click', function () {
+if (window.confirm('保存した入力（共通プロファイルと全ツールの前回入力）をすべて消します。よろしいですか？')) { ZnProfile.clearAll(); location.reload();}
+});
+}
 $('copyPrompt').addEventListener('click', copyPrompt);
 compute();
 }).catch(function () {

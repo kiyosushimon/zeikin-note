@@ -206,6 +206,38 @@ var ids = ['mode', 'annualGross', 'aSocial', 'aIncomeTax', 'aResidentTax',
 'avgHours', 'overtimeHours', 'holidayHours', 'annualHolidays', 'hoursPerDay',
 'commuteMinutes', 'commuteDays', 'takeHomeHours'];
 ids.forEach(function (id) { $(id).addEventListener('input', compute); $(id).addEventListener('change', compute);});
+/* 共通プロファイル連携（js/profile.js）: 初期値の読み書きだけを行い、計算には触らない */
+if (window.ZnProfile) {
+var savedToolJ = ZnProfile.loadTool('jikyu');
+if (savedToolJ) {
+ids.forEach(function (id) { if (savedToolJ[id] !== undefined && $(id)) $(id).value = savedToolJ[id];});
+} else {
+var profJ = ZnProfile.loadProfile();
+if (profJ.incomeThisYearSalary !== undefined) $('annualGross').value = profJ.incomeThisYearSalary;
+if (profJ.prefecture) $('prefecture').value = profJ.prefecture;
+if (profJ.ageBand) $('ageBand').value = profJ.ageBand === '65plus' ? '65to69' : profJ.ageBand;
+if (profJ.industry) $('industry').value = profJ.industry;
+if (profJ.bonusPer !== undefined) $('bonusPer').value = profJ.bonusPer;
+if (profJ.bonusCount !== undefined) $('bonusCount').value = profJ.bonusCount;
+}
+var persistJikyu = function () {
+var st = {};
+ids.forEach(function (id) { st[id] = $(id).value;});
+ZnProfile.saveTool('jikyu', st);
+ZnProfile.saveProfile({
+prefecture: $('prefecture').value,
+ageBand: $('ageBand').value === '65to69' ? '65plus' : $('ageBand').value,
+industry: $('industry').value,
+bonusPer: num('bonusPer'),
+bonusCount: Math.floor(num('bonusCount')),
+incomeThisYearSalary: num('annualGross')
+});
+};
+ids.forEach(function (id) { $(id).addEventListener('input', persistJikyu); $(id).addEventListener('change', persistJikyu);});
+if ($('clearSaved')) $('clearSaved').addEventListener('click', function () {
+if (window.confirm('保存した入力（共通プロファイルと全ツールの前回入力）をすべて消します。よろしいですか？')) { ZnProfile.clearAll(); location.reload();}
+});
+}
 $('avgCalcBtn').addEventListener('click', function () {
 var v = E.avgMonthlyHours(num('annualHolidays'), num('hoursPerDay'));
 if (v > 0) { $('avgHours').value = v; compute();}
