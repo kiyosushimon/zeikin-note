@@ -511,6 +511,22 @@ a.tool-card:active { transform: translate(2px, 2px); box-shadow: 4px 4px 0 rgba(
 .crumbs a { color: var(--ink); }
 .footer-nav { font-weight: 700; font-size: 0.92rem; margin: 10px 0 2px; }
 .footer-nav a { color: var(--ink); }
+/* フッターのツール一覧: 箇条書き（広い画面2列／スマホ1列） */
+.footer-list {
+  list-style: none; margin: 8px 0 4px; padding: 0;
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 3px 26px;
+  text-align: left;
+}
+.footer-list li { position: relative; padding-left: 1.1em; margin: 0; }
+.footer-list li::before {
+  content: ""; position: absolute; left: 0; top: 0.6em;
+  width: 0.52em; height: 0.52em;
+  background: var(--card); border: 2px solid var(--ink); border-radius: 2px;
+}
+.footer-list a { display: inline-block; padding: 2px 0; }
+@media (max-width: 640px) {
+  .footer-list { grid-template-columns: 1fr; }
+}
 .copy { font-size: 0.88rem; }
 .subhead { border-bottom: 2.5px dashed #d8d2c2; padding-bottom: 5px; }
 .check { display: block; font-weight: 700; margin: 10px 0; }
