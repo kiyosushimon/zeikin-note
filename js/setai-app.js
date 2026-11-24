@@ -155,8 +155,25 @@ if (i.children.general > 0) kids.push('16〜18歳・23歳以上 ' + i.children.g
 if (i.children.specific > 0) kids.push('19〜22歳 ' + i.children.specific + '人');
 lines.push('・子供: ' + (kids.length ? kids.join('、') + '（扶養は' + (i.children.parent === 'self' ? '本人' : '配偶者') + 'に付けて計算）' : 'なし'));
 lines.push('');
+lines.push('【計算過程】');
+function personProcess(label, p) {
+lines.push('■ ' + label);
+lines.push('・給与所得: 年収 ' + yen(p.income) + ' − 給与所得控除 ＝ 所得税用 ' + yen(p.salaryTax) + '（住民税用は住民税の速算表で換算）');
+if (p.social.total > 0) {
+lines.push('・社会保険料: ' + yen(p.social.total) + '（年収から月給の目安 ' + yen(p.social.monthlyGross || 0) + ' を出し、標準報酬月額（健保 ' + yen(p.social.standardHealth || 0) + '／厚年 ' + yen(p.social.standardPension || 0) + '）に料率を掛けた試算。内訳: 健康 ' + yen(p.social.health) + '・介護 ' + yen(p.social.care) + '・子ども ' + yen(p.social.child) + '・厚生年金 ' + yen(p.social.pension) + '・雇用 ' + yen(p.social.employment) + '）');
+} else {
+lines.push('・社会保険料: 0円（被扶養者、または収入なし）');
+}
+var it = p.incomeTax;
+lines.push('・所得税: 控除（社会保険料 ' + yen(it.social) + '＋配偶者 ' + yen(it.spouseAmount) + '＋扶養 ' + yen(it.dependentAmount) + '＋基礎 ' + yen(it.basic) + '）＝ ' + yen(it.deductionsTotal) + '、課税所得 ' + yen(it.taxable) + '（1,000円未満切り捨て）に速算表を適用し ×1.021（復興特別所得税）＝ ' + yen(it.tax));
+var rt = p.residentTax;
+lines.push('・住民税: 課税所得 ' + yen(rt.taxable) + ' × 10% − 調整控除 ' + yen(rt.adjustment) + ' ＝ 所得割 ' + yen(rt.incomeLevy) + '、＋ 均等割 ' + yen(rt.perCapita) + ' ＋ 森林環境税 ' + yen(rt.forest) + ' ＝ ' + yen(rt.tax) + '（100円未満切り捨て）');
+}
+personProcess('本人', m.self);
+personProcess('配偶者', m.spouse);
+lines.push('');
 lines.push('前提: 所得税は令和8年分の年税額（年末調整の方式）。住民税は令和8年度の標準税率による年額の目安で、実際は翌年度に課税されます。社会保険料は年収から導出した月給（目安）で標準報酬月額を当てはめた試算です。控除は社会保険料・配偶者・扶養・基礎のみで、生命保険料控除・iDeCo・住宅ローン控除などは入れていません。');
-lines.push('根拠: 国税庁タックスアンサー No.1199（基礎控除）・No.1191（配偶者控除）・No.1195（配偶者特別控除）、国税庁「令和8年分 年末調整のしかた」、総務省「個人住民税」、協会けんぽ（令和8年度の都道府県単位保険料率・保険料額表）、日本年金機構（被扶養者の収入要件・第3号被保険者）、厚生労働省（令和8年度 雇用保険料率）');
+lines.push('根拠: 国税庁タックスアンサー No.1199（基礎控除） https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1199.htm・No.1191（配偶者控除） https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1191.htm・No.1195（配偶者特別控除） https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1195.htm、国税庁「令和8年分 年末調整のしかた」 https://www.nta.go.jp/users/gensen/nencho/index/shikata.htm、総務省「個人住民税」 https://www.soumu.go.jp/main_sosiki/jichi_zeisei/czaisei/czaisei_seido/150790_14.html、協会けんぽ「令和8年度の都道府県単位保険料率」 https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/rate_prefectures/r08/index.html、日本年金機構（被扶養者の収入要件） https://www.nenkin.go.jp/service/kounen/tekiyo/hihokensha1/20141202.html、厚生労働省「令和8（2026）年度 雇用保険料率のご案内」 https://jsite.mhlw.go.jp/gunma-roudoukyoku/content/contents/002597764.pdf');
 lines.push('');
 lines.push('聞きたいこと: ①この試算の前提で見落としはないか ②夫婦の働き方・年収配分を変える場合に注意すべき点 ③私の状況で確認すべき制度や手続き');
 lines.push('');
