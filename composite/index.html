@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>来年の負担まるごとシミュレーター｜所得税・住民税・社会保険料・国保の総負担と手取り｜ぜいきんノート</title>
+<meta name="description" content="来年の税金と社会保険料の総負担と手取りを、会社員・自営業の両コースで試算します。住民税と国保は今年の所得で決まる「ツケ型」、所得税と社保は来年の収入で決まる「現年型」に分けて表示し、いつ・何が・いくら来るかを来年1月〜再来年5月のガントで確認できます。無料・登録不要・入力は送信されません。">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3785696031006214" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NYC15XQ95K"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-NYC15XQ95K');
+  </script>
+</head>
+<body class="composite-print">
+<header class="site-header">
+  <a class="logo" href="../"><span class="logo-mark"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><line x1="8.5" y1="7.5" x2="15.5" y2="7.5"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15.5" r="1" fill="currentColor" stroke="none"/></svg></span><span class="logo-name">ぜいきんノート<span class="logo-tagline">その場で分かる。情報登録完全不要</span></span></a>
+  <nav class="site-nav"><a href="../#tools">ツール一覧</a><a href="../#about">このサイトについて</a>｜<a href="../privacy/">プライバシーポリシー</a></nav>
+  <details class="menu"><summary class="menu-btn" aria-label="メニュー"><span class="burger"></span></summary><nav class="menu-panel"><a href="../taishoku-dc/">退職金 × iDeCo/DC</a><a href="../kokuho/">国民健康保険料</a><a href="../taishoku-hoken/">退職後の健康保険 比較</a><a href="../juminzei/">住民税</a><a href="../furusato/">ふるさと納税</a><a href="../bonus/">賞与の手取り計算</a><a href="../setai/">世帯年収の手取り</a><a href="../kabe/">年収の壁チェッカー</a><a href="../zangyo/">残業代計算・未払いチェック</a><a href="../gensen/">源泉徴収税額チェッカー</a><a href="../jikyu/">実質時給チェッカー</a><a href="../fukugyo/">副業の税金・申告要否チェッカー</a><a href="../composite/">来年の負担まるごと</a><a href="../privacy/">プライバシーポリシー</a></nav></details>
+</header>
+<main class="wrap">
+<nav class="crumbs"><a href="../">トップ</a> ＞ 来年の負担まるごとシミュレーター</nav>
+<h1><span class="h1-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><line x1="8.5" y1="7.5" x2="15.5" y2="7.5"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15.5" r="1" fill="currentColor" stroke="none"/></svg></span>来年の負担まるごとシミュレーター</h1>
+<p class="lead">「来年、結局いくら引かれて、いくら残るのか」。このツールは、来年の所得税・住民税・社会保険料（自営業は国民健康保険料・国民年金保険料）を1つの前提で合奏し、総負担と手取りを出します。住民税（と国保）は今年の所得で決まる「ツケ型」、所得税と社会保険料は来年の収入で決まる「現年型」です。このズレが、「昇給したのに手取りが増えない」「収入が減ったのに請求が重い」の正体です。支払いの時期は、来年1月〜再来年5月のガントで確認できます。</p>
+
+<div class="scope-box">
+  <p class="scope-title">このツールで計算できないケース</p>
+  <ul>
+    <li>退職・転職・独立などで、今年と来年で勤め方が変わる年（年の途中で変わる場合も含みます）</li>
+    <li>共働き世帯の合算（世帯全体の手取りは「世帯年収の手取り」ツールの領分です）</li>
+    <li>副業・兼業の収入の合算（「副業の税金・申告要否チェッカー」の領分です）</li>
+    <li>住宅ローン控除・医療費控除・寄附金控除・生命保険料控除・地震保険料控除・iDeCo等の控除（社会保険料・配偶者・扶養・基礎の標準ケースのみ計算します）</li>
+    <li>自営業コースで、国保データ対応外の自治体にお住まいの場合（国保が計算できないため、自営業コース自体が対象外です）</li>
+  </ul>
+  <p class="small">詳しい前提条件は、ページ下部の「前提条件・対象外のもの」にまとめています。</p>
+</div>
+
+<div id="formError"></div>
+
+<section class="card print-hide">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 20l1.2-4.2L16.7 4.3a2.15 2.15 0 0 1 3 3L8.2 18.8 4 20z"/><line x1="14.8" y1="6.2" x2="17.8" y2="9.2"/></svg></span>入力（共通）</span></h2>
+<div class="grid2">
+<div class="field">
+<label for="course">勤め方<span class="hint">今年と来年で同じ勤め方が続く前提で計算します</span></label>
+<select id="course">
+<option value="employee" selected>会社員（給与＋社会保険）</option>
+<option value="self">自営業（国民健康保険＋国民年金）</option>
+</select>
+</div>
+<div class="field">
+<label for="cityKey">お住まいの自治体<span class="hint">住民税の精密計算（対応6市）と国保の計算に使います。それ以外は住民税は標準税率の目安になります</span></label>
+<select id="cityKey"></select>
+</div>
+<div class="field">
+<label for="prefecture">都道府県<span class="hint">協会けんぽの料率に使います（会社員コース）。自治体を選ぶと自動で入ります</span></label>
+<select id="prefecture"></select>
+</div>
+<div class="field">
+<label for="ageBand">本人の年齢区分<span class="hint">介護保険料と国保の介護分の判定に使います</span></label>
+<select id="ageBand">
+<option value="under40" selected>40歳未満</option>
+<option value="40to64">40〜64歳</option>
+<option value="65plus">65歳以上</option>
+</select>
+</div>
+<div class="field">
+<label for="spouseHas">配偶者<span class="hint">配偶者控除・配偶者特別控除の判定に使います</span></label>
+<select id="spouseHas">
+<option value="no" selected>いない</option>
+<option value="yes">いる</option>
+</select>
+</div>
+<div class="field">
+<label for="residentCollection">住民税の徴収方法<span class="hint">会社員は給与天引き（特別徴収）が原則です。自営業は普通徴収に固定されます</span></label>
+<select id="residentCollection">
+<option value="special" selected>特別徴収（給与天引き）</option>
+<option value="ordinary">普通徴収（納付書払い）</option>
+</select>
+</div>
+</div>
+<div id="spouseGroup" style="display:none">
+<div class="grid2">
+<div class="field">
+<label for="spouseIncome">配偶者の収入<span class="hint">会社員コースは年収（総支給額）、自営業コースは所得を入れます</span></label>
+<div class="yen-wrap"><input type="number" id="spouseIncome" min="0" step="10000" value="0"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="spouseAgeBand">配偶者の年齢区分<span class="hint">国保の介護分の判定に使います（自営業コース）</span></label>
+<select id="spouseAgeBand">
+<option value="under40" selected>40歳未満</option>
+<option value="40to64">40〜64歳</option>
+<option value="65plus">65歳以上</option>
+</select>
+</div>
+<div class="field" id="spouseKokuhoField" style="display:none">
+<label for="spouseInKokuho">配偶者は国民健康保険に加入しているか<span class="hint">配偶者が自分の国保に加入している場合のみ「はい」にします</span></label>
+<select id="spouseInKokuho">
+<option value="yes" selected>はい（加入している）</option>
+<option value="no">いいえ（勤務先の社保など）</option>
+</select>
+</div>
+</div>
+</div>
+<div class="grid2">
+<div class="field">
+<label for="depUnder16">扶養している家族（16歳未満）<span class="hint">人数を入れます。所得税の扶養控除はありませんが、住民税の均等割の非課税判定などに使います</span></label>
+<div class="yen-wrap"><input type="number" id="depUnder16" min="0" step="1" value="0"><span class="unit">人</span></div>
+</div>
+<div class="field">
+<label for="dep1618">扶養している家族（16〜18歳）<span class="hint">一般の扶養控除の対象です</span></label>
+<div class="yen-wrap"><input type="number" id="dep1618" min="0" step="1" value="0"><span class="unit">人</span></div>
+</div>
+<div class="field">
+<label for="dep1922">扶養している家族（19〜22歳）<span class="hint">特定扶養親族として控除額が大きくなります</span></label>
+<div class="yen-wrap"><input type="number" id="dep1922" min="0" step="1" value="0"><span class="unit">人</span></div>
+</div>
+<div class="field">
+<label for="dep23plus">扶養している家族（23歳以上）<span class="hint">一般の扶養控除の対象です</span></label>
+<div class="yen-wrap"><input type="number" id="dep23plus" min="0" step="1" value="0"><span class="unit">人</span></div>
+</div>
+</div>
+</section>
+
+<section class="card print-hide" id="employeeGroup">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><line x1="4" y1="10" x2="20" y2="10"/></svg></span>入力（会社員コース）</span></h2>
+<div class="grid2">
+<div class="field">
+<label for="incThisYear">今年の年収（総支給額）<span class="hint">源泉徴収票の「支払金額」欄の金額です。住民税と国保はこの金額で決まります</span></label>
+<div class="yen-wrap"><input type="number" id="incThisYear" min="0" step="10000" value="5000000"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="incNextYear">来年の年収見込み<span class="hint">昇給・転職の見込みを入れた金額です。今年との差が大きいほど「ツケのズレ」が出ます</span></label>
+<div class="yen-wrap"><input type="number" id="incNextYear" min="0" step="10000" value="5000000"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="bonusPer">賞与（1回分の額）<span class="hint">社会保険料の自動計算に使います。賞与がない場合は0にします</span></label>
+<div class="yen-wrap"><input type="number" id="bonusPer" min="0" step="1000" value="0"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="bonusCount">賞与の回数（年）<span class="hint">年2回なら2、なければ0にします（社会保険料の計算は年3回まで）</span></label>
+<div class="yen-wrap"><input type="number" id="bonusCount" min="0" step="1" value="0"><span class="unit">回</span></div>
+</div>
+<div class="field">
+<label for="industry">雇用保険の事業の種類<span class="hint">雇用保険料率が変わります</span></label>
+<select id="industry">
+<option value="general" selected>一般の事業</option>
+<option value="nourin">農林水産・清酒製造の事業</option>
+<option value="kensetsu">建設の事業</option>
+</select>
+</div>
+</div>
+</section>
+
+<section class="card print-hide" id="selfGroup" style="display:none">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><line x1="4" y1="10" x2="20" y2="10"/></svg></span>入力（自営業コース）</span></h2>
+<div class="grid2">
+<div class="field">
+<label for="bizThisYear">今年の所得<span class="hint">確定申告書の「所得金額の合計」です。青色申告特別控除を受ける場合は、控除後の金額を入れます。住民税と国保はこの金額で決まります</span></label>
+<div class="yen-wrap"><input type="number" id="bizThisYear" min="0" step="10000" value="3000000"><span class="unit">円</span></div>
+</div>
+<div class="field">
+<label for="bizNextYear">来年の所得見込み<span class="hint">今年と同じ見込みなら同じ金額を入れます</span></label>
+<div class="yen-wrap"><input type="number" id="bizNextYear" min="0" step="10000" value="3000000"><span class="unit">円</span></div>
+</div>
+</div>
+</section>
+
+<p class="note print-hide">入力した内容は、この端末のブラウザにだけ保存され、次回以降の入力に使われます（サーバーへは送信されません）。 <button type="button" id="clearSaved" class="btn-sub">保存した入力を消す</button></p>
+
+<section class="card">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><line x1="8.5" y1="7.5" x2="15.5" y2="7.5"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15.5" r="1" fill="currentColor" stroke="none"/></svg></span>来年の総負担と手取り</span></h2>
+<p class="note">本ツールの金額は、一般的な仕組みに基づく試算であり、個別の税務相談ではありません。正確な取扱いは、税務署・お住まいの市区町村の税務担当窓口、または税理士にご確認ください。前提条件の要約は結果の下の注記に、詳しい前提はページ下部の「前提条件・対象外のもの」にまとめています。</p>
+<div class="big-result"><span class="big-label">来年の総負担（帰属ベース）</span> <span id="totalBig">— 円</span></div>
+<div class="table-wrap">
+<table class="result-table">
+<tr><th>項目</th><th>金額</th></tr>
+<tbody id="resultRows"></tbody>
+</table>
+</div>
+<h3 class="subhead">総合の見解</h3>
+<div class="assess-box" id="assessBox"></div>
+<div id="ganttArea"></div>
+<ul class="note" id="resultNotes"></ul>
+</section>
+
+<section class="card print-hide">
+<h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 13.5v-8A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v8a1.5 1.5 0 0 1-1.5 1.5H13l-4.5 4.2v-4.2H5.5A1.5 1.5 0 0 1 4 13.5z"/></svg></span>自分のAIに相談する</span></h2>
+<p>計算の内容をまとめた文をコピーできます。総合の見解・内訳・計算式と計算過程・ガントの要点まで含めた文です。ChatGPTやClaudeなど、お使いのAIに貼ると、そのまま相談できます。貼る前に、個人が特定できる情報が含まれていないか確認してください。</p>
+<button type="button" id="copyPrompt" class="btn-ai">AIに相談する用の文をコピー</button>
+</section>
+
+<details class="card accordion print-hide">
+<summary>前提条件・対象外のもの</summary>
+<ul>
+<li>対象は「来年も同じ勤め方（会社員／自営業）が続く」前提です。今年＝令和8年（2026年）、来年＝令和9年（2027年）として計算します。</li>
+<li>「来年の総負担」は帰属ベースです。今年の所得に帰属する住民税・国民健康保険料は、支払いが再来年（令和10年）5月にまたがっても全額を含みます。支払いの時期はガントが担います。</li>
+<li>控除は社会保険料・配偶者・扶養・基礎の標準ケースのみです。配偶者は一般区分で計算します（老人控除対象配偶者は v1 では一般区分として扱います）。扶養の障害者・同居老親等の加算は扱いません。</li>
+<li>住民税は対応6市（名古屋市・福岡市・札幌市・仙台市・さいたま市・新潟市）は実際の税率・均等割で精密計算、それ以外は標準税率（市民税6%・県民税4%・均等割4,000円・森林環境税1,000円・1級地）の目安です。</li>
+<li>国民健康保険料は世帯類型を「一般世帯」に固定し、加入・脱退の月割りは扱いません。未就学児の均等割5割減額は適用しないため、その分は高めに出ます。納期は年10回・6月開始の標準パターンで表示します。</li>
+<li>国民年金保険料は免除・猶予・付加保険料・前納割引を扱いません。令和9年度の月額18,290円は市区町村の公式案内で確認した値です（日本年金機構の一次発表での直接確認は未了）。</li>
+<li>自営業コースの社会保険料控除は「国保料＋国民年金（来年1年分）」の近似値です。実際に支払う時期とのズレは近似として扱います。</li>
+<li>所得税は精算・還付を扱いません（会社員は年税額そのもの、自営業は確定申告の年税額の目安）。自営業の所得税は、来年の所得から社会保険料控除の近似と基礎控除だけを差し引く式で計算し、配偶者・扶養控除は住民税側でのみ反映します。</li>
+<li>対象外: 退職・転職・独立で勤め方が変わる年／共働き世帯の合算（<a href="../setai/">世帯年収の手取り</a>の領分）／副業・兼業の合算（<a href="../fukugyo/">副業チェッカー</a>の領分）／住宅ローン・医療費・寄附金・生命保険料・地震保険料・iDeCo等の控除／青色申告特別控除や経費の計算／国保の世帯類型・月割り・65歳以上の年金所得がある世帯員／国民年金の免除・猶予・付加保険料・前納割引／確定申告による精算・還付／PDF生成機能（ブラウザの印刷機能でPDF保存できます）／端末間の同期・アカウント機能。</li>
+<li>計算はすべてブラウザの中で行い、入力した内容をサーバーへ送信することはありません。入力の保存は利用者ご自身のブラウザ（localStorage）の中だけです。</li>
+</ul>
+</details>
+
+<details class="card accordion print-hide">
+<summary>出典・計算の根拠</summary>
+<ul>
+<li>総務省「個人住民税」: 住民税の所得割・均等割・調整控除・非課税限度の一般的な仕組み<br><a href="https://www.soumu.go.jp/main_sosiki/jichi_zeisei/czaisei/czaisei_seido/150790_14.html" target="_blank" rel="noopener">https://www.soumu.go.jp/main_sosiki/jichi_zeisei/czaisei/czaisei_seido/150790_14.html</a></li>
+<li>国税庁「年末調整のしかた」: 給与所得控除（別表第五）・所得金額調整控除・配偶者控除・扶養控除・基礎控除・税額表（速算表）。所得税の計算は<a href="../nencho/">年末調整・還付シミュレーター</a>と表を共用しています</li>
+<li>日本年金機構「国民年金保険料」: 令和8年度の月額17,920円<br><a href="https://www.nenkin.go.jp/service/kokunen/hokenryo/20150313-02.html" target="_blank" rel="noopener">https://www.nenkin.go.jp/service/kokunen/hokenryo/20150313-02.html</a></li>
+<li>仙台市「令和9年度国民年金保険料について」: 令和9年度の月額18,290円（市区町村の公式案内で確認）<br><a href="https://www.city.sendai.jp/nenkin/tetsuzuki/kokumin/9nendo.html" target="_blank" rel="noopener">https://www.city.sendai.jp/nenkin/tetsuzuki/kokumin/9nendo.html</a></li>
+<li>国民健康保険料の料率・計算方式は各自治体の公式データをもとにしています。一次ソースは<a href="../kokuho/">国民健康保険料シミュレーター</a>の各自治体の出典に明記しています</li>
+<li>社会保険料（協会けんぽの都道府県別料率・標準報酬月額の等級表）は<a href="../shaho/">社会保険料計算</a>とデータを共用しています</li>
+<li>住民税の精密計算（対応6市）の税率・均等割は<a href="../juminzei/">住民税シミュレーター</a>の各市の出典に明記しています</li>
+</ul>
+</details>
+</main>
+<footer class="site-footer">
+<p class="disclaimer">このサイトの計算は一般的な仕組みに基づく試算であり、個別の税務相談ではありません。正確な取扱いは、税務署・お住まいの市区町村の税務担当窓口、または税理士にご確認ください。</p>
+<nav class="footer-nav">
+<a href="../taishoku-dc/">退職金×iDeCo/DC</a>
+<a href="../kokuho/">国民健康保険料</a>
+<a href="../taishoku-hoken/">退職後の健康保険 比較</a>
+<a href="../juminzei/">住民税</a>
+<a href="../furusato/">ふるさと納税</a>
+<a href="../bonus/">賞与の手取り計算</a>
+<a href="../setai/">世帯年収の手取り</a>
+<a href="../kabe/">年収の壁チェッカー</a>
+<a href="../zangyo/">残業代計算・未払いチェック</a>
+<a href="../gensen/">源泉徴収税額チェッカー</a>
+<a href="../jikyu/">実質時給チェッカー</a>
+<a href="../fukugyo/">副業の税金・申告要否チェッカー</a>
+<a href="../composite/">来年の負担まるごと</a>
+<a href="../privacy/">プライバシーポリシー</a>
+</nav>
+<p class="copy">© 2026 ぜいきんノート（zeikin-note.com）</p>
+</footer>
+<div class="toast" id="toast" role="status"></div>
+<script src="../js/profile.js"></script>
+<script src="../js/nencho-engine.js"></script>
+<script src="../js/shaho-engine.js"></script>
+<script src="../js/setai-engine.js"></script>
+<script src="../js/juminzei-engine.js"></script>
+<script src="../js/kokuho-engine.js"></script>
+<script src="../js/composite-engine.js"></script>
+<script src="../js/composite-app.js"></script>
+</body>
+</html>
