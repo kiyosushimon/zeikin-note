@@ -34,10 +34,11 @@ $('rate').textContent = (r.rateForTokurei * 100).toFixed(0) + '％';
 $('formula').textContent = '上限 ＝ 所得割額 ' + yen(r.residentLevy) + ' × 20％ ÷（90％ − ' + (r.rateForTokurei * 100).toFixed(0) + '％ × 1.021）＋ 2,000円';
 
 var notes = [];
+notes.push('令和8年分（2026年分）の税制改正（所得税の基礎控除の引上げなど）を反映して計算しています。総務省の目安表は改正前の前提で作られているため、年収帯によっては目安表より低い上限になります。');
 if (r.residentLevy <= 0) notes.push('住民税の所得割額が0円のため、ふるさと納税の控除による軽減は見込めません（寄附額がそのまま自己負担になります）。');
-if (input.socialInsurance == null) notes.push('社会保険料は給与収入の15％と仮定しています（総務省の目安表と同じ前提）。');
-if (r.aboveVerified) notes.push('この収入帯では、総務省の目安表の値が本ツールの簡易計算と一致しないことが照合で分かっています（目安表の方が高い側に出ます）。目安表の値も併せてご確認ください。');
-else if (!r.verifiedRange) notes.push('総務省の目安表と照合済みの範囲は給与収入300万〜700万円です。この範囲外では目安としてご利用ください。');
+if (input.socialInsurance == null) notes.push('社会保険料は給与収入の15％と仮定しています。');
+if (r.aboveVerified) notes.push('この収入帯では、総務省の目安表の値と本ツールの計算が一致しない場合があります。目安表は令和8年分の税制改正前の前提で作られているためです。');
+else if (!r.verifiedRange) notes.push('この収入の範囲外では、目安としてご利用ください。');
 if (input.medicalDeduction > 0) {
 var noMed = E.computeSimple(Object.assign({}, input, { medicalDeduction: 0}));
 notes.push('医療費控除により、上限は控除なしの場合（' + yen(noMed.limit) + '）から ' + yen(noMed.limit - r.limit) + ' 下がっています。');
@@ -112,7 +113,7 @@ lines.push('・寄附予定額 ' + yen(lastBreak.donation) + ' の場合の実�
 }
 }
 lines.push('');
-lines.push('簡易モデルは総務省の目安表と同じ前提（社会保険料＝収入の15％仮定など）で、目安表と照合済みの範囲は給与収入300万〜700万円です。上限額は翌年度の住民税に基づく目安で、確定額ではありません。');
+lines.push('簡易モデルは令和8年分（2026年分）の税制改正を反映しています（所得税の基礎控除は合計所得金額に応じて最大104万円、給与所得控除の最低保障額は74万円、社会保険料＝収入の15％と仮定）。総務省の目安表は改正前の前提で作られており、本ツールの結果と異なる場合があります。上限額は翌年度の住民税に基づく目安で、確定額ではありません。');
 lines.push('総務省ふるさと納税ポータル「税金の控除について」、国税庁タックスアンサー No.1155（寄附金控除）、No.1120（医療費控除）');
 lines.push('');
 lines.push('聞きたいこと: ①この試算の前提で見落としはないか ②上限額を超えて寄附した場合の自己負担の増え方 ③私の状況で注意すべき点');

@@ -1,13 +1,33 @@
 /* ふるさと納税 上限・複合版エンジン
- * 仕様: ~/workspace/notes/tax-tools-spec-03-furusato.md
- * 簡易モデルは総務省目安表と照合済み（給与収入300万〜700万円、全13件一致）。
- * 基礎控除は検算で使用した所得税48万円／住民税43万円を正とする（仕様 §3.1・§7-2）。
+ * 仕様: ~/workspace/notes/tax-tools-spec-03-furusato.md（令和8年分改正対応の追記を含む）
+ * 簡易モデルは令和8年分（2026年分）の税制改正を反映する:
+ * 所得税の基礎控除は合計所得金額で判定（国税庁 No.1199）、給与所得控除の最低保障額は74万円。
+ * 総務省の目安表は改正前の前提（基礎控除48万円）のまま更新されていないため、
+ * 目安表とは一部年収帯で一致しない（検証: ~/workspace/notes/furusato-2026-reform-impact.md）。
+ * 住民税の基礎控除は43万円で変更なし。
  */
 (function (global) {
 'use strict';
 
-var BASIC_IT = 480000;      // 所得税の基礎控除
-var BASIC_RT = 430000;      // 住民税の基礎控除
+// 所得税の基礎控除（令和8年分。国税庁 No.1199、仕様05 §1.11 と同一の区分表）
+var BASIC_IT_YEAR = 2026; // 令和8年分
+var BASIC_IT_TABLE = [
+  { maxTotal: 4890000, amount: 1040000 },
+  { maxTotal: 6550000, amount: 670000 },
+  { maxTotal: 23500000, amount: 620000 },
+  { maxTotal: 24000000, amount: 480000 },
+  { maxTotal: 24500000, amount: 320000 },
+  { maxTotal: 25000000, amount: 160000 },
+  { maxTotal: Infinity, amount: 0 }
+];
+var BASIC_IT_BASE = 480000; // 特例分用税率の判定・住宅ローン繰越で使う「基礎控除額 − 48万円」の基準額
+function basicDeductionIT(totalIncome) {
+  for (var i = 0; i < BASIC_IT_TABLE.length; i++) {
+    if (totalIncome <= BASIC_IT_TABLE[i].maxTotal) return BASIC_IT_TABLE[i].amount;
+  }
+  return 0;
+}
+var BASIC_RT = 430000;      // 住民税の基礎控除（令和9年度も変更なし）
 var SPOUSE_IT = 380000;     // 所得税の配偶者控除
 var SPOUSE_RT = 330000;     // 住民税の配偶者控除
 var DEP_GEN_IT = 380000, DEP_GEN_RT = 330000;   // 一般扶養
@@ -25,11 +45,14 @@ var BRACKETS = [
   { upTo: Infinity, rate: 0.45, deduct: 4796000 }
 ];
 
+/* 給与所得控除（令和8年分。最低保障額74万円は収入220万円以下に効き、
+ * 220万円超の各率は改正なし。所得税・住民税（令和9年度）とも同じ表。
+ * 別表第五の4,000円区間の平坦部（219.1万〜220万円）は簡易式では再現しない）
+ */
 function salaryIncomeOf(revenue) {
   if (revenue <= 0) return 0;
   var ded;
-  if (revenue <= 1625000) ded = 550000;
-  else if (revenue <= 1800000) ded = revenue * 0.4 - 100000;
+  if (revenue <= 2200000) ded = 740000;
   else if (revenue <= 3600000) ded = revenue * 0.3 + 80000;
   else if (revenue <= 6600000) ded = revenue * 0.2 + 440000;
   else if (revenue <= 8500000) ded = revenue * 0.1 + 1100000;
@@ -64,7 +87,11 @@ function computeSimple(input) {
   var depG = +input.depGeneral || 0, depS = +input.depSpecific || 0;
   var spouse = !!input.hasSpouse;
 
-  var dedIT = BASIC_IT + (spouse ? SPOUSE_IT : 0) + depG * DEP_GEN_IT + depS * DEP_SPEC_IT + medical;
+  // 所得税の基礎控除は合計所得金額（本モデルでは給与所得）で判定する
+  var basicIT = basicDeductionIT(salaryInc);
+  var basicExtra = Math.max(0, basicIT - BASIC_IT_BASE); // 令和8年分の調整額（最大56万円）
+
+  var dedIT = basicIT + (spouse ? SPOUSE_IT : 0) + depG * DEP_GEN_IT + depS * DEP_SPEC_IT + medical;
   var dedRT = BASIC_RT + (spouse ? SPOUSE_RT : 0) + depG * DEP_GEN_RT + depS * DEP_SPEC_RT + medical;
   var diffTotal = DIFF_BASIC + (spouse ? DIFF_SPOUSE : 0) + depG * DIFF_GEN + depS * DIFF_SPEC;
 
@@ -83,8 +110,8 @@ function computeSimple(input) {
   adj = Math.floor(adj);
   var levyRT = Math.max(0, Math.floor(taxableRT * 0.10) - adj);
 
-  // 特例分用の所得税率（住民税課税総所得 − 人的控除差調整額 −（所得税基礎控除−48万=0））
-  var rateBase = taxableRT - diffTotal - Math.max(0, BASIC_IT - 480000);
+  // 特例分用の所得税率（住民税課税総所得 − 人的控除差調整額 −（所得税基礎控除−48万円））
+  var rateBase = taxableRT - diffTotal - basicExtra;
   var rateRT = rateBase <= 0 ? 0 : bracketOf(rateBase).rate;
 
   var limit = levyRT * 0.20 / (0.90 - rateRT * 1.021) + 2000;
@@ -97,7 +124,7 @@ function computeSimple(input) {
     var leftover = possible - usedIT;
     var eraRate = input.housingEra === 'h26' ? 0.07 : 0.05;
     var eraCap = input.housingEra === 'h26' ? 136500 : 97500;
-    var carry = Math.min(leftover, Math.floor((taxableIT + Math.max(0, BASIC_IT - 480000)) * eraRate), eraCap);
+    var carry = Math.min(leftover, Math.floor((taxableIT + basicExtra) * eraRate), eraCap);
     housing = {
       possible: possible, usedInIncomeTax: usedIT, leftover: leftover,
       carryToResident: carry, residentLevyAfter: Math.max(0, levyRT - carry)
@@ -105,7 +132,7 @@ function computeSimple(input) {
   }
 
   return {
-    salaryIncome: salaryInc, socialInsurance: social,
+    salaryIncome: salaryInc, socialInsurance: social, basicDeduction: basicIT,
     taxableIncomeTax: taxableIT, incomeTax: taxIT, rateIncomeTax: rateIT,
     taxableResidentTax: taxableRT, adjustmentCredit: adj, residentLevy: levyRT,
     rateForTokurei: rateRT, limitRaw: limit, limit: floor1000(limit),
@@ -158,7 +185,7 @@ function computeDetail(input) {
   return { limitRaw: limit, limit: floor1000(limit), model: model };
 }
 
-var api = { computeSimple: computeSimple, computeBreakdown: computeBreakdown, computeDetail: computeDetail, salaryIncomeOf: salaryIncomeOf };
+var api = { computeSimple: computeSimple, computeBreakdown: computeBreakdown, computeDetail: computeDetail, salaryIncomeOf: salaryIncomeOf, basicDeductionIT: basicDeductionIT };
 if (typeof module !== 'undefined' && module.exports) module.exports = api;
 global.FurusatoEngine = api;
 })(typeof window !== 'undefined' ? window : globalThis);
