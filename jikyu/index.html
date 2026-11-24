@@ -21,7 +21,7 @@
 </head>
 <body>
 <header class="site-header">
-  <a class="logo" href="../"><span class="logo-mark"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><line x1="8.5" y1="7.5" x2="15.5" y2="7.5"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15.5" r="1" fill="currentColor" stroke="none"/></svg></span>ぜいきんノート</a>
+  <a class="logo" href="../"><span class="logo-mark"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><line x1="8.5" y1="7.5" x2="15.5" y2="7.5"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15.5" r="1" fill="currentColor" stroke="none"/></svg></span><span class="logo-name">ぜいきんノート<span class="logo-tagline">その場で分かる。情報登録完全不要</span></span></a>
   <nav class="site-nav"><a href="../#tools">ツール一覧</a><a href="../#about">このサイトについて</a>｜<a href="../privacy/">プライバシーポリシー</a></nav>
   <details class="menu"><summary class="menu-btn" aria-label="メニュー"><span class="burger"></span></summary><nav class="menu-panel"><a href="../taishoku-dc/">退職金 × iDeCo/DC</a><a href="../kokuho/">国民健康保険料</a><a href="../taishoku-hoken/">退職後の健康保険 比較</a><a href="../juminzei/">住民税</a><a href="../furusato/">ふるさと納税</a><a href="../bonus/">賞与の手取り計算</a><a href="../setai/">世帯年収の手取り</a><a href="../kabe/">年収の壁チェッカー</a><a href="../zangyo/">残業代計算・未払いチェック</a><a href="../gensen/">源泉徴収税額チェッカー</a><a href="../jikyu/">実質時給チェッカー</a><a href="../privacy/">プライバシーポリシー</a></nav></details>
 </header>
@@ -176,6 +176,8 @@
 </div>
 </section>
 
+<p class="note">入力した内容は、この端末のブラウザにだけ保存され、次回以降の入力に使われます（サーバーへは送信されません）。 <button type="button" id="clearSaved" class="btn-sub">保存した入力を消す</button></p>
+
 <section class="card">
 <h2><span class="in-flex"><span class="h2-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><line x1="8.5" y1="7.5" x2="15.5" y2="7.5"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15.5" r="1" fill="currentColor" stroke="none"/></svg></span>計算結果</span></h2>
 <p class="note">本ツールの「実質時給」は、計算方法の定義を明示したうえでの試算であり、法律で定められた金額ではありません。所定時給と最低賃金チェックは公式の計算方法に基づきますが、個別の事情により実際の金額と異なる場合があります。賃金に疑問がある場合は、勤務先の給与担当、労働基準監督署、総合労働相談コーナー、社会保険労務士・弁護士にご確認ください。</p>
@@ -247,6 +249,7 @@
 <p class="copy">© 2026 ぜいきんノート（zeikin-note.com）</p>
 </footer>
 <div class="toast" id="toast" role="status"></div>
+<script src="../js/profile.js"></script>
 <script src="../js/nencho-engine.js"></script>
 <script src="../js/shaho-engine.js"></script>
 <script src="../js/setai-engine.js"></script>
