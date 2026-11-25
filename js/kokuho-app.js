@@ -90,7 +90,19 @@ kumamoto: { label: '熊本市', roundingUnit: 1},
 'osaka-misaki': { label: '岬町', roundingUnit: 1},
 'osaka-taishi': { label: '太子町', roundingUnit: 1},
 'osaka-kanan': { label: '河南町', roundingUnit: 1},
-'osaka-chihayaakasaka': { label: '千早赤阪村', roundingUnit: 1}
+'osaka-chihayaakasaka': { label: '千早赤阪村', roundingUnit: 1},
+toyota: { label: '豊田市', roundingUnit: 100},
+toyama: { label: '富山市', roundingUnit: 10},
+yamagata: { label: '山形市', roundingUnit: 100},
+himeji: { label: '姫路市', roundingUnit: 10},
+matsuyama: { label: '松山市', roundingUnit: 10},
+takamatsu: { label: '高松市', roundingUnit: 100},
+wakayama: { label: '和歌山市', roundingUnit: 10},
+kagoshima: { label: '鹿児島市', roundingUnit: 100},
+oita: { label: '大分市', roundingUnit: 100},
+miyazaki: { label: '宮崎市', roundingUnit: 100},
+nagasaki: { label: '長崎市', roundingUnit: 100},
+nara: { label: '奈良市', roundingUnit: 100}
 };
 var COMP_LABEL = { medical: '医療分', support: '後期高齢者支援金分', care: '介護分', child: '子ども・子育て支援金分'};
 
@@ -137,7 +149,7 @@ var show = (extras[i].classList.contains('nagoya-extra') && cityKey === 'nagoya'
 extras[i].style.display = show? '': 'none';
 }
 var sendai = document.querySelectorAll('.sendai-only');
-for (var j = 0; j < sendai.length; j++) sendai[j].style.display = (cityKey === 'sendai' || cityKey === 'osaka' || cityKey === 'sakai' || cityKey === 'kyoto' || cityKey === 'chiba' || cityKey === 'shizuoka' || cityKey === 'hamamatsu' || cityKey === 'okayama' || cityKey.indexOf('osaka-') === 0)? '': 'none';
+for (var j = 0; j < sendai.length; j++) sendai[j].style.display = (cityKey === 'sendai' || cityKey === 'osaka' || cityKey === 'sakai' || cityKey === 'kyoto' || cityKey === 'chiba' || cityKey === 'shizuoka' || cityKey === 'hamamatsu' || cityKey === 'okayama' || cityKey === 'toyama' || cityKey === 'kagoshima' || cityKey === 'oita' || cityKey === 'nagasaki' || cityKey === 'nara' || cityKey.indexOf('osaka-') === 0)? '': 'none';
 }
 
 /* ---------- 入力の収集 ---------- */

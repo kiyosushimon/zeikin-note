@@ -22,7 +22,7 @@ var t = $('toast'); t.textContent = msg; t.classList.add('show');
 setTimeout(function () { t.classList.remove('show');}, 5000);
 }
 
-/* 国保対応83自治体（js/kokuho-app.js の CITIES と同じ対応表を共用） */
+/* 国保対応95自治体（js/kokuho-app.js の CITIES と同じ対応表を共用） */
 var CITIES = {
 nagoya: { label: '名古屋市', roundingUnit: 10},
 osaka: { label: '大阪市', roundingUnit: 1},
@@ -106,7 +106,19 @@ kumamoto: { label: '熊本市', roundingUnit: 1},
 'osaka-misaki': { label: '岬町', roundingUnit: 1},
 'osaka-taishi': { label: '太子町', roundingUnit: 1},
 'osaka-kanan': { label: '河南町', roundingUnit: 1},
-'osaka-chihayaakasaka': { label: '千早赤阪村', roundingUnit: 1}
+'osaka-chihayaakasaka': { label: '千早赤阪村', roundingUnit: 1},
+toyota: { label: '豊田市', roundingUnit: 100},
+toyama: { label: '富山市', roundingUnit: 10},
+yamagata: { label: '山形市', roundingUnit: 100},
+himeji: { label: '姫路市', roundingUnit: 10},
+matsuyama: { label: '松山市', roundingUnit: 10},
+takamatsu: { label: '高松市', roundingUnit: 100},
+wakayama: { label: '和歌山市', roundingUnit: 10},
+kagoshima: { label: '鹿児島市', roundingUnit: 100},
+oita: { label: '大分市', roundingUnit: 100},
+miyazaki: { label: '宮崎市', roundingUnit: 100},
+nagasaki: { label: '長崎市', roundingUnit: 100},
+nara: { label: '奈良市', roundingUnit: 100}
 };
 /* 住民税の精密計算ができる6市（data/juminzei/cities.json の実レコードを使う） */
 var JUMINZEI_PRECISE = {
@@ -270,7 +282,7 @@ function kindBadge(kind) { return ' <span class="badge">' + kind + '</span>';}
 function render(input, r) {
 if (r.errors.indexOf('age-reselect-required') >= 0) { renderAgeReselect(); return;}
 if (r.errors.indexOf('kokuho-unavailable') >= 0) {
-$('formError').innerHTML = '<div class="error">自営業コースは、国民健康保険料のデータがある自治体（対応83自治体）でのみ計算できます。お住まいの自治体が「その他」の場合は、会社員コースか、<a href="../kokuho/">国民健康保険料シミュレーター</a>の対応状況をご確認ください。</div>';
+$('formError').innerHTML = '<div class="error">自営業コースは、国民健康保険料のデータがある自治体（対応95自治体）でのみ計算できます。お住まいの自治体が「その他」の場合は、会社員コースか、<a href="../kokuho/">国民健康保険料シミュレーター</a>の対応状況をご確認ください。</div>';
 $('totalBig').textContent = '— 円';
 $('resultRows').innerHTML = '';
 $('selfIncomeTaxNote').textContent = '';
@@ -680,7 +692,7 @@ fetch('../data/kenpo/rates-2026.json').then(function (r) { return r.json();}),
 fetch('../data/shaho/params-2026.json').then(function (r) { return r.json();})
 ]).then(function (ds) {
 DATA = { tables: ds[0], juminzeiRules: ds[1], juminzeiCities: ds[2], kenpo: ds[3], shahoParams: ds[4]};
-/* 自治体セレクト（国保対応83自治体＋その他） */
+/* 自治体セレクト（国保対応95自治体＋その他） */
 var citySel = $('cityKey');
 Object.keys(CITIES).forEach(function (key) {
 var o = document.createElement('option');

@@ -84,7 +84,19 @@ var CITIES = [
 { file: 'osaka-misaki', label: '岬町（大阪府）', roundingUnit: 1},
 { file: 'osaka-taishi', label: '太子町（大阪府）', roundingUnit: 1},
 { file: 'osaka-kanan', label: '河南町（大阪府）', roundingUnit: 1},
-{ file: 'osaka-chihayaakasaka', label: '千早赤阪村（大阪府）', roundingUnit: 1}
+{ file: 'osaka-chihayaakasaka', label: '千早赤阪村（大阪府）', roundingUnit: 1},
+{ file: 'toyota', label: '豊田市（愛知県）', roundingUnit: 100},
+{ file: 'toyama', label: '富山市（富山県）', roundingUnit: 10},
+{ file: 'yamagata', label: '山形市（山形県）', roundingUnit: 100},
+{ file: 'himeji', label: '姫路市（兵庫県）', roundingUnit: 10},
+{ file: 'matsuyama', label: '松山市（愛媛県）', roundingUnit: 10},
+{ file: 'takamatsu', label: '高松市（香川県）', roundingUnit: 100},
+{ file: 'wakayama', label: '和歌山市（和歌山県）', roundingUnit: 10},
+{ file: 'kagoshima', label: '鹿児島市（鹿児島県）', roundingUnit: 100},
+{ file: 'oita', label: '大分市（大分県）', roundingUnit: 100},
+{ file: 'miyazaki', label: '宮崎市（宮崎県）', roundingUnit: 100},
+{ file: 'nagasaki', label: '長崎市（長崎県）', roundingUnit: 100},
+{ file: 'nara', label: '奈良市（奈良県）', roundingUnit: 100}
 ];
 var cityData = {}, kenpo = null, state = { result: null};
 
