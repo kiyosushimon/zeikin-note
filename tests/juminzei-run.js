@@ -46,5 +46,25 @@ check('spouse 60man R8: spouse deduction', r7.deductions.spouse, 0);
 let r8 = JuminzeiEngine.compute(rules, byName['新潟市'], { totalIncome: 700000, spouse: { income: 600000, elderly: false }, dependents: {}, socialInsurance: 0, selfStatus: 'none', spouseIncomeLimit: 620000 });
 check('spouse 60man R9: householdSize', r8.householdSize, 2);
 check('spouse 60man R9: spouse deduction', r8.deductions.spouse, 330000);
+/* さいたま市 公式計算例1〜3（2026-11-25 照合。tools/verify_juminzei_examples.js と同じケース） */
+{
+  const inc1 = KokuhoEngine.salaryIncome(3000000);
+  let s1 = JuminzeiEngine.compute(rules, byName['さいたま市'], { totalIncome: inc1, spouse: null, dependents: {}, socialInsurance: 400000, selfStatus: 'none' });
+  check('saitama ex1 total', s1.total, 121500);
+  const inc2 = KokuhoEngine.salaryIncome(5000000);
+  let s2 = JuminzeiEngine.compute(rules, byName['さいたま市'], { totalIncome: inc2, spouse: { income: 0, elderly: false }, dependents: { general: 1, young: 1 }, socialInsurance: 400000 + 32500, selfStatus: 'none' });
+  check('saitama ex2 total', s2.total, 203000);
+  const inc3 = KokuhoEngine.pensionIncome(2500000, 68);
+  let s3 = JuminzeiEngine.compute(rules, byName['さいたま市'], { totalIncome: inc3, spouse: { income: 0, elderly: false }, dependents: {}, socialInsurance: 200000, selfStatus: 'none' });
+  check('saitama ex3 total', s3.total, 44000);
+}
+/* 仙台市 通し計算例（夫婦・こども3人、2026-11-25 照合） */
+{
+  const inc = KokuhoEngine.salaryIncome(5000000);
+  let s = JuminzeiEngine.compute(rules, byName['仙台市'], { totalIncome: inc, spouse: { income: 0, elderly: false }, dependents: { specific: 1, general: 1, young: 1 }, socialInsurance: 500000, selfStatus: 'none' });
+  check('sendai full total', s.total, 141700);
+  check('sendai full taxable', s.taxable, 1520000);
+  check('sendai full adjustment', s.adjustment, 16500);
+}
 console.log(fails === 0 ? 'ALL JUMINZEI CHECKS PASSED' : fails + ' FAILURES');
 process.exitCode = fails ? 1 : 0;
