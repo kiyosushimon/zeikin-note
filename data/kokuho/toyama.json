@@ -1,0 +1,157 @@
+{
+ "common_rules_applied": {
+  "child_component_under18_exemption": {
+   "note": "18歳未満の均等割額：子ども・子育て支援金分を10割減額（市公式ページに明記）"
+  },
+  "preschool_child_reduction": {
+   "applies_to": [
+    "medical",
+    "support"
+   ],
+   "note": "未就学児の均等割額：医療分・後期高齢者支援金分を5割減額（市公式ページに明記）。子ども分は18歳未満全額軽減のため実質影響なし"
+  },
+  "statutory_reduction": {
+   "applies_to": "均等割額・平等割額",
+   "note": "所得基準による減額（法定軽減）。市公式ページに令和7年中の所得による判定式（43万円＋（給与所得者等の数－1）×10万円等）を明記。65歳以上の公的年金等受給者は所得から15万円を控除した金額で判定",
+   "salary_earner_adjustment": "(給与所得者等の数-1)×100,000円（0未満は0）",
+   "tiers": [
+    {
+     "reduction_rate": 0.7,
+     "threshold_formula": "430,000 + 調整額"
+    },
+    {
+     "reduction_rate": 0.5,
+     "threshold_formula": "430,000 + 調整額 + 310,000×被保険者数"
+    },
+    {
+     "reduction_rate": 0.2,
+     "threshold_formula": "430,000 + 調整額 + 570,000×被保険者数"
+    }
+   ]
+  }
+ },
+ "exceptions": [
+  {
+   "conditions": {
+    "note": "後期高齢者医療制度への移行で国保加入者が1人になった世帯（特定世帯）は平等割を最初の5年間は2分の1減額、その後3年間は4分の1減額。ただし介護分の平等割額は減額にならない（市公式ページに明記）"
+   },
+   "engine_status": "子ども分の per_household_fixed（特定世帯430円・特定継続世帯645円）は議案第116号で確認済み。医療分・支援分は市公式ページの一般則（特定世帯2分の1・特定継続世帯4分の3）で計算。介護分は減額なしのため per_household_fixed に通常額と同額（6,500円）を設定し、倍率フォールバックを抑止（岡山市と同手法）。",
+   "source_note": "富山市公式『国民健康保険料』ページ、富山市議会議案第116号",
+   "type": "single_member_household"
+  }
+ ],
+ "municipality_code": "16201",
+ "name": "富山市",
+ "official_pages": {
+  "notice_source": "富山市議会議案第116号『富山市国民健康保険条例の一部を改正する条例制定の件』（令和8年3月）",
+  "rate_page": "https://www.city.toyama.lg.jp/kurashi/kokuho/1010198/1010200/1003837.html",
+  "trial_page": "https://www.city.toyama.lg.jp/kurashi/kokuho/1010198/1010200/1003837.html（計算例1・2を含む）"
+ },
+ "prefecture": "富山県",
+ "provenance": {
+  "retrieval_method": "manual",
+  "retrieved_at": "2026-11-25",
+  "source_published": "2026-03（議案第116号）",
+  "source_type": "富山市公式『国民健康保険料』（HTML表＋計算例）。富山県公式『令和8年度標準保険料率の公表について』PDFの第3節『令和8年度市町村国民健康保険料（税）一覧』（実際の料率）でも同一値を確認。富山市議会議案第116号でも子ども分の料率・特定世帯額を確認。県公式PDFへの browser.open は失敗したが、検索結果スニペットで内容を取得済み",
+  "source_url": "https://www.city.toyama.lg.jp/kurashi/kokuho/1010198/1010200/1003837.html",
+  "verification": {
+   "method": "市公式『国民健康保険料』ページの計算例1・2との照合",
+   "reference_url": "https://www.city.toyama.lg.jp/kurashi/kokuho/1010198/1010200/1003837.html",
+   "status": "照合済み",
+   "verified_at": "2026-11-25",
+   "verified_cases": 2,
+   "verified_detail": "例1（夫42歳・給与収入380万円、妻35歳・給与収入90万円、子5歳・未就学児）: 医療218,880円・支援77,410円・介護65,910円・子ども10,420円・合計372,620円。例2（世帯主68歳・年金収入330万円、妻60歳・給与収入110万円）: 医療182,060円・支援64,570円・介護16,460円・子ども9,240円・合計272,330円。全件一致"
+  }
+ },
+ "publication_profile": {
+  "official_decision": "2026-03（議案第116号）",
+  "page_update_month": null
+ },
+ "rate_pattern_id": "toyama",
+ "rate_record": {
+  "base_deduction": {
+   "amount": 430000,
+   "tiers": [
+    {
+     "deduction": 430000,
+     "max_total_income": 24000000
+    },
+    {
+     "deduction": 290000,
+     "max_total_income": 24500000
+    },
+    {
+     "deduction": 150000,
+     "max_total_income": 25000000
+    },
+    {
+     "deduction": 0,
+     "max_total_income": null
+    }
+   ]
+  },
+  "components": {
+   "care": {
+    "age_band": [
+     40,
+     64
+    ],
+    "asset_rate": null,
+    "cap": 170000,
+    "income_rate": 0.023,
+    "per_capita": 9500,
+    "per_capita_adult_addon": null,
+    "per_household": 6500,
+    "per_household_fixed": {
+     "tokutei": 6500,
+     "keizoku": 6500
+    }
+   },
+   "child": {
+    "asset_rate": null,
+    "cap": 30000,
+    "income_rate": 0.0031,
+    "note": "均等割1,340円＋18歳以上均等割80円（市公式ページに『18歳以上均等割額（80円）を含んでいます』と明記。議案第116号でも確認）。特定世帯の平等割430円・特定継続世帯645円（議案第116号）",
+    "per_capita": 1340,
+    "per_capita_adult_addon": 80,
+    "per_household": 860,
+    "per_household_fixed": {
+     "keizoku": 645,
+     "tokutei": 430
+    }
+   },
+   "medical": {
+    "asset_rate": null,
+    "cap": 670000,
+    "income_rate": 0.064,
+    "per_capita": 25000,
+    "per_capita_adult_addon": null,
+    "per_household": 17500
+   },
+   "support": {
+    "asset_rate": null,
+    "cap": 260000,
+    "income_rate": 0.023,
+    "per_capita": 8200,
+    "per_capita_adult_addon": null,
+    "per_household": 7000
+   }
+  },
+  "fiscal_year": 2026,
+  "levy_type": "料",
+  "method": "3方式",
+  "rate_pattern_id": "toyama",
+  "rounding": {
+   "confirmed_at": "2026-11-25",
+   "note": "区分ごとに10円未満切捨て。公式計算例2件の再現で確認（例1の子ども分10,427円→10,420円、例2の子ども分9,249円→9,240円）。条文上の明記は未確認",
+   "per_component": "floor_10yen"
+  }
+ },
+ "scope_group": "chukakushi",
+ "unconfirmed": [
+  "端数処理の条文上の明記（照合では区分ごと10円未満切捨てで再現）",
+  "特定世帯・特定継続世帯の平等割額（医療分・支援分・介護分）。子ども分は議案第116号で確認済み",
+  "市独自の軽減・減免の有無",
+  "自治体コード16201は全国地方公共団体コード表の標準値。県公式資料・既存JSONでの直接照合は未実施"
+ ]
+}
