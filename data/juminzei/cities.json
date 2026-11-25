@@ -1,488 +1,488 @@
 {
-  "meta": {
-    "title": "住民税（個人市県民税）6市パラメータ",
-    "fiscal_year": "令和8年度（令和7年分の所得に対する課税）",
-    "created": "2026-11-23",
-    "scope": "部品C（住民税計算）・部品D（非課税限度額チェッカー）用データ。全6市とも政令指定都市のため、所得割の標準内訳は市民税8%・県民税2%（指定都市以外は市民税6%・県民税4%）。",
-    "sources_policy": "一次ソース（総務省・各市・各県の公式ページ）のみ。推測で埋めた数値はない。"
-  },
-  "cities": [
+ "meta": {
+  "title": "住民税（個人市県民税）6市パラメータ",
+  "fiscal_year": "令和8年度（令和7年分の所得に対する課税）",
+  "created": "2026-11-23",
+  "scope": "部品C（住民税計算）・部品D（非課税限度額チェッカー）用データ。全6市とも政令指定都市のため、所得割の標準内訳は市民税8%・県民税2%（指定都市以外は市民税6%・県民税4%）。",
+  "sources_policy": "一次ソース（総務省・各市・各県の公式ページ）のみ。推測で埋めた数値はない。"
+ },
+ "cities": [
+  {
+   "city": "名古屋市",
+   "prefecture": "愛知県",
+   "designated_city": true,
+   "income_levy": {
+    "city_rate_pct": 7.7,
+    "prefecture_rate_pct": 2.0,
+    "total_rate_pct": 9.7,
+    "note": "市民税は名古屋市独自の「市民税減税」適用後の税率（指定都市の標準は市民税8%）。県民税は標準どおり2%。合計9.7%は6市中唯一10%未満。",
+    "sources": [
+     {
+      "url": "https://www.city.nagoya.jp/kurashi/zeikin/1037356/1011880/1011883/1011891.html",
+      "checked": "2026-11-23",
+      "note": "計算例ページ。市民税率7.7%・県民税率2%を明記"
+     },
+     {
+      "url": "https://faq.city.nagoya.jp/faq/detail.aspx?id=1614",
+      "checked": "2026-11-23",
+      "note": "令和8年度の計算方法。所得割 税率 市民税7.7%・県民税2%"
+     }
+    ]
+   },
+   "per_capita_levy": {
+    "city_yen": 2800,
+    "prefecture_yen": 1500,
+    "total_yen": 4300,
+    "city_note": "市民税減税後の額（標準は3,000円）",
+    "prefecture_includes": [
+     {
+      "name": "あいち森と緑づくり税",
+      "yen": 500,
+      "note": "愛知県の独自課税。県民税均等割1,500円のうち500円"
+     }
+    ],
+    "forest_environment_tax_national_yen": 1000,
+    "grand_total_yen": 5300,
+    "sources": [
+     {
+      "url": "https://www.city.nagoya.jp/_res/projects/default_project/_page_/001/012/148/2026kojinsiminzei.pdf",
+      "checked": "2026-11-23",
+      "note": "令和8年度 個人市民税のあらまし。均等割 市民税2,800円・県民税1,500円（うち500円はあいち森と緑づくり税）、森林環境税1,000円"
+     }
+    ]
+   },
+   "surcharges": [
     {
-      "city": "名古屋市",
-      "prefecture": "愛知県",
-      "designated_city": true,
-      "income_levy": {
-        "city_rate_pct": 7.7,
-        "prefecture_rate_pct": 2.0,
-        "total_rate_pct": 9.7,
-        "note": "市民税は名古屋市独自の「市民税減税」適用後の税率（指定都市の標準は市民税8%）。県民税は標準どおり2%。合計9.7%は6市中唯一10%未満。",
-        "sources": [
-          {
-            "url": "https://www.city.nagoya.jp/kurashi/zeikin/1037356/1011880/1011883/1011891.html",
-            "checked": "2026-11-23",
-            "note": "計算例ページ。市民税率7.7%・県民税率2%を明記"
-          },
-          {
-            "url": "https://faq.city.nagoya.jp/faq/detail.aspx?id=1614",
-            "checked": "2026-11-23",
-            "note": "令和8年度の計算方法。所得割 税率 市民税7.7%・県民税2%"
-          }
-        ]
-      },
-      "per_capita_levy": {
-        "city_yen": 2800,
-        "prefecture_yen": 1500,
-        "total_yen": 4300,
-        "city_note": "市民税減税後の額（標準は3,000円）",
-        "prefecture_includes": [
-          {
-            "name": "あいち森と緑づくり税",
-            "yen": 500,
-            "note": "愛知県の独自課税。県民税均等割1,500円のうち500円"
-          }
-        ],
-        "forest_environment_tax_national_yen": 1000,
-        "grand_total_yen": 5300,
-        "sources": [
-          {
-            "url": "https://www.city.nagoya.jp/_res/projects/default_project/_page_/001/012/148/2026kojinsiminzei.pdf",
-            "checked": "2026-11-23",
-            "note": "令和8年度 個人市民税のあらまし。均等割 市民税2,800円・県民税1,500円（うち500円はあいち森と緑づくり税）、森林環境税1,000円"
-          }
-        ]
-      },
-      "surcharges": [
-        {
-          "name": "あいち森と緑づくり税",
-          "yen": 500,
-          "levied_via": "県民税均等割に含む",
-          "level": "愛知県"
-        },
-        {
-          "name": "市民税減税（マイナスの上乗せ）",
-          "detail": "所得割 市民税8%→7.7%、均等割 市民税3,000円→2,800円",
-          "level": "名古屋市"
-        }
-      ],
-      "tax_class": {
-        "class": 1,
-        "class_label": "1級地",
-        "basis": "名古屋市公式の均等割非課税算式の基礎額が35万円（＝1級地の額）であることから判定。算式: 35万円×(扶養家族の数+1)+10万円+21万円",
-        "sources": [
-          {
-            "url": "https://www.city.nagoya.jp/_res/projects/default_project/_page_/001/012/148/2026kojinsiminzei.pdf",
-            "checked": "2026-11-23"
-          }
-        ]
-      },
-      "nontaxable_local": {
-        "per_capita_formula": "合計所得金額 ≤ 35万円×(扶養家族の数+1)+10万円+21万円（扶養なしは45万円以下）",
-        "income_levy_formula": "総所得金額等 ≤ 35万円×(扶養家族の数+1)+10万円+32万円（扶養なしは45万円以下）",
-        "special_category_limit_yen": 1350000,
-        "sources": [
-          {
-            "url": "https://www.city.nagoya.jp/_res/projects/default_project/_page_/001/012/148/2026kojinsiminzei.pdf",
-            "checked": "2026-11-23",
-            "note": "障害者・未成年者・寡婦・ひとり親の非課税限度額135万円も同資料で確認"
-          }
-        ]
-      },
-      "calculation_example": {
-        "url": "https://www.city.nagoya.jp/kurashi/zeikin/1037356/1011880/1011883/1011891.html",
-        "title": "市民税・県民税の計算例（令和8年度）",
-        "summary": "給与所得者の完全な計算例あり。課税総所得金額1,562,000円→市民税所得割120,274円（×7.7%）、県民税所得割31,240円（×2%）、調整控除は人的控除差330,000円×市民税4%・県民税1%、均等割を加え100円未満切捨て。年税額139,200円+森林環境税1,000円=140,200円。",
-        "verified_against_parameters": true
-      }
+     "name": "あいち森と緑づくり税",
+     "yen": 500,
+     "levied_via": "県民税均等割に含む",
+     "level": "愛知県"
     },
     {
-      "city": "福岡市",
-      "prefecture": "福岡県",
-      "designated_city": true,
-      "income_levy": {
-        "city_rate_pct": 8.0,
-        "prefecture_rate_pct": 2.0,
-        "total_rate_pct": 10.0,
-        "note": "指定都市の標準内訳（平成30年度からの税源移譲による組み替え後）。",
-        "sources": [
-          {
-            "url": "https://www.pref.fukuoka.lg.jp/contents/kojinkenminzei.html",
-            "checked": "2026-11-23",
-            "note": "福岡県公式。指定都市（福岡市・北九州市）は県民税2%・市民税8%と明記"
-          },
-          {
-            "url": "https://www.city.fukuoka.lg.jp/zaisei/shisanzei/life/Index.html",
-            "checked": "2026-11-23",
-            "note": "福岡市 個人市県民税について"
-          }
-        ]
-      },
-      "per_capita_levy": {
-        "city_yen": 3000,
-        "prefecture_yen": 1500,
-        "total_yen": 4500,
-        "prefecture_includes": [
-          {
-            "name": "福岡県森林環境税",
-            "yen": 500,
-            "note": "県民税均等割に上乗せ。平成20年度から導入"
-          }
-        ],
-        "forest_environment_tax_national_yen": 1000,
-        "grand_total_yen": 5500,
-        "sources": [
-          {
-            "url": "https://www.city.fukuoka.lg.jp/zaisei/shisanzei/life/Index.html",
-            "checked": "2026-11-23",
-            "note": "均等割 市民税3,000円・県民税1,500円（県民税のうち500円は福岡県森林環境税相当額）"
-          },
-          {
-            "url": "https://www.pref.fukuoka.lg.jp/contents/kojinkenminzei.html",
-            "checked": "2026-11-23"
-          }
-        ]
-      },
-      "surcharges": [
-        {
-          "name": "福岡県森林環境税",
-          "yen": 500,
-          "levied_via": "県民税均等割に上乗せ",
-          "level": "福岡県"
-        }
-      ],
-      "tax_class": {
-        "class": 1,
-        "class_label": "1級地",
-        "basis": "福岡市公式の均等割非課税算式の基礎額が35万円（＝1級地の額）。算式: 35万円×(同一生計配偶者+扶養親族数+本人)+21万円+10万円",
-        "sources": [
-          {
-            "url": "https://www.city.fukuoka.lg.jp/zaisei/shisanzei/life/Index.html",
-            "checked": "2026-11-23"
-          }
-        ]
-      },
-      "nontaxable_local": {
-        "per_capita_formula": "合計所得金額 ≤ 35万円×(人数)+10万円+21万円（扶養なしは45万円以下）",
-        "income_levy_formula": "総所得金額等 ≤ 35万円×(人数)+10万円+32万円（扶養なしは45万円以下）",
-        "special_category_limit_yen": 1350000,
-        "sources": [
-          {
-            "url": "https://www.city.fukuoka.lg.jp/zaisei/shisanzei/life/Index.html",
-            "checked": "2026-11-23"
-          }
-        ]
-      },
-      "calculation_example": {
-        "url": "https://www.city.fukuoka.lg.jp/zaisei/zeisei/life/minnnanosizei.html",
-        "title": "令和8年度 みんなの市税（市税情報誌）「個人の市県民税を計算してみましょう！」",
-        "summary": "公式情報誌に計算例の章があることは目次で確認。例の数値そのものの抽出・照合は未実施。",
-        "verified_against_parameters": false
-      }
-    },
-    {
-      "city": "札幌市",
-      "prefecture": "北海道",
-      "designated_city": true,
-      "income_levy": {
-        "city_rate_pct": 8.0,
-        "prefecture_rate_pct": 2.0,
-        "total_rate_pct": 10.0,
-        "note": "平成30年度以後は市民税8%・道民税2%（平成29年度以前は6%・4%）。",
-        "sources": [
-          {
-            "url": "https://www.city.sapporo.jp/citytax/syurui/shiminzei/kojin_zeigaku.html",
-            "checked": "2026-11-23",
-            "note": "税額の算出方法。所得割の税率表に平成30年度以後 市民税8%・道民税2%"
-          },
-          {
-            "url": "https://www.callcenter.city.sapporo.jp/sapporo/cc/web/knowledge1268.html",
-            "checked": "2026-11-23",
-            "note": "標準税率採用のFAQ"
-          }
-        ]
-      },
-      "per_capita_levy": {
-        "city_yen": 3000,
-        "prefecture_yen": 1000,
-        "total_yen": 4000,
-        "prefecture_name": "道民税",
-        "prefecture_includes": [],
-        "forest_environment_tax_national_yen": 1000,
-        "grand_total_yen": 5000,
-        "sources": [
-          {
-            "url": "https://www.city.sapporo.jp/citytax/syurui/shiminzei/kojin_zeigaku.html",
-            "checked": "2026-11-23",
-            "note": "均等割 市民税3,000円・道民税1,000円、森林環境税1,000円"
-          }
-        ]
-      },
-      "surcharges": [],
-      "tax_class": {
-        "class": 1,
-        "class_label": "1級地",
-        "basis": "札幌市公式の均等割非課税算式が35万円×家族数+31万円（=10万円+21万円）であり、基礎額35万円＝1級地の額。",
-        "sources": [
-          {
-            "url": "https://www.city.sapporo.jp/citytax/syurui/shiminzei/kojin.html",
-            "checked": "2026-11-23",
-            "note": "個人市民税ページ。非課税限度額早見表あり"
-          }
-        ]
-      },
-      "nontaxable_local": {
-        "per_capita_formula": "合計所得金額 ≤ 35万円×家族数（本人+同一生計配偶者+扶養親族数）+31万円（扶養なしは45万円以下）",
-        "special_category_limit_yen": 1350000,
-        "sources": [
-          {
-            "url": "https://www.city.sapporo.jp/citytax/syurui/shiminzei/kojin.html",
-            "checked": "2026-11-23"
-          }
-        ]
-      },
-      "calculation_example": {
-        "url": "https://www.city.sapporo.jp/citytax/simulation.html",
-        "title": "個人住民税の税額試算（「令和8年度個人住民税（市民税・道民税）等の税額計算について」PDFへのリンクあり）",
-        "summary": "試算システムと税額計算資料PDFが公式に用意されている。静的な計算例ページの数値照合は未実施。なお税額の算出方法ページ自体に控除表・調整控除の算式が完備している。",
-        "verified_against_parameters": false
-      }
-    },
-    {
-      "city": "仙台市",
-      "prefecture": "宮城県",
-      "designated_city": true,
-      "income_levy": {
-        "city_rate_pct": 8.0,
-        "prefecture_rate_pct": 2.0,
-        "total_rate_pct": 10.0,
-        "note": "平成30年度から税源移譲により市民税8%・県民税2%（合計10%は不変）。",
-        "sources": [
-          {
-            "url": "https://www.city.sendai.jp/shiminze-kikaku/kurashi/tetsuzuki/zekin/kojin/gaiyo.html",
-            "checked": "2026-11-23",
-            "note": "税率表（令和6年度以降）所得割 市民税8%・県民税2%"
-          },
-          {
-            "url": "https://www.pref.miyagi.jp/soshiki/zeimu/kojinkenmin.html",
-            "checked": "2026-11-23",
-            "note": "宮城県公式。仙台市の内訳変更を明記"
-          }
-        ]
-      },
-      "per_capita_levy": {
-        "city_yen": 3000,
-        "prefecture_yen": 2200,
-        "total_yen": 5200,
-        "prefecture_includes": [
-          {
-            "name": "みやぎ環境税",
-            "yen": 1200,
-            "note": "宮城県の独自課税。平成23年度から令和12年度まで。県民税均等割2,200円のうち1,200円"
-          }
-        ],
-        "forest_environment_tax_national_yen": 1000,
-        "grand_total_yen": 6200,
-        "sources": [
-          {
-            "url": "https://www.city.sendai.jp/shiminze-kikaku/kurashi/tetsuzuki/zekin/kojin/gaiyo.html",
-            "checked": "2026-11-23",
-            "note": "均等割 市民税3,000円・県民税2,200円（うち みやぎ環境税1,200円）"
-          },
-          {
-            "url": "https://www.pref.miyagi.jp/soshiki/zeimu/kojinkenmin.html",
-            "checked": "2026-11-23",
-            "note": "県民税均等割 年額2,200円（みやぎ環境税1,200円加算）"
-          }
-        ]
-      },
-      "surcharges": [
-        {
-          "name": "みやぎ環境税",
-          "yen": 1200,
-          "levied_via": "県民税均等割に加算",
-          "level": "宮城県",
-          "period": "平成23年度〜令和12年度"
-        }
-      ],
-      "tax_class": {
-        "class": 1,
-        "class_label": "1級地",
-        "basis": "仙台市公式の非課税早見表: 扶養1人で合計所得金額101万円以下＝35万円×2+10万円+21万円と一致し、基礎額35万円＝1級地の額。",
-        "sources": [
-          {
-            "url": "https://www.city.sendai.jp/shiminze-kikaku/kurashi/tetsuzuki/zekin/kojin/gaiyo.html",
-            "checked": "2026-11-23",
-            "note": "非課税早見表（令和8年度以降）"
-          }
-        ]
-      },
-      "nontaxable_local": {
-        "per_capita_formula": "合計所得金額 ≤ 35万円×(人数)+10万円+21万円（扶養なし45万円以下、扶養1人101万円以下、2人136万円以下…と早見表あり）",
-        "special_category_limit_yen": 1350000,
-        "sources": [
-          {
-            "url": "https://www.city.sendai.jp/shiminze-kikaku/kurashi/tetsuzuki/zekin/kojin/gaiyo.html",
-            "checked": "2026-11-23"
-          }
-        ]
-      },
-      "calculation_example": {
-        "url": "https://www.city.sendai.jp/shiminze-kikaku/kurashi/tetsuzuki/zekin/kojin/sikenminzeinituite/syotokukingaku.html",
-        "title": "個人市県民税の所得（収入）金額について（給与所得の計算例1〜3）",
-        "summary": "給与収入→給与所得の換算計算例は公式にある（令和8年度以降の速算表つき）。収入から年税額まで通しの計算例は未確認（仙台市は税額試算ページを提供）。",
-        "verified_against_parameters": false
-      }
-    },
-    {
-      "city": "さいたま市",
-      "prefecture": "埼玉県",
-      "designated_city": true,
-      "income_levy": {
-        "city_rate_pct": 8.0,
-        "prefecture_rate_pct": 2.0,
-        "total_rate_pct": 10.0,
-        "note": "指定都市の標準内訳。",
-        "sources": [
-          {
-            "url": "https://www.city.saitama.lg.jp/001/153/004/002/001/001/p013654.html",
-            "checked": "2026-11-23",
-            "note": "個人市民税・県民税の税額の計算方法。所得割 課税総所得金額等 市民税8%・県民税2%"
-          },
-          {
-            "url": "https://www.city.saitama.lg.jp/001/153/004/006/p065397_d/fil/R8shizeinoshiori.pdf",
-            "checked": "2026-11-23",
-            "note": "令和8年度版 市税のしおり"
-          }
-        ]
-      },
-      "per_capita_levy": {
-        "city_yen": 3000,
-        "prefecture_yen": 1000,
-        "total_yen": 4000,
-        "prefecture_includes": [],
-        "forest_environment_tax_national_yen": 1000,
-        "grand_total_yen": 5000,
-        "sources": [
-          {
-            "url": "https://www.city.saitama.lg.jp/001/153/004/002/001/001/p013654.html",
-            "checked": "2026-11-23",
-            "note": "均等割 市民税3,000円・県民税1,000円"
-          },
-          {
-            "url": "https://www.city.saitama.lg.jp/001/153/004/006/p065397_d/fil/R8shizeinoshiori.pdf",
-            "checked": "2026-11-23"
-          }
-        ]
-      },
-      "surcharges": [],
-      "tax_class": {
-        "class": 1,
-        "class_label": "1級地",
-        "basis": "さいたま市公式（市税のしおり令和8年度版）の均等割非課税算式が35万円×(本人+同一生計配偶者+扶養親族の数)+31万円であり、基礎額35万円＝1級地の額。",
-        "sources": [
-          {
-            "url": "https://www.city.saitama.lg.jp/001/153/004/006/p065397_d/fil/R8shizeinoshiori.pdf",
-            "checked": "2026-11-23"
-          }
-        ]
-      },
-      "nontaxable_local": {
-        "per_capita_formula": "合計所得金額 ≤ 35万円×(人数)+31万円（扶養なしは45万円以下）",
-        "income_levy_formula": "総所得金額等 ≤ 35万円×(人数)+42万円（扶養なしは45万円以下）",
-        "special_category_limit_yen": 1350000,
-        "sources": [
-          {
-            "url": "https://www.city.saitama.lg.jp/001/153/004/006/p065397_d/fil/R8shizeinoshiori.pdf",
-            "checked": "2026-11-23"
-          }
-        ]
-      },
-      "calculation_example": {
-        "url": "https://www.city.saitama.lg.jp/001/153/004/002/001/001/p013654.html",
-        "title": "個人市民税・県民税の税額の計算方法",
-        "summary": "算式（課税所得金額は1,000円未満切捨て、所得割額は100円未満切捨て）と税率表は公式に完備。数値入りの通し計算例は未確認（税額シミュレーションは提供あり）。",
-        "verified_against_parameters": false
-      }
-    },
-    {
-      "city": "新潟市",
-      "prefecture": "新潟県",
-      "designated_city": true,
-      "income_levy": {
-        "city_rate_pct": 8.0,
-        "prefecture_rate_pct": 2.0,
-        "total_rate_pct": 10.0,
-        "note": "平成30年度分から市民税8%・県民税2%（県費負担教職員の給与負担事務の指定都市への移譲に伴う組み替え）。",
-        "sources": [
-          {
-            "url": "https://www.city.niigata.lg.jp/kurashi/zei/siraberu/kojin/kojingaiyou.html",
-            "checked": "2026-11-23",
-            "note": "個人市民税の概要。所得割 税率10%（市民税8%・県民税2%）"
-          },
-          {
-            "url": "https://www.city.niigata.lg.jp/kurashi/zei/siraberu/kojin/keisanrei.html",
-            "checked": "2026-11-23",
-            "note": "計算例。課税標準額×市民税8%・県民税2%で計算"
-          }
-        ]
-      },
-      "per_capita_levy": {
-        "city_yen": 3000,
-        "prefecture_yen": 1000,
-        "total_yen": 4000,
-        "prefecture_includes": [],
-        "forest_environment_tax_national_yen": 1000,
-        "grand_total_yen": 5000,
-        "sources": [
-          {
-            "url": "https://www.city.niigata.lg.jp/kurashi/zei/siraberu/kojin/kojingaiyou.html",
-            "checked": "2026-11-23",
-            "note": "令和6年度以降 市民税3,000円・県民税1,000円・森林環境税1,000円"
-          },
-          {
-            "url": "https://www.city.niigata.lg.jp/kurashi/zei/siraberu/toukei_kouhyou/shiori.files/00_R8shiori.pdf",
-            "checked": "2026-11-23",
-            "note": "令和8年度版 市税のしおり"
-          }
-        ]
-      },
-      "surcharges": [],
-      "tax_class": {
-        "class": 2,
-        "class_label": "2級地",
-        "basis": "新潟市公式の均等割非課税算式の基礎額が31万5,000円（＝2級地の額。1級地35万円×0.9）。算式: 31万5,000円×(本人+同一生計配偶者+扶養親族の数)+10万円+18万9,000円。厚生労働省資料でも新潟市は2級地-1とされている。",
-        "sources": [
-          {
-            "url": "https://www.city.niigata.lg.jp/kurashi/zei/siraberu/toukei_kouhyou/shiori.files/00_R8shiori.pdf",
-            "checked": "2026-11-23"
-          },
-          {
-            "url": "https://www.city.niigata.lg.jp/kurashi/zei/siraberu/kojin/kojingaiyou.html",
-            "checked": "2026-11-23"
-          },
-          {
-            "url": "https://jsite.mhlw.go.jp/niigata-roudoukyoku/content/contents/s0728-10.pdf",
-            "checked": "2026-11-23",
-            "note": "厚生労働省 新潟労働局。平成30年度資料で新潟市は2級地-1"
-          }
-        ]
-      },
-      "nontaxable_local": {
-        "per_capita_formula": "合計所得金額 ≤ 31万5,000円×(人数)+10万円+18万9,000円（18万9,000円の加算は同一生計配偶者・扶養親族がいる場合のみ）",
-        "income_levy_formula": "総所得金額等 ≤ 35万円×(人数)+10万円+32万円（所得割の算式は級地によらず全国共通の35万円基礎）",
-        "special_category_limit_yen": 1350000,
-        "sources": [
-          {
-            "url": "https://www.city.niigata.lg.jp/kurashi/zei/siraberu/kojin/kojingaiyou.html",
-            "checked": "2026-11-23"
-          }
-        ]
-      },
-      "calculation_example": {
-        "url": "https://www.city.niigata.lg.jp/kurashi/zei/siraberu/kojin/keisanrei.html",
-        "title": "計算例（令和7年中の収入＝令和8年度課税分）",
-        "summary": "完全な計算例3件あり。【給与所得者(1)】給与収入5,000,000円・夫婦子2人・社会保険料500,000円→所得3,560,000円、控除1,590,000円、課税標準1,970,000円、調整控除150,000円×市民税4%・県民税1%、年税額194,500円（森林環境税込）。【給与所得者(2)】同条件+住宅ローン控除見込75,000円→119,500円。【公的年金】年金収入2,600,000円・夫婦→54,000円。本データの税率・均等割・調整控除按分と全て一致。",
-        "verified_against_parameters": true
-      }
+     "name": "市民税減税（マイナスの上乗せ）",
+     "detail": "所得割 市民税8%→7.7%、均等割 市民税3,000円→2,800円",
+     "level": "名古屋市"
     }
-  ]
+   ],
+   "tax_class": {
+    "class": 1,
+    "class_label": "1級地",
+    "basis": "名古屋市公式の均等割非課税算式の基礎額が35万円（＝1級地の額）であることから判定。算式: 35万円×(扶養家族の数+1)+10万円+21万円",
+    "sources": [
+     {
+      "url": "https://www.city.nagoya.jp/_res/projects/default_project/_page_/001/012/148/2026kojinsiminzei.pdf",
+      "checked": "2026-11-23"
+     }
+    ]
+   },
+   "nontaxable_local": {
+    "per_capita_formula": "合計所得金額 ≤ 35万円×(扶養家族の数+1)+10万円+21万円（扶養なしは45万円以下）",
+    "income_levy_formula": "総所得金額等 ≤ 35万円×(扶養家族の数+1)+10万円+32万円（扶養なしは45万円以下）",
+    "special_category_limit_yen": 1350000,
+    "sources": [
+     {
+      "url": "https://www.city.nagoya.jp/_res/projects/default_project/_page_/001/012/148/2026kojinsiminzei.pdf",
+      "checked": "2026-11-23",
+      "note": "障害者・未成年者・寡婦・ひとり親の非課税限度額135万円も同資料で確認"
+     }
+    ]
+   },
+   "calculation_example": {
+    "url": "https://www.city.nagoya.jp/kurashi/zeikin/1037356/1011880/1011883/1011891.html",
+    "title": "市民税・県民税の計算例（令和8年度）",
+    "summary": "給与所得者の完全な計算例あり。課税総所得金額1,562,000円→市民税所得割120,274円（×7.7%）、県民税所得割31,240円（×2%）、調整控除は人的控除差330,000円×市民税4%・県民税1%、均等割を加え100円未満切捨て。年税額139,200円+森林環境税1,000円=140,200円。",
+    "verified_against_parameters": true
+   }
+  },
+  {
+   "city": "福岡市",
+   "prefecture": "福岡県",
+   "designated_city": true,
+   "income_levy": {
+    "city_rate_pct": 8.0,
+    "prefecture_rate_pct": 2.0,
+    "total_rate_pct": 10.0,
+    "note": "指定都市の標準内訳（平成30年度からの税源移譲による組み替え後）。",
+    "sources": [
+     {
+      "url": "https://www.pref.fukuoka.lg.jp/contents/kojinkenminzei.html",
+      "checked": "2026-11-23",
+      "note": "福岡県公式。指定都市（福岡市・北九州市）は県民税2%・市民税8%と明記"
+     },
+     {
+      "url": "https://www.city.fukuoka.lg.jp/zaisei/shisanzei/life/Index.html",
+      "checked": "2026-11-23",
+      "note": "福岡市 個人市県民税について"
+     }
+    ]
+   },
+   "per_capita_levy": {
+    "city_yen": 3000,
+    "prefecture_yen": 1500,
+    "total_yen": 4500,
+    "prefecture_includes": [
+     {
+      "name": "福岡県森林環境税",
+      "yen": 500,
+      "note": "県民税均等割に上乗せ。平成20年度から導入"
+     }
+    ],
+    "forest_environment_tax_national_yen": 1000,
+    "grand_total_yen": 5500,
+    "sources": [
+     {
+      "url": "https://www.city.fukuoka.lg.jp/zaisei/shisanzei/life/Index.html",
+      "checked": "2026-11-23",
+      "note": "均等割 市民税3,000円・県民税1,500円（県民税のうち500円は福岡県森林環境税相当額）"
+     },
+     {
+      "url": "https://www.pref.fukuoka.lg.jp/contents/kojinkenminzei.html",
+      "checked": "2026-11-23"
+     }
+    ]
+   },
+   "surcharges": [
+    {
+     "name": "福岡県森林環境税",
+     "yen": 500,
+     "levied_via": "県民税均等割に上乗せ",
+     "level": "福岡県"
+    }
+   ],
+   "tax_class": {
+    "class": 1,
+    "class_label": "1級地",
+    "basis": "福岡市公式の均等割非課税算式の基礎額が35万円（＝1級地の額）。算式: 35万円×(同一生計配偶者+扶養親族数+本人)+21万円+10万円",
+    "sources": [
+     {
+      "url": "https://www.city.fukuoka.lg.jp/zaisei/shisanzei/life/Index.html",
+      "checked": "2026-11-23"
+     }
+    ]
+   },
+   "nontaxable_local": {
+    "per_capita_formula": "合計所得金額 ≤ 35万円×(人数)+10万円+21万円（扶養なしは45万円以下）",
+    "income_levy_formula": "総所得金額等 ≤ 35万円×(人数)+10万円+32万円（扶養なしは45万円以下）",
+    "special_category_limit_yen": 1350000,
+    "sources": [
+     {
+      "url": "https://www.city.fukuoka.lg.jp/zaisei/shisanzei/life/Index.html",
+      "checked": "2026-11-23"
+     }
+    ]
+   },
+   "calculation_example": {
+    "url": "https://www.city.fukuoka.lg.jp/zaisei/zeisei/life/documents/r8P012-P028.pdf",
+    "title": "令和8年度 みんなの市税「個人の市県民税を計算してみましょう！」（冊子p.27〜28）",
+    "summary": "給与収入500万円・不動産所得30万円、妻・長男17歳・長女13歳・父70歳（同居・特別障がい者）の例。給与所得3,560,000円、総所得3,860,000円、所得控除計2,607,000円、課税総所得1,253,000円、所得割（市8%・県2%）100,240円／25,060円、均等割3,000円／1,500円、森林環境税1,000円、年税額105,700円まで、税率・均等割・森林環境税・所得割額・合計の算術照合が一致。調整控除（市20,000円／県5,000円）は公式の人的控除差450,000円を前提としており、エンジン未対応の扶養障害者控除（530,000円）とその人的控除差のためエンジンでは再現できない（tools/verify_juminzei_examples.js の KNOWN として記録）。",
+    "verified_against_parameters": false
+   }
+  },
+  {
+   "city": "札幌市",
+   "prefecture": "北海道",
+   "designated_city": true,
+   "income_levy": {
+    "city_rate_pct": 8.0,
+    "prefecture_rate_pct": 2.0,
+    "total_rate_pct": 10.0,
+    "note": "平成30年度以後は市民税8%・道民税2%（平成29年度以前は6%・4%）。",
+    "sources": [
+     {
+      "url": "https://www.city.sapporo.jp/citytax/syurui/shiminzei/kojin_zeigaku.html",
+      "checked": "2026-11-23",
+      "note": "税額の算出方法。所得割の税率表に平成30年度以後 市民税8%・道民税2%"
+     },
+     {
+      "url": "https://www.callcenter.city.sapporo.jp/sapporo/cc/web/knowledge1268.html",
+      "checked": "2026-11-23",
+      "note": "標準税率採用のFAQ"
+     }
+    ]
+   },
+   "per_capita_levy": {
+    "city_yen": 3000,
+    "prefecture_yen": 1000,
+    "total_yen": 4000,
+    "prefecture_name": "道民税",
+    "prefecture_includes": [],
+    "forest_environment_tax_national_yen": 1000,
+    "grand_total_yen": 5000,
+    "sources": [
+     {
+      "url": "https://www.city.sapporo.jp/citytax/syurui/shiminzei/kojin_zeigaku.html",
+      "checked": "2026-11-23",
+      "note": "均等割 市民税3,000円・道民税1,000円、森林環境税1,000円"
+     }
+    ]
+   },
+   "surcharges": [],
+   "tax_class": {
+    "class": 1,
+    "class_label": "1級地",
+    "basis": "札幌市公式の均等割非課税算式が35万円×家族数+31万円（=10万円+21万円）であり、基礎額35万円＝1級地の額。",
+    "sources": [
+     {
+      "url": "https://www.city.sapporo.jp/citytax/syurui/shiminzei/kojin.html",
+      "checked": "2026-11-23",
+      "note": "個人市民税ページ。非課税限度額早見表あり"
+     }
+    ]
+   },
+   "nontaxable_local": {
+    "per_capita_formula": "合計所得金額 ≤ 35万円×家族数（本人+同一生計配偶者+扶養親族数）+31万円（扶養なしは45万円以下）",
+    "special_category_limit_yen": 1350000,
+    "sources": [
+     {
+      "url": "https://www.city.sapporo.jp/citytax/syurui/shiminzei/kojin.html",
+      "checked": "2026-11-23"
+     }
+    ]
+   },
+   "calculation_example": {
+    "url": "https://www.city.sapporo.jp/documents/171801/r8keisan.pdf",
+    "title": "令和8年度個人住民税（市民税・道民税）等の税額計算について（「★あなたの税額を計算してみましょう」p.4）",
+    "summary": "給与収入200万円・年金収入170万円・不動産所得10万円の例。給与所得は公式1,220,000円（所得金額調整控除で10万円を差し引いた額。エンジンは未対応のため1,320,000円と100,000円の差が出ることを KNOWN として記録）。年金所得600,000円（65歳以上の公的年金等控除110万円と一致）、総所得1,920,000円、課税総所得420,000円、所得割（市8%・道2%）33,600円／8,400円、均等割3,000円／1,000円、森林環境税1,000円、合計29,700円まで算術照合が一致。寄附金税額控除（市5,760円／道1,440円）はエンジン未対応のため照合対象外。",
+    "verified_against_parameters": false
+   }
+  },
+  {
+   "city": "仙台市",
+   "prefecture": "宮城県",
+   "designated_city": true,
+   "income_levy": {
+    "city_rate_pct": 8.0,
+    "prefecture_rate_pct": 2.0,
+    "total_rate_pct": 10.0,
+    "note": "平成30年度から税源移譲により市民税8%・県民税2%（合計10%は不変）。",
+    "sources": [
+     {
+      "url": "https://www.city.sendai.jp/shiminze-kikaku/kurashi/tetsuzuki/zekin/kojin/gaiyo.html",
+      "checked": "2026-11-23",
+      "note": "税率表（令和6年度以降）所得割 市民税8%・県民税2%"
+     },
+     {
+      "url": "https://www.pref.miyagi.jp/soshiki/zeimu/kojinkenmin.html",
+      "checked": "2026-11-23",
+      "note": "宮城県公式。仙台市の内訳変更を明記"
+     }
+    ]
+   },
+   "per_capita_levy": {
+    "city_yen": 3000,
+    "prefecture_yen": 2200,
+    "total_yen": 5200,
+    "prefecture_includes": [
+     {
+      "name": "みやぎ環境税",
+      "yen": 1200,
+      "note": "宮城県の独自課税。平成23年度から令和12年度まで。県民税均等割2,200円のうち1,200円"
+     }
+    ],
+    "forest_environment_tax_national_yen": 1000,
+    "grand_total_yen": 6200,
+    "sources": [
+     {
+      "url": "https://www.city.sendai.jp/shiminze-kikaku/kurashi/tetsuzuki/zekin/kojin/gaiyo.html",
+      "checked": "2026-11-23",
+      "note": "均等割 市民税3,000円・県民税2,200円（うち みやぎ環境税1,200円）"
+     },
+     {
+      "url": "https://www.pref.miyagi.jp/soshiki/zeimu/kojinkenmin.html",
+      "checked": "2026-11-23",
+      "note": "県民税均等割 年額2,200円（みやぎ環境税1,200円加算）"
+     }
+    ]
+   },
+   "surcharges": [
+    {
+     "name": "みやぎ環境税",
+     "yen": 1200,
+     "levied_via": "県民税均等割に加算",
+     "level": "宮城県",
+     "period": "平成23年度〜令和12年度"
+    }
+   ],
+   "tax_class": {
+    "class": 1,
+    "class_label": "1級地",
+    "basis": "仙台市公式の非課税早見表: 扶養1人で合計所得金額101万円以下＝35万円×2+10万円+21万円と一致し、基礎額35万円＝1級地の額。",
+    "sources": [
+     {
+      "url": "https://www.city.sendai.jp/shiminze-kikaku/kurashi/tetsuzuki/zekin/kojin/gaiyo.html",
+      "checked": "2026-11-23",
+      "note": "非課税早見表（令和8年度以降）"
+     }
+    ]
+   },
+   "nontaxable_local": {
+    "per_capita_formula": "合計所得金額 ≤ 35万円×(人数)+10万円+21万円（扶養なし45万円以下、扶養1人101万円以下、2人136万円以下…と早見表あり）",
+    "special_category_limit_yen": 1350000,
+    "sources": [
+     {
+      "url": "https://www.city.sendai.jp/shiminze-kikaku/kurashi/tetsuzuki/zekin/kojin/gaiyo.html",
+      "checked": "2026-11-23"
+     }
+    ]
+   },
+   "calculation_example": {
+    "url": "https://www.city.sendai.jp/shiminze-kikaku/kurashi/tetsuzuki/zekin/kojin/documents/zei_keisanrei.pdf",
+    "title": "税額の計算例（夫婦・こども3人の場合）",
+    "summary": "夫の給与収入500万円・妻（収入なし）・こども3人（20歳・17歳・14歳）、社会保険料50万円の通し計算例をエンジンで完全再現。給与所得3,560,000円、所得控除計2,040,000円、課税所得1,520,000円、人的控除差330,000円、調整控除16,500円（市13,200円・県3,300円）、市民税111,400円・県民税29,300円・森林環境税1,000円、合計141,700円。別途、給与所得の計算例1〜3（syotokukingaku.html）はエンジンの既知の簡易化により不一致: 例1は別表第五の平坦部で400円、例2・例3は所得金額調整控除の未対応で30,000円／100,000円の差（tools/verify_juminzei_examples.js の KNOWN として記録）。",
+    "verified_against_parameters": true
+   }
+  },
+  {
+   "city": "さいたま市",
+   "prefecture": "埼玉県",
+   "designated_city": true,
+   "income_levy": {
+    "city_rate_pct": 8.0,
+    "prefecture_rate_pct": 2.0,
+    "total_rate_pct": 10.0,
+    "note": "指定都市の標準内訳。",
+    "sources": [
+     {
+      "url": "https://www.city.saitama.lg.jp/001/153/004/002/001/001/p013654.html",
+      "checked": "2026-11-23",
+      "note": "個人市民税・県民税の税額の計算方法。所得割 課税総所得金額等 市民税8%・県民税2%"
+     },
+     {
+      "url": "https://www.city.saitama.lg.jp/001/153/004/006/p065397_d/fil/R8shizeinoshiori.pdf",
+      "checked": "2026-11-23",
+      "note": "令和8年度版 市税のしおり"
+     }
+    ]
+   },
+   "per_capita_levy": {
+    "city_yen": 3000,
+    "prefecture_yen": 1000,
+    "total_yen": 4000,
+    "prefecture_includes": [],
+    "forest_environment_tax_national_yen": 1000,
+    "grand_total_yen": 5000,
+    "sources": [
+     {
+      "url": "https://www.city.saitama.lg.jp/001/153/004/002/001/001/p013654.html",
+      "checked": "2026-11-23",
+      "note": "均等割 市民税3,000円・県民税1,000円"
+     },
+     {
+      "url": "https://www.city.saitama.lg.jp/001/153/004/006/p065397_d/fil/R8shizeinoshiori.pdf",
+      "checked": "2026-11-23"
+     }
+    ]
+   },
+   "surcharges": [],
+   "tax_class": {
+    "class": 1,
+    "class_label": "1級地",
+    "basis": "さいたま市公式（市税のしおり令和8年度版）の均等割非課税算式が35万円×(本人+同一生計配偶者+扶養親族の数)+31万円であり、基礎額35万円＝1級地の額。",
+    "sources": [
+     {
+      "url": "https://www.city.saitama.lg.jp/001/153/004/006/p065397_d/fil/R8shizeinoshiori.pdf",
+      "checked": "2026-11-23"
+     }
+    ]
+   },
+   "nontaxable_local": {
+    "per_capita_formula": "合計所得金額 ≤ 35万円×(人数)+31万円（扶養なしは45万円以下）",
+    "income_levy_formula": "総所得金額等 ≤ 35万円×(人数)+42万円（扶養なしは45万円以下）",
+    "special_category_limit_yen": 1350000,
+    "sources": [
+     {
+      "url": "https://www.city.saitama.lg.jp/001/153/004/006/p065397_d/fil/R8shizeinoshiori.pdf",
+      "checked": "2026-11-23"
+     }
+    ]
+   },
+   "calculation_example": {
+    "url": "https://www.city.saitama.lg.jp/001/153/004/002/001/001/p013654.html",
+    "title": "個人市民税・県民税の税額の計算方法（計算例1〜3）",
+    "summary": "3例すべてエンジンで完全再現。例1: 給与収入300万円・一人世帯・社会保険料40万円→課税1,190,000円・調整控除2,500円・市民税96,200円・県民税24,300円・合計121,500円。例2: 給与収入500万円・夫婦＋子2人（24歳・12歳）・社会保険料40万円・生命保険料控除32,500円→課税2,037,000円・調整控除5,650円・市民税161,400円・県民税40,600円・合計203,000円（生命保険料控除はエンジン未対応のため社会保険料控除へ合算して照合）。例3: 年金収入250万円・夫婦（68歳・67歳）・社会保険料20万円→課税440,000円・調整控除5,000円・市民税34,200円・県民税8,800円・合計44,000円。個別の例ページ: p014265.html / p014300.html / p014314.html。",
+    "verified_against_parameters": true
+   }
+  },
+  {
+   "city": "新潟市",
+   "prefecture": "新潟県",
+   "designated_city": true,
+   "income_levy": {
+    "city_rate_pct": 8.0,
+    "prefecture_rate_pct": 2.0,
+    "total_rate_pct": 10.0,
+    "note": "平成30年度分から市民税8%・県民税2%（県費負担教職員の給与負担事務の指定都市への移譲に伴う組み替え）。",
+    "sources": [
+     {
+      "url": "https://www.city.niigata.lg.jp/kurashi/zei/siraberu/kojin/kojingaiyou.html",
+      "checked": "2026-11-23",
+      "note": "個人市民税の概要。所得割 税率10%（市民税8%・県民税2%）"
+     },
+     {
+      "url": "https://www.city.niigata.lg.jp/kurashi/zei/siraberu/kojin/keisanrei.html",
+      "checked": "2026-11-23",
+      "note": "計算例。課税標準額×市民税8%・県民税2%で計算"
+     }
+    ]
+   },
+   "per_capita_levy": {
+    "city_yen": 3000,
+    "prefecture_yen": 1000,
+    "total_yen": 4000,
+    "prefecture_includes": [],
+    "forest_environment_tax_national_yen": 1000,
+    "grand_total_yen": 5000,
+    "sources": [
+     {
+      "url": "https://www.city.niigata.lg.jp/kurashi/zei/siraberu/kojin/kojingaiyou.html",
+      "checked": "2026-11-23",
+      "note": "令和6年度以降 市民税3,000円・県民税1,000円・森林環境税1,000円"
+     },
+     {
+      "url": "https://www.city.niigata.lg.jp/kurashi/zei/siraberu/toukei_kouhyou/shiori.files/00_R8shiori.pdf",
+      "checked": "2026-11-23",
+      "note": "令和8年度版 市税のしおり"
+     }
+    ]
+   },
+   "surcharges": [],
+   "tax_class": {
+    "class": 2,
+    "class_label": "2級地",
+    "basis": "新潟市公式の均等割非課税算式の基礎額が31万5,000円（＝2級地の額。1級地35万円×0.9）。算式: 31万5,000円×(本人+同一生計配偶者+扶養親族の数)+10万円+18万9,000円。厚生労働省資料でも新潟市は2級地-1とされている。",
+    "sources": [
+     {
+      "url": "https://www.city.niigata.lg.jp/kurashi/zei/siraberu/toukei_kouhyou/shiori.files/00_R8shiori.pdf",
+      "checked": "2026-11-23"
+     },
+     {
+      "url": "https://www.city.niigata.lg.jp/kurashi/zei/siraberu/kojin/kojingaiyou.html",
+      "checked": "2026-11-23"
+     },
+     {
+      "url": "https://jsite.mhlw.go.jp/niigata-roudoukyoku/content/contents/s0728-10.pdf",
+      "checked": "2026-11-23",
+      "note": "厚生労働省 新潟労働局。平成30年度資料で新潟市は2級地-1"
+     }
+    ]
+   },
+   "nontaxable_local": {
+    "per_capita_formula": "合計所得金額 ≤ 31万5,000円×(人数)+10万円+18万9,000円（18万9,000円の加算は同一生計配偶者・扶養親族がいる場合のみ）",
+    "income_levy_formula": "総所得金額等 ≤ 35万円×(人数)+10万円+32万円（所得割の算式は級地によらず全国共通の35万円基礎）",
+    "special_category_limit_yen": 1350000,
+    "sources": [
+     {
+      "url": "https://www.city.niigata.lg.jp/kurashi/zei/siraberu/kojin/kojingaiyou.html",
+      "checked": "2026-11-23"
+     }
+    ]
+   },
+   "calculation_example": {
+    "url": "https://www.city.niigata.lg.jp/kurashi/zei/siraberu/kojin/keisanrei.html",
+    "title": "計算例（令和7年中の収入＝令和8年度課税分）",
+    "summary": "完全な計算例3件あり。【給与所得者(1)】給与収入5,000,000円・夫婦子2人・社会保険料500,000円→所得3,560,000円、控除1,590,000円、課税標準1,970,000円、調整控除150,000円×市民税4%・県民税1%、年税額194,500円（森林環境税込）。【給与所得者(2)】同条件+住宅ローン控除見込75,000円→119,500円。【公的年金】年金収入2,600,000円・夫婦→54,000円。本データの税率・均等割・調整控除按分と全て一致。",
+    "verified_against_parameters": true
+   }
+  }
+ ]
 }
