@@ -96,7 +96,11 @@ var CITIES = [
 { file: 'oita', label: '大分市（大分県）', roundingUnit: 100},
 { file: 'miyazaki', label: '宮崎市（宮崎県）', roundingUnit: 100},
 { file: 'nagasaki', label: '長崎市（長崎県）', roundingUnit: 100},
-{ file: 'nara', label: '奈良市（奈良県）', roundingUnit: 100}
+{ file: 'nara', label: '奈良市（奈良県）', roundingUnit: 100},
+{ file: 'kurashiki', label: '倉敷市（岡山県）', roundingUnit: 1},
+{ file: 'amagasaki', label: '尼崎市（兵庫県）', roundingUnit: 1},
+{ file: 'nishinomiya', label: '西宮市（兵庫県）', roundingUnit: 1},
+{ file: 'kanazawa', label: '金沢市（石川県）', roundingUnit: 1}
 ];
 var cityData = {}, kenpo = null, state = { result: null};
 
