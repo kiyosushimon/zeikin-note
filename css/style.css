@@ -372,15 +372,17 @@ a.tool-card:active { transform: translate(2px, 2px); box-shadow: 3px 3px 0 rgba(
     animation: overlay-in 0.25s ease both;
   }
   .menu-panel {
-    position: fixed; top: 0; right: 0; z-index: 20;
-    width: min(320px, 85vw); min-width: 0;
+    position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 20;
+    width: auto; min-width: 0;
     height: 100vh; height: 100dvh;
     max-height: none; overflow-y: auto;
-    border-right: none; border-radius: 16px 0 0 16px;
-    box-shadow: -4px 0 0 rgba(38, 34, 26, 0.22);
-    padding: 76px 8px 24px;
+    border: none; border-radius: 0;
+    box-shadow: none;
+    padding: 84px 20px 40px;
   }
-  details.menu[open] .menu-panel { animation: drawer-in 0.3s ease-out both; }
+  .menu-panel a { font-size: 1.12rem; padding: 15px 8px; }
+  .menu-panel .menu-kind { font-size: 0.76em; font-weight: 700; }
+  details.menu[open] .menu-panel { animation: overlay-in 0.25s ease both; }
   .burger, .burger::before, .burger::after { transition: transform 0.2s ease, top 0.2s ease, background-color 0.2s ease; }
   details.menu[open] .burger { background: transparent; }
   details.menu[open] .burger::before { top: 0; transform: rotate(45deg); }
