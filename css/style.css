@@ -382,6 +382,7 @@ a.tool-card:active { transform: translate(2px, 2px); box-shadow: 3px 3px 0 rgba(
   }
   .menu-panel a { font-size: 1.12rem; padding: 15px 8px; }
   .menu-panel .menu-kind { font-size: 0.76em; font-weight: 700; }
+  .menu-panel .menu-desc { display: block; font-size: 0.8rem; font-weight: 500; color: var(--muted); line-height: 1.55; margin-top: 3px; }
   details.menu[open] .menu-panel { animation: overlay-in 0.25s ease both; }
   .burger, .burger::before, .burger::after { transition: transform 0.2s ease, top 0.2s ease, background-color 0.2s ease; }
   details.menu[open] .burger { background: transparent; }
