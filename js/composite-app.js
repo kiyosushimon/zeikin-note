@@ -22,7 +22,7 @@ var t = $('toast'); t.textContent = msg; t.classList.add('show');
 setTimeout(function () { t.classList.remove('show');}, 5000);
 }
 
-/* 国保対応105自治体（js/kokuho-app.js の CITIES と同じ対応表を共用） */
+/* 国保対応108自治体（js/kokuho-app.js の CITIES と同じ対応表を共用） */
 var CITIES = {
 nagoya: { label: '名古屋市', roundingUnit: 10},
 osaka: { label: '大阪市', roundingUnit: 1},
@@ -128,7 +128,10 @@ kurume: { label: '久留米市', roundingUnit: 100},
 kawagoe: { label: '川越市', roundingUnit: 100},
 machida: { label: '町田市', roundingUnit: 100},
 kashiwa: { label: '柏市', roundingUnit: 100},
-okazaki: { label: '岡崎市', roundingUnit: 100}
+okazaki: { label: '岡崎市', roundingUnit: 100},
+asahikawa: { label: '旭川市', roundingUnit: 10},
+iwaki: { label: 'いわき市', roundingUnit: 100},
+mito: { label: '水戸市', roundingUnit: 100}
 };
 /* 住民税の精密計算ができる6市（data/juminzei/cities.json の実レコードを使う） */
 var JUMINZEI_PRECISE = {
@@ -143,7 +146,8 @@ sapporo: '北海道', sendai: '宮城県', saitama: '埼玉県', niigata: '新�
 hamamatsu: '静岡県', okayama: '岡山県', kumamoto: '熊本県',
 kurashiki: '岡山県', amagasaki: '兵庫県', nishinomiya: '兵庫県', kanazawa: '石川県',
 nagano: '長野県', kurume: '福岡県', kawagoe: '埼玉県',
-machida: '東京都', kashiwa: '千葉県', okazaki: '愛知県'
+machida: '東京都', kashiwa: '千葉県', okazaki: '愛知県',
+asahikawa: '北海道', iwaki: '福島県', mito: '茨城県'
 };
 function cityPrefecture(key) {
 if (CITY_PREFECTURE[key]) return CITY_PREFECTURE[key];
@@ -295,7 +299,7 @@ function kindBadge(kind) { return ' <span class="badge">' + kind + '</span>';}
 function render(input, r) {
 if (r.errors.indexOf('age-reselect-required') >= 0) { renderAgeReselect(); return;}
 if (r.errors.indexOf('kokuho-unavailable') >= 0) {
-$('formError').innerHTML = '<div class="error">自営業コースは、国民健康保険料のデータがある自治体（対応105自治体）でのみ計算できます。お住まいの自治体が「その他」の場合は、会社員コースか、<a href="../kokuho/">国民健康保険料シミュレーター</a>の対応状況をご確認ください。</div>';
+$('formError').innerHTML = '<div class="error">自営業コースは、国民健康保険料のデータがある自治体（対応108自治体）でのみ計算できます。お住まいの自治体が「その他」の場合は、会社員コースか、<a href="../kokuho/">国民健康保険料シミュレーター</a>の対応状況をご確認ください。</div>';
 $('totalBig').textContent = '— 円';
 $('resultRows').innerHTML = '';
 $('selfIncomeTaxNote').textContent = '';
@@ -705,7 +709,7 @@ fetch('../data/kenpo/rates-2026.json').then(function (r) { return r.json();}),
 fetch('../data/shaho/params-2026.json').then(function (r) { return r.json();})
 ]).then(function (ds) {
 DATA = { tables: ds[0], juminzeiRules: ds[1], juminzeiCities: ds[2], kenpo: ds[3], shahoParams: ds[4]};
-/* 自治体セレクト（国保対応105自治体＋その他） */
+/* 自治体セレクト（国保対応108自治体＋その他） */
 var citySel = $('cityKey');
 Object.keys(CITIES).forEach(function (key) {
 var o = document.createElement('option');
