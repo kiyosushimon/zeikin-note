@@ -103,7 +103,10 @@ var CITIES = [
 { file: 'kanazawa', label: '金沢市（石川県）', roundingUnit: 1},
 { file: 'nagano', label: '長野市（長野県）', roundingUnit: 10},
 { file: 'kurume', label: '久留米市（福岡県）', roundingUnit: 100},
-{ file: 'kawagoe', label: '川越市（埼玉県）', roundingUnit: 100}
+{ file: 'kawagoe', label: '川越市（埼玉県）', roundingUnit: 100},
+{ file: 'machida', label: '町田市（東京都）', roundingUnit: 100},
+{ file: 'kashiwa', label: '柏市（千葉県）', roundingUnit: 100},
+{ file: 'okazaki', label: '岡崎市（愛知県）', roundingUnit: 100}
 ];
 var cityData = {}, kenpo = null, state = { result: null};
 
