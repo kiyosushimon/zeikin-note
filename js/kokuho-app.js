@@ -112,7 +112,10 @@ kurume: { label: '久留米市', roundingUnit: 100},
 kawagoe: { label: '川越市', roundingUnit: 100},
 machida: { label: '町田市', roundingUnit: 100},
 kashiwa: { label: '柏市', roundingUnit: 100},
-okazaki: { label: '岡崎市', roundingUnit: 100}
+okazaki: { label: '岡崎市', roundingUnit: 100},
+asahikawa: { label: '旭川市', roundingUnit: 10},
+iwaki: { label: 'いわき市', roundingUnit: 100},
+mito: { label: '水戸市', roundingUnit: 100}
 };
 var COMP_LABEL = { medical: '医療分', support: '後期高齢者支援金分', care: '介護分', child: '子ども・子育て支援金分'};
 
@@ -159,7 +162,7 @@ var show = (extras[i].classList.contains('nagoya-extra') && cityKey === 'nagoya'
 extras[i].style.display = show? '': 'none';
 }
 var sendai = document.querySelectorAll('.sendai-only');
-for (var j = 0; j < sendai.length; j++) sendai[j].style.display = (cityKey === 'sendai' || cityKey === 'osaka' || cityKey === 'sakai' || cityKey === 'kyoto' || cityKey === 'chiba' || cityKey === 'shizuoka' || cityKey === 'hamamatsu' || cityKey === 'okayama' || cityKey === 'toyama' || cityKey === 'kagoshima' || cityKey === 'oita' || cityKey === 'nagasaki' || cityKey === 'nara' || cityKey === 'kurashiki' || cityKey === 'nishinomiya' || cityKey === 'kanazawa' || cityKey === 'nagano' || cityKey === 'kurume' || cityKey === 'kashiwa' || cityKey.indexOf('osaka-') === 0)? '': 'none';
+for (var j = 0; j < sendai.length; j++) sendai[j].style.display = (cityKey === 'sendai' || cityKey === 'osaka' || cityKey === 'sakai' || cityKey === 'kyoto' || cityKey === 'chiba' || cityKey === 'shizuoka' || cityKey === 'hamamatsu' || cityKey === 'okayama' || cityKey === 'toyama' || cityKey === 'kagoshima' || cityKey === 'oita' || cityKey === 'nagasaki' || cityKey === 'nara' || cityKey === 'kurashiki' || cityKey === 'nishinomiya' || cityKey === 'kanazawa' || cityKey === 'nagano' || cityKey === 'kurume' || cityKey === 'kashiwa' || cityKey === 'asahikawa' || cityKey.indexOf('osaka-') === 0)? '': 'none';
 }
 
 /* ---------- 入力の収集 ---------- */
